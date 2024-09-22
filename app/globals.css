@@ -2,26 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Dashboard.css */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Apply gradient background to all menu items */
+.custom-menu .ant-menu-item {
+  /* Gradient from #0d60d8 to #2a86f4 */
+  color: white !important; /* Ensure text is visible on gradient */
+  position: relative; /* For positioning the ::before pseudo-element */
+  transition: background 0.3s ease; /* Smooth transition for background changes */
+  left: -3px;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.custom-menu .ant-menu-item:hover {
+  background: linear-gradient(to right, #0d60d8, #2a86f4);
+  transition: background 2s ease;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Define the shape using ::before pseudo-element */
+.custom-menu .ant-menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0; /* Position the shape 8px from the left */
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: background 2s ease; /* Smooth transition for background changes */
+  transition: opacity 2s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+/* Show the shape on hover */
+.custom-menu .ant-menu-item:hover::before {
+  opacity: 1; /* Make the shape visible */
+  transition: background 0.3s ease; /* Smooth transition for background changes */
+  transition: opacity 0.7s ease, transform 0.3s ease; /* Smooth transition */
+  background-image: url("./../assets/images/before-shape.svg");
+}
+
+/* Maintain gradient on hover with slight color adjustment */
+.custom-menu .ant-menu-item:hover {
+  background: linear-gradient(
+    to right,
+    #0d63d9,
+    #2a86f4
+  ); /* Adjusted gradient on hover */
+  color: white !important; /* Ensure text remains visible */
+}
+
+/* Maintain gradient when selected */
+.custom-menu .ant-menu-item-selected {
+  background: linear-gradient(to right, #0d63d9, #2a86f4) !important;
+  color: white !important; /* Ensure text remains visible */
+}
+
+/* Ensure icons have proper color */
+.custom-menu .ant-menu-item .ant-menu-item-icon img {
+  filter: brightness(0) invert(1); /* Invert icon colors for visibility */
+}
+
+/* Optional: Adjust link color if labels are rendered as <a> tags */
+.custom-menu .ant-menu-item a {
+  color: white !important;
+}
+
+/* Optional: Adjust submenu items if any */
+.custom-menu .ant-menu-submenu-title {
+  color: white !important;
+}
+
+.custom-menu .ant-menu-submenu:hover .ant-menu-submenu-title,
+.custom-menu .ant-menu-submenu-selected .ant-menu-submenu-title {
+  background: linear-gradient(to right, #0d63d9, #2a86f4) !important;
+  color: white !important;
+}
+
+.custom-menu .ant-menu-item-selected {
+  position: relative;
+}
+
+.custom-menu .ant-menu-item-selected::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1; /* Show the shape when selected */
+  transition: all 200ms ease;
+  transition: background 0.3s ease; /* Smooth transition for background changes */
+  background-image: url("./../assets/images/before-shape.svg"); /* Use selected shape */
 }
