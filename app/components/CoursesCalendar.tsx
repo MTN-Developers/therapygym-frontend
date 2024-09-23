@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import "dayjs/locale/zh-cn";
 
-import { Calendar, Col, Radio, Row, Select, theme, Typography } from "antd";
+import { Calendar, Select, theme, Typography } from "antd";
 import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import dayLocaleData from "dayjs/plugin/localeData";
@@ -45,13 +45,13 @@ const CoursesCalender: React.FC = () => {
   //   const date = new Date()
 
   return (
-    <div style={wrapperStyle}>
+    <div style={wrapperStyle} className="shadow-lg">
       <Calendar
         fullscreen={false}
         onSelect={onSelect} // Handle date selection
         value={selectedDate} // Controlled value
         // dateCellRender={(value) => dateCellRender(value, selectedDate)}
-        headerRender={({ value, type, onChange, onTypeChange }) => {
+        headerRender={({ value }) => {
           const start = 0;
           const end = 12;
           const monthOptions = [];
@@ -73,7 +73,7 @@ const CoursesCalender: React.FC = () => {
           }
 
           const year = value.year();
-          const month = value.month();
+          // const month = value.month();
           const options = [];
           for (let i = year - 10; i < year + 10; i += 1) {
             options.push(
@@ -87,7 +87,7 @@ const CoursesCalender: React.FC = () => {
               <Typography.Title level={4}>
                 {value.format("MMMM")} {year}
               </Typography.Title>
-              <Row gutter={8}>
+              {/* <Row gutter={8}>
                 <Col>
                   <Radio.Group
                     size="small"
@@ -125,7 +125,7 @@ const CoursesCalender: React.FC = () => {
                     {monthOptions}
                   </Select>
                 </Col>
-              </Row>
+              </Row> */}
             </div>
           );
         }}
