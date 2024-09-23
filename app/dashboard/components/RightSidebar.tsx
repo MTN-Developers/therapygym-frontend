@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import userPhoto from "./../../assets/images/user-photo.svg";
+import userPhoto from "../../../assets/images/user-photo.svg";
 import CoursesCalender from "./CoursesCalendar";
 import Link from "next/link";
 import UpcomingEvents from "./Clubs";

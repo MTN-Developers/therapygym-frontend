@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import SearchIcon from "./../../assets/images/search-icon.svg";
-import billIcon from "./../../assets/images/bill-icon.svg";
-import messageIcon from "./../../assets/images/message-icon.svg";
+import SearchIcon from "../../../assets/images/search-icon.svg";
+import billIcon from "../../../assets/images/bill-icon.svg";
+import messageIcon from "../../../assets/images/message-icon.svg";
 
 export default function Header() {
   const [search, setSearch] = useState("");

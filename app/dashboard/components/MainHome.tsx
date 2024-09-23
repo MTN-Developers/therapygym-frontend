@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import videoPlaceholder from "../../assets/images/video-placeholder.svg";
-import playIcon from "./../../assets/images/play-icon.svg";
+import videoPlaceholder from "../../../assets/images/video-placeholder.svg";
+import playIcon from "../../../assets/images/play-icon.svg";
 import CoursesSlider from "./CoursesSlider";
 import RightSidebar from "./RightSidebar";
 

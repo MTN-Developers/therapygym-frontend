@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import Providers from "./Providers";
 import CustomLayout from "./CustomLayout";
 import "swiper/css/navigation"; // If you use navigation

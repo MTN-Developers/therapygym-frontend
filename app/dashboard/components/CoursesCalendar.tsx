@@ -9,8 +9,8 @@ import type { Dayjs } from "dayjs";
 import dayLocaleData from "dayjs/plugin/localeData";
 import Image from "next/image";
 
-import arrowLeft from "../../assets/images/arrow-left.svg";
-import arrowRight from "../../assets/images/arrow-right.svg";
+import arrowLeft from "../../../assets/images/arrow-left.svg";
+import arrowRight from "../../../assets/images/arrow-right.svg";
 
 dayjs.extend(dayLocaleData);
 

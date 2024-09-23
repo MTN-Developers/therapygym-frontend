@@ -20,31 +20,31 @@ const items: MenuItem[] = [
     id: 1,
     label: "Home",
     icon: homeIcon,
-    link: "/",
+    link: "/dashboard/",
   },
   {
     id: 2,
     label: "All courses",
     icon: coursesIcon,
-    link: "/all-courses",
+    link: "/dashboard/all-courses",
   },
   {
     id: 3,
     label: "Calender",
     icon: calenderIcon,
-    link: "/calender",
+    link: "/dashboard/calender",
   },
   {
     id: 4,
     label: "Discussion",
     icon: discussionIcon,
-    link: "/discussion",
+    link: "/dashboard/discussion",
   },
   {
     id: 5,
     label: "MTN Support",
     icon: supportIcon,
-    link: "/support",
+    link: "/dashboard/support",
   },
 ];
 
