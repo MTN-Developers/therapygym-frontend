@@ -99,3 +99,15 @@
   transition: background 0.3s ease; /* Smooth transition for background changes */
   background-image: url("./../assets/images/before-shape.svg"); /* Use selected shape */
 }
+
+/* control the date cell */
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: #f87171; /* Tailwind's red-400 */
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -11,34 +11,40 @@ import { Layout, Menu, theme } from "antd";
 import { MenuItem } from "@/interfaces"; // Ensure this interface is defined as:
 // interface MenuItem { id: number; label: string; icon: string; }
 import Image from "next/image";
+import Link from "next/link";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const items: MenuItem[] = [
   {
     id: 1,
     label: "Home",
     icon: homeIcon,
+    link: "/",
   },
   {
     id: 2,
     label: "All courses",
     icon: coursesIcon,
+    link: "/all-courses",
   },
   {
     id: 3,
     label: "Calender",
     icon: calenderIcon,
+    link: "/calender",
   },
   {
     id: 4,
     label: "Discussion",
     icon: discussionIcon,
+    link: "/discussion",
   },
   {
     id: 5,
     label: "MTN Support",
     icon: supportIcon,
+    link: "/support",
   },
 ];
 
@@ -112,25 +118,28 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         >
           {items.map((item) => (
             <Menu.Item key={item.id.toString()} className="flex">
-              <Image
-                src={item.icon}
-                alt={`${item.label} icon`}
-                width={20}
-                height={20}
-                className="inline me-4"
-              />
-              {item.label}
+              <Link href={item.link}>
+                <Image
+                  src={item.icon}
+                  alt={`${item.label} icon`}
+                  width={20}
+                  height={20}
+                  className="inline me-4"
+                />
+                {item.label}
+              </Link>
             </Menu.Item>
           ))}
         </Menu>
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "24px 16px 0" }}>
+        {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
+        <Content style={{ margin: "0px 0px 0" }}>
           <div
             style={{
-              padding: 24,
-              minHeight: 360,
+              paddingTop: 56,
+              paddingInline: 24,
+              minHeight: "100vh",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
@@ -138,9 +147,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
