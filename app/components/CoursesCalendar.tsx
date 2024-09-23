@@ -3,27 +3,16 @@ import React, { useState } from "react";
 import dayjs from "dayjs";
 
 import "dayjs/locale/zh-cn";
-
 import { Calendar, Select, theme, Typography } from "antd";
 import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import dayLocaleData from "dayjs/plugin/localeData";
+import Image from "next/image";
+
+import arrowLeft from "../../assets/images/arrow-left.svg";
+import arrowRight from "../../assets/images/arrow-right.svg";
 
 dayjs.extend(dayLocaleData);
-
-// const dateCellRender = (currentDate: Dayjs, selectedDate: Dayjs) => {
-// const isSelected = currentDate.isSame(selectedDate, "day");
-
-// return (
-//     <div
-//     className={`w-full h-full flex items-center justify-center ${
-//         isSelected ? "bg-red-500 text-white rounded-full" : ""
-//     }`}
-//     >
-//     {currentDate.date()}
-//     </div>
-// );
-// };
 
 const CoursesCalender: React.FC = () => {
   const { token } = theme.useToken();
@@ -35,6 +24,13 @@ const CoursesCalender: React.FC = () => {
   const onSelect = (value: Dayjs) => {
     setSelectedDate(value);
   };
+  const goToPreviousMonth = () => {
+    setSelectedDate(selectedDate.subtract(1, "month"));
+  };
+
+  const goToNextMonth = () => {
+    setSelectedDate(selectedDate.add(1, "month"));
+  };
 
   const wrapperStyle: React.CSSProperties = {
     width: 300,
@@ -42,15 +38,12 @@ const CoursesCalender: React.FC = () => {
     borderRadius: token.borderRadiusLG,
   };
 
-  //   const date = new Date()
-
   return (
     <div style={wrapperStyle} className="shadow-lg">
       <Calendar
         fullscreen={false}
         onSelect={onSelect} // Handle date selection
         value={selectedDate} // Controlled value
-        // dateCellRender={(value) => dateCellRender(value, selectedDate)}
         headerRender={({ value }) => {
           const start = 0;
           const end = 12;
@@ -73,7 +66,6 @@ const CoursesCalender: React.FC = () => {
           }
 
           const year = value.year();
-          // const month = value.month();
           const options = [];
           for (let i = year - 10; i < year + 10; i += 1) {
             options.push(
@@ -83,49 +75,33 @@ const CoursesCalender: React.FC = () => {
             );
           }
           return (
-            <div style={{ padding: 8 }}>
-              <Typography.Title level={4}>
+            <div
+              style={{ padding: 8 }}
+              className="flex  items-center content-center justify-between "
+            >
+              <Typography.Title level={5} className="m-0">
                 {value.format("MMMM")} {year}
               </Typography.Title>
-              {/* <Row gutter={8}>
-                <Col>
-                  <Radio.Group
-                    size="small"
-                    onChange={(e) => onTypeChange(e.target.value)}
-                    value={type}
-                  >
-                    <Radio.Button value="month">Month</Radio.Button>
-                    <Radio.Button value="year">Year</Radio.Button>
-                  </Radio.Group>
-                </Col>
-                <Col>
-                  <Select
-                    size="small"
-                    popupMatchSelectWidth={false}
-                    className="my-year-select"
-                    value={year}
-                    onChange={(newYear) => {
-                      const now = value.clone().year(newYear);
-                      onChange(now);
-                    }}
-                  >
-                    {options}
-                  </Select>
-                </Col>
-                <Col>
-                  <Select
-                    size="small"
-                    popupMatchSelectWidth={false}
-                    value={month}
-                    onChange={(newMonth) => {
-                      const now = value.clone().month(newMonth);
-                      onChange(now);
-                    }}
-                  >
-                    {monthOptions}
-                  </Select>
-                </Col>
-              </Row> */}
+              <div className="flex gap-4 ">
+                <div onClick={goToPreviousMonth} className="cursor-pointer">
+                  <Image
+                    width={10}
+                    height={10}
+                    src={arrowLeft}
+                    onClick={goToPreviousMonth}
+                    alt="arrow"
+                  />
+                </div>
+                <div onClick={goToNextMonth} className="cursor-pointer">
+                  <Image
+                    width={10}
+                    height={10}
+                    src={arrowRight}
+                    onClick={goToPreviousMonth}
+                    alt="arrow"
+                  />
+                </div>
+              </div>
             </div>
           );
         }}

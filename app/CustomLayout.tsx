@@ -53,24 +53,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  // State to manage sidebar width
-
-  // Map the original items to Ant Design Menu's expected format
-  //   const menuItems: MenuProps["items"] = useMemo(() => {
-  //     return items.map((item) => ({
-  //       key: item.id.toString(),
-  //       label: item.label,
-  //       icon: (
-  //         <Image
-  //           src={item.icon}
-  //           alt={`${item.label} icon`}
-  //           width={20}
-  //           height={20}
-  //         />
-  //       ),
-  //     }));
-  //   }, []);
-
   return (
     <Layout>
       <Sider

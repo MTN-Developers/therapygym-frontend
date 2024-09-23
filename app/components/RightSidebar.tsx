@@ -2,6 +2,9 @@ import Image from "next/image";
 import React from "react";
 import userPhoto from "./../../assets/images/user-photo.svg";
 import CoursesCalender from "./CoursesCalendar";
+import Link from "next/link";
+import UpcomingEvents from "./Clubs";
+import Clubs from "./UpcomingEvents";
 
 const RightSidebar = () => {
   return (
@@ -18,6 +21,11 @@ const RightSidebar = () => {
         <p className="text-[12px] text-[#4d4d4d] font-[500]">Client</p>
       </div>
       <CoursesCalender />
+      <Link href={"/all-courses"} className="text-center underline font-[500]">
+        see more
+      </Link>
+      <Clubs />
+      <UpcomingEvents />
     </div>
   );
 };
