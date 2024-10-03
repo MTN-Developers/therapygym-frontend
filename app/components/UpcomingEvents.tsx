@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import arrowIcon from "../../../assets/images/arrow-icon.svg";
+import arrowIcon from "../../assets/images/arrow-icon.svg";
 import Link from "next/link";
 
 const UpcomingEvents = () => {

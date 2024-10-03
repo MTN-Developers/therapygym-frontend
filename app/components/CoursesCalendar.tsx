@@ -7,13 +7,17 @@ import { Calendar, Select, theme, Typography } from "antd";
 import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 import dayLocaleData from "dayjs/plugin/localeData";
+import weekday from "dayjs/plugin/weekday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
 
-import arrowLeft from "../../../assets/images/arrow-left.svg";
-import arrowRight from "../../../assets/images/arrow-right.svg";
+import arrowLeft from "../../assets/images/arrow-left.svg";
+import arrowRight from "../../assets/images/arrow-right.svg";
 
+// Extend Day.js with the plugins
 dayjs.extend(dayLocaleData);
-
+dayjs.extend(weekday);
+dayjs.extend(weekOfYear);
 const CoursesCalender: React.FC = () => {
   const { token } = theme.useToken();
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());

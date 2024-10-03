@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import arrowIcon from "../../../assets/images/arrow-icon.svg";
+import arrowIcon from "../../assets/images/arrow-icon.svg";
 import Link from "next/link";
-import fitrIcon from "../../../assets/images/fitra-icon.svg";
-import pregOneIcon from "../../../assets/images/preg-one.svg";
-import pregTwoIcon from "../../../assets/images/preg-two.svg";
+import fitrIcon from "../../assets/images/fitra-icon.svg";
+import pregOneIcon from "../../assets/images/preg-one.svg";
+import pregTwoIcon from "../../assets/images/preg-two.svg";
 
 const UpcomingEvents = () => {
   return (
