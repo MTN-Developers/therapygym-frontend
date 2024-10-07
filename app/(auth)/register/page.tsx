@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 
 // Import your assets
 import registerBanner from "../../../assets/images/register-banner.png";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -216,6 +217,12 @@ const RegisterPage = () => {
             >
               Register
             </Button>
+            <Link
+              href={"/login"}
+              className="text-blue-400 hover:cursor-pointer hover:text-blue-600 underline"
+            >
+              Already have account?
+            </Link>
           </form>
         </div>
         <div className="lg:flex items-center hidden">

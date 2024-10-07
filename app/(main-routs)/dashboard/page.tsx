@@ -1,12 +1,12 @@
 import React from "react";
 
-import Header from "@/app/components/Header";
 import MainHome from "@/app/components/MainHome";
+import CustomHeader from "@/app/components/CustomHeader";
 
 export default function Home() {
   return (
     <div>
-      <Header />
+      <CustomHeader />
       <MainHome />
     </div>
   );

@@ -5,7 +5,7 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import billIcon from "../../assets/images/bill-icon.svg";
 import messageIcon from "../../assets/images/message-icon.svg";
 
-export default function Header() {
+export default function CustomHeader() {
   const [search, setSearch] = useState("");
 
   // Derived state for showing the search icon

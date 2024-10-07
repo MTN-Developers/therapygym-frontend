@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -15,6 +15,7 @@ import Link from "next/link";
 import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { useUserSession } from "@/app/contexts/userDataContext";
+import { usePathname } from "next/navigation";
 
 const { Content, Sider } = Layout;
 
@@ -53,27 +54,62 @@ const items: MenuItem[] = [
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserSession();
-
-  // console.log(user);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer },
   } = theme.useToken();
 
+  const sidebarWidth = 266;
+  const headerHeight = 64; // Adjust if your header has a different height
+
+  const pathname = usePathname();
+
+  // Function to determine the active menu item
+  const getActiveMenuItem = () => {
+    // If the pathname starts with '/dashboard/course/', set 'All courses' as active
+    if (pathname.startsWith("/dashboard/course/")) {
+      return "2"; // Assuming '2' is the ID for 'All courses'
+    }
+
+    // Get the segments of the pathname
+    const pathSegments = pathname.split("/").filter(Boolean);
+    const pathSecondSegment = pathSegments[1]; // index 0 is 'dashboard', index 1 is the next segment
+
+    // If there is no second segment, we are on '/dashboard' or '/dashboard/'
+    if (!pathSecondSegment) {
+      return "1"; // Home
+    }
+
+    // Find the active menu item based on the second segment
+    const activeItem = items.find((item) => {
+      const itemLinkSegments = item.link.split("/").filter(Boolean);
+      const itemSecondSegment = itemLinkSegments[1];
+      return pathSecondSegment === itemSecondSegment;
+    });
+
+    return activeItem ? activeItem.id.toString() : "1"; // Default to '1' if no match
+  };
+
+  const selectedKey = getActiveMenuItem();
+
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh", display: "flex" }}>
       <Sider
-        width={"266px"}
-        className="h-screen"
+        width={sidebarWidth}
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(collapsed) => setCollapsed(collapsed)}
         breakpoint="lg"
         collapsedWidth="0"
         style={{
+          zIndex: 10,
           background: "#0d63d9",
-          transition: "width 0.3s ease",
-          overflow: "hidden",
+          transition: "width 0.2s",
           position: "fixed",
-          left: 0,
           top: 0,
+          left: 0,
+          bottom: 0,
         }}
       >
         {/* Sidebar Content */}
@@ -86,7 +122,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           {/* Menu Items */}
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            selectedKeys={[selectedKey]}
             className="flex-1 custom-menu"
             style={{
               background: "#0d63d9",
@@ -110,38 +146,55 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           </Menu>
 
           {/* Footer Section */}
-          <div className="flex items-center justify-center p-4">
-            <div className="flex gap-2 items-center">
-              <Image src={userPhoto} alt="user photo" width={35} height={35} />
-              <div className="text-white flex flex-col">
-                <p>{user.user.name}</p>
-                <p className="text-[12px]">Client</p>
-              </div>
-              <button onClick={() => signOut()}>
-                <Image src={logoutIcon} alt="logout icon" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </Sider>
-      {/* Main Content Area */}
-      <div style={{ marginLeft: "266px" }}>
-        <Layout>
-          <Content style={{ margin: "0px 0px 0" }}>
+          {!collapsed && (
             <div
+              className="flex items-center justify-center p-4"
               style={{
-                paddingTop: 56,
-                paddingInline: 24,
-                minHeight: "100vh",
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
+                position: "absolute",
+                bottom: "10px",
+                left: "0",
+                right: "0",
               }}
             >
-              {children}
+              <div className="flex gap-2 items-center">
+                <Image
+                  src={userPhoto}
+                  alt="user photo"
+                  width={35}
+                  height={35}
+                />
+                <div className="text-white flex flex-col">
+                  <p>{user.user.name}</p>
+                  <p className="text-[12px]">Client</p>
+                </div>
+                <button onClick={() => signOut()}>
+                  <Image src={logoutIcon} alt="logout icon" />
+                </button>
+              </div>
             </div>
-          </Content>
-        </Layout>
-      </div>
+          )}
+        </div>
+      </Sider>
+
+      {/* Main Content Area */}
+      <Layout
+        style={{
+          marginLeft: collapsed ? 0 : sidebarWidth,
+          flex: 1,
+          overflow: "hidden",
+        }}
+      >
+        <Content
+          style={{
+            padding: 24,
+            overflowY: "auto",
+            height: `calc(100vh - ${headerHeight}px)`,
+            background: colorBgContainer,
+          }}
+        >
+          {children}
+        </Content>
+      </Layout>
     </Layout>
   );
 };

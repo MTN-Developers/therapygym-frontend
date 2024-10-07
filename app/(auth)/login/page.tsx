@@ -8,6 +8,7 @@ import loginBanner from "../../../assets/images/login-banner.svg";
 import { Button, Input, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import lockIcon from "../../../assets/images/lock-icon.svg";
+import Link from "next/link";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -83,6 +84,12 @@ const Page = () => {
             >
               Login
             </Button>
+            <Link
+              href={"/register"}
+              className="text-blue-400 hover:cursor-pointer hover:text-blue-600 underline"
+            >
+              create a new account?
+            </Link>
           </form>
         </div>
         <div className="lg:flex items-center hidden">

@@ -43,3 +43,37 @@ export interface ApiResponseData {
 export interface ApiResponse {
   data: ApiResponseData;
 }
+
+export interface Course {
+  id: number;
+  title: string;
+  logo: string;
+  calendar_image: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Chapter {
+  id: number;
+  title: string;
+  description: string;
+  // Add other properties as needed
+}
+
+export interface PDF {
+  id: number;
+  title: string;
+  url: string;
+  // Add other properties as needed
+}
+
+export interface SingleCourse {
+  id: number;
+  title: string;
+  logo: string;
+  calendar_image: string;
+  created_at: string;
+  updated_at: string;
+  chapters: Chapter[];
+  pdfs: PDF[];
+}
