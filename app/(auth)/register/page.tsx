@@ -12,91 +12,86 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 // Import your assets
 import registerBanner from "../../../assets/images/register-banner.png";
 import Link from "next/link";
+import CountrySelect from "@/app/components/CountrySelect";
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    username: "",
-    password: "",
-    password_confirmation: "",
-    phone: "",
-    work: "",
-    city: "",
-    nationality: "",
-    birthdate: null,
-  });
-
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleChange = (key: string, value: any) => {
-    setFormData((prevData) => ({ ...prevData, [key]: value }));
-  };
+  // Validation schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Full Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    username: Yup.string().required("Username is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+    phone: Yup.string()
+      .required("Phone Number is required")
+      .matches(/^\d+$/, "Phone Number must contain only digits"),
+    work: Yup.string().required("Occupation is required"),
+    city: Yup.string().required("City is required"),
+    nationality: Yup.string().required("Nationality is required"),
+    birthdate: Yup.date()
+      .nullable()
+      .transform((curr, orig) => (orig === "" ? null : curr))
+      .typeError("Birthdate is required")
+      .required("Birthdate is required")
+      .max(
+        dayjs().startOf("day").toDate(),
+        "Birthdate cannot be today or in the future"
+      ),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  console.log("Validation Errors:", errors); // Log validation errors
+
+  const onSubmit = async (data: any) => {
+    console.log("Form Data:", data); // Log form data
+
     setLoading(true);
-
-    // Validate required fields
-    const {
-      name,
-      email,
-      username,
-      password,
-      password_confirmation,
-      phone,
-      work,
-      city,
-      nationality,
-      birthdate,
-    } = formData;
-
-    if (
-      !name ||
-      !email ||
-      !username ||
-      !password ||
-      !password_confirmation ||
-      !phone ||
-      !work ||
-      !city ||
-      !nationality ||
-      !birthdate
-    ) {
-      message.error("Please fill in all required fields.");
-      setLoading(false);
-      return;
-    }
-
-    if (password !== password_confirmation) {
-      message.error("Passwords do not match.");
-      setLoading(false);
-      return;
-    }
 
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/register`,
         {
-          ...formData,
-          birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
+          ...data,
+          birthdate: dayjs(data.birthdate).format("YYYY-MM-DD"),
         }
       );
 
       if (response.status === 201 || response.status === 200) {
         message.success("Registration successful");
-        router.push("/login"); // Redirect to login page after successful registration
+        router.push("/login");
       } else {
         message.error("Registration failed");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Registration error:", error);
-      message.error("An error occurred during registration");
+      // Extract and display the error message
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.error;
+        message.error(errorMessage || "An error occurred during registration");
+      } else {
+        message.error("An error occurred during registration");
+      }
     } finally {
       setLoading(false);
     }
@@ -107,8 +102,8 @@ const RegisterPage = () => {
       <div className="w-full h-full rounded-3xl flex justify-between ">
         <div className="flex items-center justify-center flex-1">
           <form
-            onSubmit={handleSubmit}
-            className="md:w-[683px]  min-h-[600px] w-[250px] flex flex-col items-center justify-center gap-y-4"
+            onSubmit={handleSubmit(onSubmit)}
+            className="md:w-[683px] min-h-[600px] w-[250px] flex flex-col items-center justify-center gap-y-4"
           >
             <div>
               <h1 className="text-[50px] text-[#0b7cf8] font-[700] font-sans">
@@ -119,94 +114,186 @@ const RegisterPage = () => {
               </p>
             </div>
             {/* Name */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Full Name"
-              prefix={<UserOutlined />}
-              value={formData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
+            <Controller
+              control={control}
+              name="name"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="Full Name"
+                  prefix={<UserOutlined />}
+                  {...field}
+                />
+              )}
             />
+            {errors.name && (
+              <p className="text-red-500">{errors.name.message}</p>
+            )}
             {/* Email */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Email"
-              prefix={<MailOutlined />}
-              value={formData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
+            <Controller
+              control={control}
+              name="email"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="Email"
+                  prefix={<MailOutlined />}
+                  {...field}
+                />
+              )}
             />
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message}</p>
+            )}
             {/* Username */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Username"
-              prefix={<UserOutlined />}
-              value={formData.username}
-              onChange={(e) => handleChange("username", e.target.value)}
+            <Controller
+              control={control}
+              name="username"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="Username"
+                  prefix={<UserOutlined />}
+                  {...field}
+                />
+              )}
             />
+            {errors.username && (
+              <p className="text-red-500">{errors.username.message}</p>
+            )}
             {/* Password */}
-            <Input.Password
-              size="large"
-              className="max-w-[364px]"
-              placeholder="Password"
-              prefix={<LockOutlined />}
-              value={formData.password}
-              onChange={(e) => handleChange("password", e.target.value)}
+            <Controller
+              control={control}
+              name="password"
+              defaultValue=""
+              render={({ field }) => (
+                <Input.Password
+                  size="large"
+                  className="max-w-[364px]"
+                  placeholder="Password"
+                  prefix={<LockOutlined />}
+                  {...field}
+                />
+              )}
             />
+            {errors.password && (
+              <p className="text-red-500">{errors.password.message}</p>
+            )}
             {/* Confirm Password */}
-            <Input.Password
-              size="large"
-              className="max-w-[364px]"
-              placeholder="Confirm Password"
-              prefix={<LockOutlined />}
-              value={formData.password_confirmation}
-              onChange={(e) =>
-                handleChange("password_confirmation", e.target.value)
-              }
+            <Controller
+              control={control}
+              name="password_confirmation"
+              defaultValue=""
+              render={({ field }) => (
+                <Input.Password
+                  size="large"
+                  className="max-w-[364px]"
+                  placeholder="Confirm Password"
+                  prefix={<LockOutlined />}
+                  {...field}
+                />
+              )}
             />
+            {errors.password_confirmation && (
+              <p className="text-red-500">
+                {errors.password_confirmation.message}
+              </p>
+            )}
             {/* Phone */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Phone Number"
-              prefix={<PhoneOutlined />}
-              value={formData.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
+            <Controller
+              control={control}
+              name="phone"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="Phone Number"
+                  prefix={<PhoneOutlined />}
+                  value={field.value}
+                  onChange={(e) => {
+                    // Filter out non-numeric characters
+                    const value = e.target.value.replace(/\D/g, "");
+                    field.onChange(value);
+                  }}
+                />
+              )}
             />
+            {errors.phone && (
+              <p className="text-red-500">{errors.phone.message}</p>
+            )}
             {/* Work */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Occupation"
-              value={formData.work}
-              onChange={(e) => handleChange("work", e.target.value)}
+            <Controller
+              control={control}
+              name="work"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="Occupation"
+                  {...field}
+                />
+              )}
             />
+            {errors.work && (
+              <p className="text-red-500">{errors.work.message}</p>
+            )}
             {/* City */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="City"
-              value={formData.city}
-              onChange={(e) => handleChange("city", e.target.value)}
+            <Controller
+              control={control}
+              name="city"
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  className="max-w-[364px]"
+                  size="large"
+                  placeholder="City"
+                  {...field}
+                />
+              )}
             />
+            {errors.city && (
+              <p className="text-red-500">{errors.city.message}</p>
+            )}
             {/* Nationality */}
-            <Input
-              className="max-w-[364px]"
-              size="large"
-              placeholder="Nationality"
-              value={formData.nationality}
-              onChange={(e) => handleChange("nationality", e.target.value)}
+            <CountrySelect
+              control={control}
+              error={errors["nationality"]?.message as string}
+              name={"nationality"}
             />
             {/* Birthdate */}
-            <DatePicker
-              className="max-w-[364px] w-full"
-              size="large"
-              placeholder="Birthdate"
-              format="YYYY-MM-DD"
-              value={formData.birthdate}
-              onChange={(date) => handleChange("birthdate", date)}
+            <Controller
+              control={control}
+              name="birthdate"
+              //@ts-ignore
+              defaultValue={null}
+              render={({ field }) => (
+                <DatePicker
+                  className="max-w-[364px] w-full"
+                  size="large"
+                  placeholder="Birthdate"
+                  format="YYYY-MM-DD"
+                  disabledDate={(current) => {
+                    // Disable today and future dates
+                    return current && current >= dayjs().startOf("day");
+                  }}
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={(date) =>
+                    field.onChange(date ? date.toDate() : null)
+                  }
+                />
+              )}
             />
+            {errors.birthdate && (
+              <p className="text-red-500">{errors.birthdate.message}</p>
+            )}
             {/* Register Button */}
             <Button
               type="primary"
@@ -221,7 +308,7 @@ const RegisterPage = () => {
               href={"/login"}
               className="text-blue-400 hover:cursor-pointer hover:text-blue-600 underline"
             >
-              Already have account?
+              Already have an account?
             </Link>
           </form>
         </div>
