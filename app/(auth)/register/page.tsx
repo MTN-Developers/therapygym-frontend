@@ -14,44 +14,17 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 
 // Import your assets
 import registerBanner from "../../../assets/images/register-banner.png";
 import Link from "next/link";
 import CountrySelect from "@/app/components/CountrySelect";
+import { validationSchema } from "@/app/utils/RegisterationValidation";
+import { RegisterFormData } from "@/interfaces";
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  // Validation schema
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Full Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    username: Yup.string().required("Username is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-    password_confirmation: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-    phone: Yup.string()
-      .required("Phone Number is required")
-      .matches(/^\d+$/, "Phone Number must contain only digits"),
-    work: Yup.string().required("Occupation is required"),
-    city: Yup.string().required("City is required"),
-    nationality: Yup.string().required("Nationality is required"),
-    birthdate: Yup.date()
-      .nullable()
-      .transform((curr, orig) => (orig === "" ? null : curr))
-      .typeError("Birthdate is required")
-      .required("Birthdate is required")
-      .max(
-        dayjs().startOf("day").toDate(),
-        "Birthdate cannot be today or in the future"
-      ),
-  });
 
   const {
     handleSubmit,
@@ -63,7 +36,7 @@ const RegisterPage = () => {
 
   console.log("Validation Errors:", errors); // Log validation errors
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: RegisterFormData) => {
     console.log("Form Data:", data); // Log form data
 
     setLoading(true);
@@ -83,20 +56,26 @@ const RegisterPage = () => {
       } else {
         message.error("Registration failed");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Registration error:", error);
       // Extract and display the error message
-      if (error.response && error.response.data) {
-        const errorMessage = error.response.data.error;
-        message.error(errorMessage || "An error occurred during registration");
+      // Handle Axios errors
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.data) {
+          const errorMessage = error.response.data.error;
+          message.error(
+            errorMessage || "An error occurred during registration"
+          );
+        } else {
+          message.error("An error occurred during registration");
+        }
       } else {
-        message.error("An error occurred during registration");
+        message.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="w-screen min-h-screen p-[34px] flex items-center content-center">
       <div className="w-full h-full rounded-3xl flex justify-between ">
@@ -129,7 +108,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
+              <p className="text-red-500  text-[14px]">{errors.name.message}</p>
             )}
             {/* Email */}
             <Controller
@@ -147,7 +126,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
+              <p className="text-red-500 text-[14px]">{errors.email.message}</p>
             )}
             {/* Username */}
             <Controller
@@ -165,7 +144,9 @@ const RegisterPage = () => {
               )}
             />
             {errors.username && (
-              <p className="text-red-500">{errors.username.message}</p>
+              <p className="text-red-500 text-[14px]">
+                {errors.username.message}
+              </p>
             )}
             {/* Password */}
             <Controller
@@ -183,7 +164,9 @@ const RegisterPage = () => {
               )}
             />
             {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
+              <p className="text-red-500 text-[14px]">
+                {errors.password.message}
+              </p>
             )}
             {/* Confirm Password */}
             <Controller
@@ -201,7 +184,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.password_confirmation && (
-              <p className="text-red-500">
+              <p className="text-red-500 text-[14px]">
                 {errors.password_confirmation.message}
               </p>
             )}
@@ -226,7 +209,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.phone && (
-              <p className="text-red-500">{errors.phone.message}</p>
+              <p className="text-red-500 text-[14px]">{errors.phone.message}</p>
             )}
             {/* Work */}
             <Controller
@@ -243,7 +226,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.work && (
-              <p className="text-red-500">{errors.work.message}</p>
+              <p className="text-red-500 text-[14px]">{errors.work.message}</p>
             )}
             {/* City */}
             <Controller
@@ -260,7 +243,7 @@ const RegisterPage = () => {
               )}
             />
             {errors.city && (
-              <p className="text-red-500">{errors.city.message}</p>
+              <p className="text-red-500 text-[14px]">{errors.city.message}</p>
             )}
             {/* Nationality */}
             <CountrySelect
@@ -272,8 +255,6 @@ const RegisterPage = () => {
             <Controller
               control={control}
               name="birthdate"
-              //@ts-ignore
-              defaultValue={null}
               render={({ field }) => (
                 <DatePicker
                   className="max-w-[364px] w-full"
@@ -292,7 +273,9 @@ const RegisterPage = () => {
               )}
             />
             {errors.birthdate && (
-              <p className="text-red-500">{errors.birthdate.message}</p>
+              <p className="text-red-500 text-[14px]">
+                {errors.birthdate.message}
+              </p>
             )}
             {/* Register Button */}
             <Button

@@ -77,3 +77,17 @@ export interface SingleCourse {
   chapters: Chapter[];
   pdfs: PDF[];
 }
+
+// Define the interface for your form data
+export interface RegisterFormData {
+  name: string;
+  email: string;
+  username: string;
+  password: string;
+  password_confirmation: string;
+  phone: string;
+  work: string;
+  city: string;
+  nationality: string;
+  birthdate: Date | null;
+}
