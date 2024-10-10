@@ -33,7 +33,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className="font-poppins">
+      <head></head>
+      <body suppressHydrationWarning={true} className="font-poppins">
         <UserSessionProvider
           session={
             serverSession as {
