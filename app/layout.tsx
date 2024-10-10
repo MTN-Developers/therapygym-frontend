@@ -15,21 +15,5 @@ export default async function RootLayout({
 }>) {
   //
 
-  return (
-    <>{children}</>
-    // <html lang="en" className={`${poppins.variable}`}>
-    //   {/* <body suppressHydrationWarning={true} className="font-poppins"> */}
-    //   <UserSessionProvider
-    //     session={
-    //       serverSession as {
-    //         user: User;
-    //         expires: string;
-    //       }
-    //     }
-    //   >
-    //     <Providers>{children}</Providers>
-    //   </UserSessionProvider>
-    //   {/* </body> */}
-    // </html>
-  );
+  return <>{children}</>;
 }

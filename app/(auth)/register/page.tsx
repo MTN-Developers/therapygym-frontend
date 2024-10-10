@@ -16,7 +16,9 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 // Import your assets
-import registerBanner from "../../../assets/images/register-banner.png";
+// import registerBanner from "../../../assets/images/register-banner.png";
+import registerBanner from "../../../assets/images/login-banner.svg";
+
 import Link from "next/link";
 import CountrySelect from "@/app/components/CountrySelect";
 import { validationSchema } from "@/app/utils/RegisterationValidation";

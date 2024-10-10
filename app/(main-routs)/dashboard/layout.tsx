@@ -9,6 +9,7 @@ import { UserSessionProvider } from "@/app/contexts/userDataContext";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { User } from "@/interfaces";
+import Providers from "@/app/Providers";
 
 //
 const poppins = Poppins({
@@ -44,7 +45,9 @@ export default async function RootLayout({
             }
           }
         >
-          <CustomLayout>{children} </CustomLayout>
+          <Providers>
+            <CustomLayout>{children}</CustomLayout>
+          </Providers>
         </UserSessionProvider>
       </body>
     </html>

@@ -1,4 +1,3 @@
-// hooks/useCourses.ts
 import { Course } from "@/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

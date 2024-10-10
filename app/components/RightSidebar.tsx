@@ -21,7 +21,7 @@ const RightSidebar = () => {
           className="shadow-sm"
         />
         <h2 className="font-bold text-[#4d4d4d] text-[18px] ">
-          {user.user.name}
+          {user?.user?.name}
         </h2>
         <p className="text-[12px] text-[#4d4d4d] font-[500]">Client</p>
       </div>

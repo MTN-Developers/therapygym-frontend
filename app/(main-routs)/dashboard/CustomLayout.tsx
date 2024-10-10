@@ -1,5 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Button, Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -7,16 +10,17 @@ import discussionIcon from "@/assets/images/discussion-icon.svg";
 import supportIcon from "@/assets/images/support-icon.svg";
 import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
 import { signOut } from "next-auth/react";
-import { Layout, Menu, theme } from "antd";
-import { MenuItem } from "@/interfaces";
 import Image from "next/image";
 import Link from "next/link";
 import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { useUserSession } from "@/app/contexts/userDataContext";
 import { usePathname } from "next/navigation";
-const { Content, Sider } = Layout;
-const items: MenuItem[] = [
+import CustomHeader from "@/app/components/CustomHeader";
+
+const { Content, Sider, Header } = Layout;
+
+const items = [
   {
     id: 1,
     label: "Home",
@@ -48,125 +52,187 @@ const items: MenuItem[] = [
     link: "/dashboard/support",
   },
 ];
+
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserSession();
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const showLogoutModal = () => {
+    setOpen(true);
+  };
+
+  const hideLogoutModal = () => {
+    setOpen(false);
+  };
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const sidebarWidth = 266;
-  const headerHeight = 64; // Adjust if your header has a different height
+
+  const sidebarWidth = collapsed ? 80 : 266;
+  const headerHeight = 64;
+
   const pathname = usePathname();
-  // Function to determine the active menu item
+
   const getActiveMenuItem = () => {
-    // If the pathname starts with '/dashboard/course/', set 'All courses' as active
     if (pathname.startsWith("/dashboard/course/")) {
-      return "2"; // Assuming '2' is the ID for 'All courses'
+      return "2";
     }
-    // Get the segments of the pathname
+
     const pathSegments = pathname.split("/").filter(Boolean);
-    const pathSecondSegment = pathSegments[1]; // index 0 is 'dashboard', index 1 is the next segment
-    // If there is no second segment, we are on '/dashboard' or '/dashboard/'
+    const pathSecondSegment = pathSegments[1];
+
     if (!pathSecondSegment) {
-      return "1"; // Home
+      return "1";
     }
-    // Find the active menu item based on the second segment
+
     const activeItem = items.find((item) => {
       const itemLinkSegments = item.link.split("/").filter(Boolean);
       const itemSecondSegment = itemLinkSegments[1];
       return pathSecondSegment === itemSecondSegment;
     });
-    return activeItem ? activeItem.id.toString() : "1"; // Default to '1' if no match
+
+    return activeItem ? activeItem.id.toString() : "1";
   };
+
   const selectedKey = getActiveMenuItem();
+
   return (
     <Layout style={{ minHeight: "100vh", display: "flex" }}>
       <Sider
         width={sidebarWidth}
         collapsible
         collapsed={collapsed}
-        onCollapse={(collapsed) => setCollapsed(collapsed)}
-        breakpoint="lg"
-        collapsedWidth="0"
+        trigger={null}
         style={{
           zIndex: 10,
-          background: "#0D63D9",
-          transition: "width 0.2s",
+          background: "#0d63d9",
+          transition: "width 0.2s ease",
           position: "fixed",
           top: 0,
           left: 0,
           bottom: 0,
         }}
       >
-        {/* Sidebar Content */}
-        <div className="flex flex-col h-full">
-          {/* Logo Section */}
-          <div className="flex justify-center py-4">
-            <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
-          </div>
-          {/* Menu Items */}
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedKey]}
-            className="flex-1 custom-menu"
+        <div className="flex justify-center py-4">
+          <Image
+            src={mtnliveLogo}
+            alt="logo"
+            width={collapsed ? 40 : 150}
+            height={73}
+          />
+        </div>
+
+        <Menu
+          mode="inline"
+          selectedKeys={[selectedKey]}
+          className="flex-1 custom-menu"
+          style={{
+            background: "#0d63d9",
+            borderRight: "none",
+          }}
+        >
+          {items.map((item) => (
+            <Menu.Item key={item.id.toString()} className="flex">
+              <Link href={item.link}>
+                <Image
+                  src={item.icon}
+                  alt={`${item.label} icon`}
+                  width={20}
+                  height={20}
+                  className="inline me-4"
+                />
+                {!collapsed && item.label}
+              </Link>
+            </Menu.Item>
+          ))}
+        </Menu>
+
+        {!collapsed && (
+          <div
+            className="flex items-center justify-center p-4"
             style={{
-              background: "#0D63D9",
-              borderRight: "none",
+              position: "absolute",
+              bottom: "10px",
+              left: "0",
+              right: "0",
             }}
           >
-            {items.map((item) => (
-              <Menu.Item key={item.id.toString()} className="flex">
-                <Link href={item.link}>
-                  <Image
-                    src={item.icon}
-                    alt={`${item.label} icon`}
-                    width={20}
-                    height={20}
-                    className="inline me-4"
-                  />
-                  {item.label}
-                </Link>
-              </Menu.Item>
-            ))}
-          </Menu>
-          {/* Footer Section */}
-          {!collapsed && (
-            <div
-              className="flex items-center justify-center p-4"
-              style={{
-                position: "absolute",
-                bottom: "10px",
-                left: "0",
-                right: "0",
-              }}
-            >
-              <div className="flex gap-2 items-center">
-                <Image
-                  src={userPhoto}
-                  alt="user photo"
-                  width={35}
-                  height={35}
-                />
-                <div className="text-white flex flex-col">
-                  <p>{user.user.name}</p>
-                  <p className="text-[12px]">Client</p>
-                </div>
-                <button onClick={() => signOut()}>
-                  <Image src={logoutIcon} alt="logout icon" />
-                </button>
+            <div className="flex gap-2 items-center">
+              <Image src={userPhoto} alt="user photo" width={35} height={35} />
+              <div className="text-white flex flex-col">
+                <p>{user?.user?.name}</p>
+                <p className="text-[12px]">Client</p>
               </div>
+              <button
+                onClick={() => {
+                  showLogoutModal();
+                }}
+              >
+                <Image src={logoutIcon} alt="logout icon" />
+              </button>
             </div>
-          )}
-        </div>
+            <Modal
+              title="Logout"
+              open={open}
+              onOk={() => {
+                hideLogoutModal();
+                signOut();
+              }}
+              onCancel={hideLogoutModal}
+              okText="yes"
+              cancelText="no"
+            >
+              <p>Do you want to logout?</p>
+            </Modal>
+          </div>
+        )}
       </Sider>
-      {/* Main Content Area */}
+
       <Layout
         style={{
-          marginLeft: collapsed ? 0 : sidebarWidth,
+          marginLeft: collapsed ? 80 : 266,
           flex: 1,
-          overflow: "hidden",
         }}
       >
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+            display: "flex",
+            alignItems: "center",
+            paddingTop: "40px",
+
+            justifyContent: "space-between", // Ensures the button and the header are on the same line
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                fontSize: "16px",
+                width: 64,
+                height: 64,
+              }}
+            />
+          </div>
+          {pathname === "/dashboard" ? (
+            <>
+              <div className=" w-full pe-12">
+                <CustomHeader />
+              </div>
+            </>
+          ) : null}
+        </Header>
+
         <Content
           style={{
             padding: 24,
@@ -181,4 +247,5 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     </Layout>
   );
 };
+
 export default Dashboard;

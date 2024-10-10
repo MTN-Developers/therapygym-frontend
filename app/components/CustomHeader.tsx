@@ -20,7 +20,7 @@ export default function CustomHeader() {
 
   return (
     <div className="flex justify-between ps-10 lg:ps-0">
-      <div className="relative shadow-md rounded-lg">
+      <div className="relative  rounded-lg">
         <div className="absolute right-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
           {showSearchIcon && (
             <Image src={SearchIcon} alt="search" width={15} height={15} />
@@ -33,7 +33,7 @@ export default function CustomHeader() {
           type="search"
           placeholder="Search Courses Here"
           aria-label="Search Courses"
-          className="w-[150px] lg:w-[357px] h-[46px] px-4 bg-gradient-to-r from-[#f9f9f9] to-[#f9f9f9] rounded-lg text-blue-700 focus:outline-none focus:border-blue-500 transition-colors duration-300 pr-10"
+          className="w-[150px] lg:w-[357px] h-[46px] shadow-md  px-4 bg-gradient-to-r from-[#f9f9f9] to-[#f9f9f9] rounded-lg text-blue-700 focus:outline-none focus:border-blue-500 transition-colors duration-300 pr-10"
         />
       </div>
       <div className="flex gap-2">
