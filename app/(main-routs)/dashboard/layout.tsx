@@ -32,6 +32,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${poppins.variable}`}>
+      <head>
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+      </head>
       <body className="font-poppins">
         <UserSessionProvider
           session={

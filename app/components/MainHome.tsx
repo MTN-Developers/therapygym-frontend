@@ -1,58 +1,51 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useRef } from "react";
-import videoPlaceholder from "../../assets/images/video-placeholder.svg";
-import playIcon from "../../assets/images/play-icon.svg";
+// import Image from "next/image";
+// import videoPlaceholder from "../../assets/images/video-placeholder.svg";
+// import playIcon from "../../assets/images/play-icon.svg";
 import CoursesSlider from "./CoursesSlider";
 import RightSidebar from "./RightSidebar";
-// import VideoPlayer from "./VideoPlayer";
-import Plyr from "plyr";
-import "plyr/dist/plyr.css";
+import dynamic from "next/dynamic";
 
+const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
 const MainHome = () => {
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      const player = new Plyr(videoRef.current, {
-        controls: ["play", "progress", "volume", "fullscreen", "settings"],
-      });
-      return () => {
-        player.destroy();
-      };
-    }
-  }, []);
-
   return (
     <div className="my-5 flex flex-nowrap justify-around content-center ">
       <div className=" overflow-hidden  w-[854px]">
-        <div className="video-player">
-          <video ref={videoRef} id="player" playsInline controls>
-            <source
-              src={
-                "https://mtnlive.s3.amazonaws.com/uploads/EBM/Clips/CH1/EBM_%D9%85%D9%82%D8%AF%D9%85%D8%A9_%D8%AA%D8%B9%D8%B1%D9%8A%D9%81%D9%8A%D8%A9_%D8%B9%D9%86_?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241010T073235Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=52fc75d7b14c5ca7c93bca72918dc11d2ac92dda093c603c0b36dc9e456aa2de"
-              }
-            />
-          </video>
-        </div>
         <div className="relative w-[854px] h-[372px]">
-          <Image
+          <div className="video-player  absolute left-0 top-0 h-full w-full">
+            <Plyr
+              source={{
+                type: "video",
+                poster: "https://managethenow.net/test/video-placeholder.svg",
+                sources: [
+                  {
+                    src: "https://mtnlive.s3.amazonaws.com/uploads/Therapy_GYM_Values_May_June_2023/Clips/Therapy_GYM_Values/%D8%A7%D9%84%D9%8A%D9%88%D9%85%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A8%D8%B9_%D8%A7%D9%84%D8%AD%D8%B1%D9%8A%D9%80%D8%A9_%D8%A3%D8%B5%D9%81%D8%B1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241010T090344Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=e9387d0400f744aa99ab12327c626bf176836c67870a752fba89560c010a0025",
+                    type: "video/mp4",
+                    size: 720,
+                  },
+                ],
+              }}
+              preload="auto"
+              src="https://mtnlive.s3.amazonaws.com/uploads/Therapy_GYM_Values_May_June_2023/Clips/Therapy_GYM_Values/%D8%A7%D9%84%D9%8A%D9%88%D9%85%20%D8%A7%D9%84%D8%AB%D8%A7%D9%84%D8%AB_%D8%A7%D9%84%D9%82%D9%80%D9%80%D9%80%D8%AF%D8%B1%D8%A9_%D8%A3%D8%AD%D9%85%D8%B1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241010T083454Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=b91ac52c96f7bd3ff63b81e580750fb923c652c1d53e8624beaed6389eedc168"
+            />
+          </div>
+          {/* <Image
             src={videoPlaceholder}
             fill
             objectFit="cover"
             alt="image-video"
             className="absolute top-0 left-0"
-          />
-          <Image
+          /> */}
+          {/* <Image
             src={playIcon}
             alt="play"
             className="absolute transform translate-x-1/2 translate-y-1/2 top-[168px] left-[409px]"
-          />
+          /> */}
           <div className="absolute bottom-4 right-5 text-right">
-            <h2 className="text-xl text-white font-[500]">
+            {/* <h2 className="text-xl text-white font-[500]">
               برنامج جلسة رجال - الحلقة الثالثة - الكسب عند الرجال
-            </h2>
-            <p className="text-lg text-white font-[500] ">د / أحمد الدملاوى</p>
+            </h2> */}
+            {/* <p className="text-lg text-white font-[500] ">د / أحمد الدملاوى</p> */}
           </div>
           <div className="absolute top-2 left-2 bg-[#ff0000] rounded-2xl px-1 flex items-center gap-[5px]">
             <div className="w-[10px] h-[10px] rounded-full bg-white"></div>

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
@@ -16,9 +15,7 @@ import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { useUserSession } from "@/app/contexts/userDataContext";
 import { usePathname } from "next/navigation";
-
 const { Content, Sider } = Layout;
-
 const items: MenuItem[] = [
   {
     id: 1,
@@ -51,48 +48,37 @@ const items: MenuItem[] = [
     link: "/dashboard/support",
   },
 ];
-
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserSession();
   const [collapsed, setCollapsed] = useState<boolean>(false);
-
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   const sidebarWidth = 266;
   const headerHeight = 64; // Adjust if your header has a different height
-
   const pathname = usePathname();
-
   // Function to determine the active menu item
   const getActiveMenuItem = () => {
     // If the pathname starts with '/dashboard/course/', set 'All courses' as active
     if (pathname.startsWith("/dashboard/course/")) {
       return "2"; // Assuming '2' is the ID for 'All courses'
     }
-
     // Get the segments of the pathname
     const pathSegments = pathname.split("/").filter(Boolean);
     const pathSecondSegment = pathSegments[1]; // index 0 is 'dashboard', index 1 is the next segment
-
     // If there is no second segment, we are on '/dashboard' or '/dashboard/'
     if (!pathSecondSegment) {
       return "1"; // Home
     }
-
     // Find the active menu item based on the second segment
     const activeItem = items.find((item) => {
       const itemLinkSegments = item.link.split("/").filter(Boolean);
       const itemSecondSegment = itemLinkSegments[1];
       return pathSecondSegment === itemSecondSegment;
     });
-
     return activeItem ? activeItem.id.toString() : "1"; // Default to '1' if no match
   };
-
   const selectedKey = getActiveMenuItem();
-
   return (
     <Layout style={{ minHeight: "100vh", display: "flex" }}>
       <Sider
@@ -104,7 +90,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         collapsedWidth="0"
         style={{
           zIndex: 10,
-          background: "#0d63d9",
+          background: "#0D63D9",
           transition: "width 0.2s",
           position: "fixed",
           top: 0,
@@ -118,14 +104,13 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           <div className="flex justify-center py-4">
             <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
           </div>
-
           {/* Menu Items */}
           <Menu
             mode="inline"
             selectedKeys={[selectedKey]}
             className="flex-1 custom-menu"
             style={{
-              background: "#0d63d9",
+              background: "#0D63D9",
               borderRight: "none",
             }}
           >
@@ -144,7 +129,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               </Menu.Item>
             ))}
           </Menu>
-
           {/* Footer Section */}
           {!collapsed && (
             <div
@@ -175,7 +159,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           )}
         </div>
       </Sider>
-
       {/* Main Content Area */}
       <Layout
         style={{
@@ -198,5 +181,4 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     </Layout>
   );
 };
-
 export default Dashboard;
