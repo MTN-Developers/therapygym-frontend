@@ -16,7 +16,7 @@ export interface User {
   birthdate: string;
   accessToken: string;
   refreshToken: string;
-  expiresAt: string;
+  accessTokenExpires: string | number;
 }
 
 export interface Credentials {
@@ -37,7 +37,9 @@ export interface ApiUserResponse {
 
 export interface ApiResponseData {
   user: ApiUserResponse;
-  token: string;
+  access_token: string;
+  refresh_token: string;
+  expires_at: string;
 }
 
 export interface ApiResponse {

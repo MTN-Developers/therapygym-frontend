@@ -6,12 +6,16 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Spin, Card, Typography, List } from "antd";
-import type { SingleCourse as Course, Chapter, PDF } from "@/interfaces"; // Adjust the import path
-import staticImg from "../../../../../assets/images/static-course-img.jpg";
+import { Spin } from "antd";
+import type { SingleCourse as Course } from "@/interfaces"; // Adjust the import path
 import Image from "next/image";
 
-const { Title, Text } = Typography;
+import strokGroup from "@/assets/images/Group 754.png";
+import strokOne from "@/assets/images/Pattern.png";
+import strokTwo from "@/assets/images/Pattern-1.png";
+import RightSideCourseComp from "@/app/components/RightSideCourseComp";
+import type { TabsProps } from "antd";
+import LeftSideCourseComp from "@/app/components/LeftSideCourseComp";
 
 const fetchCourse = async (id: string): Promise<Course> => {
   const { data } = await axios.get<Course>(
@@ -23,6 +27,75 @@ const fetchCourse = async (id: string): Promise<Course> => {
 const Page: React.FC = () => {
   const params = useParams();
   const id = params.id as string;
+
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: <span style={{ marginInline: 16 }}>عن الكورس</span>,
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            عن الكورس
+          </h2>
+          <p className="w-[701px] mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            يولدها التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك
+            أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: "عن المحاضر",
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            عن المحاضرة
+          </h2>
+          <p className="w-[701px] mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى أن
+            تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: "أراء العملاء",
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            أراء العملاء{" "}
+          </h2>
+          <p className="w-[701px] mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            يولدها التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+  ];
+
+  const onChange = (key: string) => {
+    console.log(key);
+  };
 
   const {
     data: course,
@@ -59,64 +132,31 @@ const Page: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <Card
-        cover={
-          <Image
-            src={staticImg}
-            alt={course.title}
-            style={{ objectFit: "cover", height: 300 }}
-          />
-        }
-        style={{ maxWidth: 800, margin: "0 auto" }}
-      >
-        <Title level={2}>{course.title}</Title>
-        <Text>
-          Created at: {new Date(course.created_at).toLocaleDateString()}
-        </Text>
-
-        {course.chapters && course.chapters.length > 0 && (
-          <div style={{ marginTop: 24 }}>
-            <Title level={3}>Chapters</Title>
-            <List
-              dataSource={course.chapters}
-              renderItem={(chapter: Chapter) => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={chapter.title}
-                    description={chapter.description}
-                  />
-                </List.Item>
-              )}
-            />
-          </div>
-        )}
-
-        {course.pdfs && course.pdfs.length > 0 && (
-          <div style={{ marginTop: 24 }}>
-            <Title level={3}>PDFs</Title>
-            <List
-              dataSource={course.pdfs}
-              renderItem={(pdf: PDF) => (
-                <List.Item>
-                  <List.Item.Meta
-                    title={pdf.title}
-                    description={
-                      <a
-                        href={pdf.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Download
-                      </a>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </div>
-        )}
-      </Card>
+    <div dir="rtl" className="flex w-full relative p-[39px] pl-0 pb-0">
+      <div className="fixed bg-[#f7fbff] w-full z-10 lg:h-[300px] top-0 left-0 pointer-events-none"></div>
+      <Image
+        src={strokGroup}
+        alt="stroke"
+        width={800}
+        height={800}
+        className="fixed z-10 top-0 pointer-events-none right-0 w-[900px]"
+      />
+      <Image
+        src={strokOne}
+        alt="stroke"
+        width={800}
+        height={800}
+        className="fixed z-10 top-40 pointer-events-none  left-[268px] w-[180px]"
+      />
+      <Image
+        src={strokTwo}
+        alt="stroke"
+        width={800}
+        height={800}
+        className="fixed top-12 z-10 pointer-events-none left-[176px] w-[180px]"
+      />
+      <RightSideCourseComp course={course} />
+      <LeftSideCourseComp items={items} onChange={onChange} />
     </div>
   );
 };

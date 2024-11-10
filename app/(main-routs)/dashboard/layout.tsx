@@ -5,11 +5,9 @@ import "swiper/css/navigation"; // If you use navigation
 import "swiper/css/pagination"; // If you use pagination
 
 import { Poppins } from "next/font/google";
-import { UserSessionProvider } from "@/app/contexts/userDataContext";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import { User } from "@/interfaces";
+
 import Providers from "@/app/Providers";
+import NextTopLoader from "nextjs-toploader";
 
 //
 const poppins = Poppins({
@@ -29,7 +27,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   //
-  const serverSession = await getServerSession(authOptions);
 
   return (
     <html lang="en" className={`${poppins.variable}`}>
@@ -37,18 +34,12 @@ export default async function RootLayout({
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
       </head>
       <body className="font-poppins">
-        <UserSessionProvider
-          session={
-            serverSession as {
-              user: User;
-              expires: string;
-            }
-          }
-        >
-          <Providers>
-            <CustomLayout>{children}</CustomLayout>
-          </Providers>
-        </UserSessionProvider>
+        <Providers>
+          <CustomLayout>
+            <NextTopLoader />
+            {children}
+          </CustomLayout>
+        </Providers>
       </body>
     </html>
   );

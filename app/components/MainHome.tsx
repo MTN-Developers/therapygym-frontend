@@ -20,14 +20,14 @@ const MainHome = () => {
                 poster: "https://managethenow.net/test/video-placeholder2.png",
                 sources: [
                   {
-                    src: "https://mtnlive.s3.amazonaws.com/uploads/Therapy_GYM_Values_May_June_2023/Clips/Therapy_GYM_Values/%D8%A7%D9%84%D9%8A%D9%88%D9%85%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A8%D8%B9_%D8%A7%D9%84%D8%AD%D8%B1%D9%8A%D9%80%D8%A9_%D8%A3%D8%B5%D9%81%D8%B1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241010T090344Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=e9387d0400f744aa99ab12327c626bf176836c67870a752fba89560c010a0025",
+                    src: "https://mtnlive.s3.amazonaws.com/uploads/TG-Estro-Recorded/Est_1st_Session_16_October_2021.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241015%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241015T083222Z&X-Amz-SignedHeaders=host&X-Amz-Expires=14400&X-Amz-Signature=e28d16d2ba1d55cc511ba9823bc9faf83ddf6aa5b00a492b85f18380c4d9a50c",
                     type: "video/mp4",
                     size: 720,
                   },
                 ],
               }}
               preload="auto"
-              src="https://mtnlive.s3.amazonaws.com/uploads/Therapy_GYM_Values_May_June_2023/Clips/Therapy_GYM_Values/%D8%A7%D9%84%D9%8A%D9%88%D9%85%20%D8%A7%D9%84%D8%AB%D8%A7%D9%84%D8%AB_%D8%A7%D9%84%D9%82%D9%80%D9%80%D9%80%D8%AF%D8%B1%D8%A9_%D8%A3%D8%AD%D9%85%D8%B1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241010T083454Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1800&X-Amz-Signature=b91ac52c96f7bd3ff63b81e580750fb923c652c1d53e8624beaed6389eedc168"
+              src="https://mtnlive.s3.amazonaws.com/uploads/TG-Estro-Recorded/Est_1st_Session_16_October_2021.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQFC27LM7JPWP4JTN%2F20241015%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241015T083222Z&X-Amz-SignedHeaders=host&X-Amz-Expires=14400&X-Amz-Signature=e28d16d2ba1d55cc511ba9823bc9faf83ddf6aa5b00a492b85f18380c4d9a50c"
             />
           </div>
 
