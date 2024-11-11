@@ -5,9 +5,11 @@ import MainHome from "@/app/components/MainHome";
 // import { RootState } from "@/app/store/store";
 // import { useRouter } from "next/navigation";
 // import { initializeAuthState } from "@/app/store/slices/authSlice";
-import ProtectedRoute from "@/app/components/ProtectedRoute";
+// import ProtectedRoute from "@/app/components/ProtectedRoute";
+import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 
 export default function Home() {
+  useAxiosInterceptors();
   // const isAuthenticated = useSelector(
   //   (state: RootState) => state.auth.isAuthenticated
   // );
@@ -32,11 +34,11 @@ export default function Home() {
   // if (isAuthenticated === true) {
   // User is authenticated
   return (
-    <ProtectedRoute>
-      <div>
-        <MainHome />
-      </div>
-    </ProtectedRoute>
+    // <ProtectedRoute>
+    <div>
+      <MainHome />
+    </div>
+    // </ProtectedRoute>
   );
   // }
 

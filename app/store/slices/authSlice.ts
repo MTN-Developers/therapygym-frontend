@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "@/interfaces";
 // import * as jwt_decode from "jwt-decode";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { deleteCookie } from "cookies-next";
 
 interface AuthState {
   user: User | null;
@@ -122,6 +123,11 @@ const authSlice = createSlice({
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("tokenExpiry");
+
+      // Delete cookies
+      deleteCookie("access_token");
+      deleteCookie("refresh_token");
+      deleteCookie("user");
     },
     setCredentials(state, action) {
       state.accessToken = action.payload.accessToken;

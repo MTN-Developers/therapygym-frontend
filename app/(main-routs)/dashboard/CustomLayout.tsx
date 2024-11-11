@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 // import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, Modal, theme } from "antd";
+import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -15,11 +15,12 @@ import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
 // import CustomHeader from "@/app/components/CustomHeader";
-import { RootState, useAppDispatch } from "@/app/store/store";
+import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 
-const { Content, Sider, Header } = Layout;
+const { Content, Sider } = Layout;
 
 const items = [
   {
@@ -55,10 +56,12 @@ const items = [
 ];
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
-  const [collapsed, setCollapsed] = useState(false);
+  useAxiosInterceptors();
+
+  const [collapsed] = useState(false);
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const [isMounted, setIsMounted] = useState(false); // Add this line
   console.log(isMounted);
 
@@ -77,6 +80,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    router.push("/login");
   };
 
   const showLogoutModal = () => {
