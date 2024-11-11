@@ -1,42 +1,45 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import MainHome from "@/app/components/MainHome";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
-import { useRouter } from "next/navigation";
-import { initializeAuthState } from "@/app/store/slices/authSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "@/app/store/store";
+// import { useRouter } from "next/navigation";
+// import { initializeAuthState } from "@/app/store/slices/authSlice";
+import ProtectedRoute from "@/app/components/ProtectedRoute";
 
 export default function Home() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const router = useRouter();
-  const dispatch = useDispatch();
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  // const router = useRouter();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(initializeAuthState());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(initializeAuthState());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (isAuthenticated === false) {
+  //     router.replace("/login");
+  //   }
+  // }, [isAuthenticated, router]);
 
-  if (isAuthenticated === undefined) {
-    // Authentication status is being determined
-    return <div>Loading...</div>;
-  }
+  // if (isAuthenticated === undefined) {
+  //   // Authentication status is being determined
+  //   return <div>Loading...</div>;
+  // }
 
-  if (isAuthenticated === true) {
-    // User is authenticated
-    return (
+  // if (isAuthenticated === true) {
+  // User is authenticated
+  return (
+    <ProtectedRoute>
       <div>
         <MainHome />
       </div>
-    );
-  }
+    </ProtectedRoute>
+  );
+  // }
 
   // If isAuthenticated is false, we've already redirected to /login
-  return null;
+  // return null;
 }

@@ -2,13 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import authReducer from "./slices/authSlice";
 import allCoursesReducer from "./slices/allCoursesSlice";
-import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
+// import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  subscribedCourses: subscribedCoursesSliceReducer,
+  // subscribedCourses: subscribedCoursesSliceReducer,
   allCourses: allCoursesReducer,
   // Add other reducers here
 });

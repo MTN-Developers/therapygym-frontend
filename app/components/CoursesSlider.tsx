@@ -5,26 +5,29 @@ import "swiper/css";
 import { Spin } from "antd";
 import { Course } from "@/interfaces"; // Ensure this interface is imported
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
-import { useEffect } from "react";
-import { fetchSubscribedCourses } from "../store/slices/subscribedCoursesSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { AppDispatch, RootState } from "../store/store";
+// import { useEffect } from "react";
+// import { fetchSubscribedCourses } from "../store/slices/subscribedCoursesSlice";
 import starIcon from "@/assets/images/Star 5.svg";
+import useSubscribedCourses from "../hooks/useSubscribedCourses";
 
 const CoursesSlider = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { data: courses, error, isLoading } = useSubscribedCourses();
 
-  const {
-    courses,
-    loading: isLoading,
-    error,
-  } = useSelector((state: RootState) => state.subscribedCourses);
+  // const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    if (courses.length === 0 && !isLoading && !error) {
-      dispatch(fetchSubscribedCourses());
-    }
-  }, [dispatch, courses.length, isLoading, error]);
+  // const {
+  //   courses,
+  //   loading: isLoading,
+  //   error,
+  // } = useSelector((state: RootState) => state.subscribedCourses);
+
+  // useEffect(() => {
+  //   if (courses.length === 0 && !isLoading && !error) {
+  //     dispatch(fetchSubscribedCourses());
+  //   }
+  // }, [dispatch, courses.length, isLoading, error]);
 
   // console.log("CoursesSlider initialized", courses);
 
@@ -35,9 +38,7 @@ const CoursesSlider = () => {
       </h1>
       {error && (
         <div className="">
-          <h1 className="text-xl font-bold text-[#5d5d5d] py-4">
-            Error: {error}.
-          </h1>
+          <h1 className="text-xl font-bold text-[#5d5d5d] py-4">Error.</h1>
         </div>
       )}
       {isLoading && (
@@ -52,7 +53,7 @@ const CoursesSlider = () => {
           No courses found. Please subscribe to some courses to see them here.
         </h1>
       )}
-      {courses.length > 0 && (
+      {courses?.length > 0 && (
         <Swiper
           spaceBetween={16}
           slidesPerView={1}

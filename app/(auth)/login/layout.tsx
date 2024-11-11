@@ -1,14 +1,15 @@
 "use client";
 
+import Providers from "@/app/Providers";
 // import type { Metadata } from "next";
 import "../../globals.css";
 
 import { Poppins } from "next/font/google";
 
 // import ProvidersAuth from "./ProvidersAuth";
-import { Provider } from "react-redux";
-import { store, persistor } from "@/app/store/store";
-import { PersistGate } from "redux-persist/integration/react";
+// import { Provider } from "react-redux";
+// import { store, persistor } from "@/app/store/store";
+// import { PersistGate } from "redux-persist/integration/react";
 
 //
 const poppins = Poppins({
@@ -33,11 +34,11 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable}`}>
       <body className="font-poppins">
         {/* <ProvidersAuth>{children}</ProvidersAuth> */}
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            {children}
-          </PersistGate>
-        </Provider>
+        {/* <Provider store={store}> */}
+        {/* <PersistGate loading={null} persistor={persistor}> */}
+        <Providers>{children}</Providers>
+        {/* </PersistGate> */}
+        {/* </Provider> */}
       </body>
     </html>
   );

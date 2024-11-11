@@ -26,7 +26,7 @@ import { RootState } from "@/app/store/store";
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
   const [loader, setLoader] = useState(false);
 
   const router = useRouter();
@@ -84,18 +84,18 @@ const RegisterPage = () => {
 
   useEffect(() => {
     setLoader(true);
-    if (user) {
+    if (isAuthenticated) {
       router.push("/dashboard");
       setLoader(false);
     }
     setLoader(false);
-  }, [router, user]);
+  }, [router, isAuthenticated]);
 
   if (loader) {
     return null;
   }
 
-  if (user === undefined) {
+  if (!isAuthenticated) {
     return (
       <div className="w-screen min-h-screen p-[34px] flex items-center content-center">
         <div className="w-full h-full rounded-3xl flex justify-between ">

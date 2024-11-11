@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import loginBanner from "../../../assets/images/login-banner.svg";
 import { Button, Input, message } from "antd";
@@ -12,6 +12,7 @@ import Link from "next/link";
 import { login } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
+import PublicRoute from "@/app/components/PublicRoute";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const Page = () => {
   const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, user } = useSelector((state: RootState) => state.auth);
+  const { loading } = useSelector((state: RootState) => state.auth);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,14 +38,14 @@ const Page = () => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [router, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [router, user]);
 
-  if (user !== undefined) {
-    return (
+  return (
+    <PublicRoute>
       <div className="w-screen h-screen p-[34px]">
         <div className="w-full h-full rounded-3xl flex justify-between ">
           <div className="flex items-center justify-center flex-1">
@@ -114,10 +115,8 @@ const Page = () => {
           </div>
         </div>
       </div>
-    );
-  }
-
-  return null;
+    </PublicRoute>
+  );
 };
 
 export default Page;
