@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setChapters,
@@ -8,17 +8,14 @@ import {
 } from "@/app/store/slices/playSubscribedCoursesSlice";
 import { RootState } from "@/app/store/store";
 import { useParams } from "next/navigation";
-import { Collapse, List } from "antd";
-import { IVideo } from "@/interfaces";
+import { IChapter, IVideo } from "@/interfaces";
 import HeaderClassRoom from "@/app/components/classroom/HeaderClassRoom";
-import videoLibIcon from "@/assets/images/Video Library.svg";
-import videoArrowIcon from "@/assets/images/video arrow.svg";
-import Image from "next/image";
-
-const { Panel } = Collapse;
+import RightSidebar from "@/app/components/classroom/RightSidebar";
+import { Tabs, TabsProps } from "antd";
+import WhatYouGainComp from "@/app/components/WhatYouGainComp";
 
 const Page = () => {
-  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [toggleSidebar, setToggleSidebar] = useState(true);
   const params = useParams();
   const courseId = params.id;
   const dispatch = useDispatch();
@@ -27,8 +24,76 @@ const Page = () => {
     (state: RootState) => state.playSubscribedCourse
   );
 
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: <span style={{ marginInline: 16 }}>عن الكورس</span>,
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            عن الكورس
+          </h2>
+          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            يولدها التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك
+            أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: "عن المحاضر",
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            عن المحاضرة
+          </h2>
+          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى أن
+            تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: "أراء العملاء",
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            أراء العملاء{" "}
+          </h2>
+          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
+            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            يولدها التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك
+            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
+            الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              قرأة المزيد
+            </span>
+          </p>
+        </div>
+      ),
+    },
+  ];
+
   //handlers
 
+  const onChange = (key: string) => {
+    console.log(key);
+  };
   const handleVideoSelect = (video: IVideo) => {
     dispatch(setCurrentVideo(video));
   };
@@ -73,10 +138,114 @@ const Page = () => {
   const videoId = currentVideo?.url
     ? extractYouTubeVideoId(currentVideo.url)
     : null;
-  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+
+  // References
+  const playerRef = useRef<any>(null);
+  const [playerReady, setPlayerReady] = useState(false);
+
+  // Load YouTube IFrame API
+  useEffect(() => {
+    // If the API is already loaded, do nothing
+    if (window.YT && window.YT.Player) {
+      setPlayerReady(true);
+      return;
+    }
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    // This function will be called by the YouTube API when it's ready
+    (window as any).onYouTubeIframeAPIReady = () => {
+      setPlayerReady(true);
+    };
+  }, []);
+
+  const getAllVideos = useCallback((chapters: IChapter[]): IVideo[] => {
+    const allVideos: IVideo[] = [];
+    chapters?.forEach((chapter) => {
+      allVideos.push(...chapter.videos);
+    });
+    return allVideos;
+  }, []);
+
+  // Initialize the player
+  useEffect(() => {
+    if (playerReady && videoId) {
+      if (playerRef.current) {
+        // If player already exists, just load new video
+        playerRef.current.loadVideoById(videoId);
+      } else {
+        playerRef.current = new window.YT.Player("player", {
+          videoId: videoId,
+          events: {
+            onStateChange: onPlayerStateChange,
+          },
+        });
+      }
+    }
+  }, [playerReady, videoId]);
+
+  const onPlayerStateChange = useCallback(
+    (event: any) => {
+      if (event.data === window.YT.PlayerState.ENDED) {
+        // Video has ended
+        console.log("Video ended");
+
+        if (!course?.chapters || !currentVideo) return;
+
+        // Get all videos
+        const allVideos = getAllVideos(course.chapters);
+
+        // Find the index of the current video
+        const currentVideoIndex = allVideos.findIndex(
+          (video) => video.id === currentVideo.id
+        );
+
+        if (
+          currentVideoIndex !== -1 &&
+          currentVideoIndex + 1 < allVideos.length
+        ) {
+          // Get the next video
+          const nextVideo = allVideos[currentVideoIndex + 1];
+          console.log("Next video is:", nextVideo);
+
+          // Dispatch the action to set the next video
+          dispatch(setCurrentVideo(nextVideo));
+        } else {
+          console.log("No more videos.");
+        }
+      }
+    },
+    [course?.chapters, currentVideo, dispatch, getAllVideos]
+  );
+
+  useEffect(() => {
+    if (playerReady && videoId) {
+      if (playerRef.current) {
+        // Destroy existing player before creating a new one
+        playerRef.current.destroy();
+      }
+
+      playerRef.current = new window.YT.Player("player", {
+        videoId: videoId,
+        events: {
+          onStateChange: onPlayerStateChange,
+        },
+        playerVars: {
+          autoplay: 1, // Enable autoplay
+          rel: 0, // Don't show related videos
+          modestbranding: 1, // Hide YouTube logo
+        },
+      });
+    }
+  }, [playerReady, videoId, onPlayerStateChange]);
 
   return (
-    <div className="bg-gray-400 overflow-x-hidden">
+    <div className=" overflow-x-hidden">
       <HeaderClassRoom
         video={currentVideo}
         handleToggleSidebar={handleToggleSidebar}
@@ -84,7 +253,7 @@ const Page = () => {
 
       {course ? (
         <>
-          {embedUrl ? (
+          {videoId ? (
             <div
               style={{
                 position: "relative",
@@ -93,8 +262,8 @@ const Page = () => {
                 overflow: "hidden",
               }}
             >
-              <iframe
-                src={embedUrl}
+              <div
+                id="player"
                 style={{
                   position: "absolute",
                   top: "0",
@@ -104,11 +273,7 @@ const Page = () => {
                   height: "535px",
                   backgroundColor: "#424242",
                 }}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title="YouTube Video Player"
-              ></iframe>
+              ></div>
             </div>
           ) : (
             <p>No video available</p>
@@ -118,75 +283,21 @@ const Page = () => {
         <p>Course not found with this ID.</p>
       )}
 
+      <RightSidebar
+        toggleSidebar={toggleSidebar}
+        chapters={chapters}
+        handleVideoSelect={handleVideoSelect}
+        handleToggleSidebar={handleToggleSidebar}
+        currentVideo={currentVideo}
+      />
+
       <div
         dir="rtl"
-        className={`lg:w-[495px] lg:h-[535px] py-6  bg-[#2d2f31] transition-transform duration-300 text-white! font-[pnu] absolute top-[66px] right-0 transform ${
-          toggleSidebar ? "translate-x-0" : "translate-x-full"
-        }`}
+        className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30"
       >
-        <Collapse
-          accordion
-          bordered={false}
-          expandIconPosition="end"
-          expandIcon={() => (
-            <>
-              <Image src={videoArrowIcon} alt="arrow" />
-            </>
-          )}
-        >
-          <p className="text-white font-[pnu] px-6 my-4 text-xl">
-            محتوى الكورس
-          </p>
-          {chapters?.map((chapter) => (
-            <Panel
-              header={
-                <>
-                  <div
-                    style={{
-                      background: "#545454",
-                    }}
-                    className="flex items-center gap-4"
-                  >
-                    <Image src={videoLibIcon} alt="video icon" />
-                    <p className="text-white font-bold">{chapter.title}</p>
-                  </div>
-                </>
-              }
-              key={chapter.id}
-            >
-              <List
-                style={{ background: "#2d2f31" }}
-                dataSource={chapter.videos}
-                renderItem={(video) => (
-                  <List.Item
-                    key={video.id}
-                    onClick={() => {
-                      handleVideoSelect(video);
-                      handleToggleSidebar();
-                    }}
-                    style={{ cursor: "pointer" }}
-                    className={`${
-                      video.id === currentVideo?.id
-                        ? "bg-gray-500"
-                        : "bg-[#2d2f31]"
-                    } `}
-                  >
-                    <p
-                      className={`px-4 ${
-                        video.id === currentVideo?.id
-                          ? "text-white"
-                          : "text-[#8d8d8d]"
-                      } `}
-                    >
-                      {video.title}
-                    </p>
-                  </List.Item>
-                )}
-              />
-            </Panel>
-          ))}
-        </Collapse>
+        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       </div>
+      <WhatYouGainComp />
     </div>
   );
 };
