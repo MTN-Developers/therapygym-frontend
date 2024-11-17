@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import userPhoto from "../../assets/images/user-photo.svg";
+import userPhoto from "@/assets/images/user-photo.svg";
 import CoursesCalender from "./CoursesCalendar";
 import Link from "next/link";
 import UpcomingEvents from "./Clubs";
 import Clubs from "./UpcomingEvents";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState } from "../../store/store";
 
 const RightSidebar = () => {
   const { user } = useSelector((state: RootState) => state.auth);

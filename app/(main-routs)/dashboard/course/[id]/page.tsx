@@ -13,9 +13,9 @@ import Image from "next/image";
 import strokGroup from "@/assets/images/Group 754.png";
 import strokOne from "@/assets/images/Pattern.png";
 import strokTwo from "@/assets/images/Pattern-1.png";
-import RightSideCourseComp from "@/app/components/RightSideCourseComp";
+import RightSideCourseComp from "@/app/components/course/RightSideCourseComp";
 import type { TabsProps } from "antd";
-import LeftSideCourseComp from "@/app/components/LeftSideCourseComp";
+import LeftSideCourseComp from "@/app/components/course/LeftSideCourseComp";
 
 const fetchCourse = async (id: string): Promise<Course> => {
   const { data } = await axios.get<Course>(

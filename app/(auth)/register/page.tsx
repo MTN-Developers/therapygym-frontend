@@ -18,7 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import registerBanner from "../../../assets/images/login-banner.svg";
 
 import Link from "next/link";
-import CountrySelect from "@/app/components/CountrySelect";
+import CountrySelect from "@/app/components/auth/CountrySelect";
 import { validationSchema } from "@/app/utils/RegisterationValidation";
 import { RegisterFormData } from "@/interfaces";
 import { useSelector } from "react-redux";

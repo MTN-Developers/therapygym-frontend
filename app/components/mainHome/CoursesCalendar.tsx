@@ -11,8 +11,8 @@ import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import Image from "next/image";
 
-import arrowLeft from "../../assets/images/arrow-left.svg";
-import arrowRight from "../../assets/images/arrow-right.svg";
+import arrowLeft from "@/assets/images/arrow-left.svg";
+import arrowRight from "@/assets/images/arrow-right.svg";
 
 // Extend Day.js with the plugins
 dayjs.extend(dayLocaleData);

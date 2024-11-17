@@ -6,9 +6,9 @@ import { Spin } from "antd";
 import { SubscribedCourseApi } from "@/interfaces"; // Ensure this interface is imported
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
+import { AppDispatch, RootState } from "@/app/store/store";
 import { useEffect } from "react";
-import { fetchSubscribedCourses } from "../store/slices/subscribedCoursesSlice";
+import { fetchSubscribedCourses } from "@/app/store/slices/subscribedCoursesSlice";
 import starIcon from "@/assets/images/Star 5.svg";
 import { useRouter } from "next/navigation";
 // import useSubscribedCourses from "../hooks/useSubscribedCourses";

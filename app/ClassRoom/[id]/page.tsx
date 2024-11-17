@@ -12,12 +12,50 @@ import { IChapter, IVideo } from "@/interfaces";
 import HeaderClassRoom from "@/app/components/classroom/HeaderClassRoom";
 import RightSidebar from "@/app/components/classroom/RightSidebar";
 import { Tabs, TabsProps } from "antd";
-import WhatYouGainComp from "@/app/components/WhatYouGainComp";
+import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
+import VideoPlayer from "@/app/components/classroom/VideoPlayer";
+
+// YouTube Player Types
+interface YouTubePlayer {
+  loadVideoById: (videoId: string) => void;
+  destroy: () => void;
+}
+
+interface YouTubeEvent {
+  data: number;
+}
+
+interface YouTubePlayerState {
+  ENDED: number;
+}
+
+interface YouTubeWindow extends Window {
+  YT: {
+    Player: new (
+      elementId: string,
+      config: {
+        videoId: string;
+        events?: {
+          onStateChange?: (event: YouTubeEvent) => void;
+        };
+        playerVars?: {
+          autoplay?: number;
+          rel?: number;
+          modestbranding?: number;
+        };
+      }
+    ) => YouTubePlayer;
+    PlayerState: YouTubePlayerState;
+  };
+  onYouTubeIframeAPIReady?: () => void;
+}
+
+declare const window: YouTubeWindow;
 
 const Page = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const params = useParams();
-  const courseId = params.id;
+  const courseId = params.id as string;
   const dispatch = useDispatch();
 
   const { chapters, course, currentVideo } = useSelector(
@@ -90,10 +128,10 @@ const Page = () => {
   ];
 
   //handlers
-
   const onChange = (key: string) => {
     console.log(key);
   };
+
   const handleVideoSelect = (video: IVideo) => {
     dispatch(setCurrentVideo(video));
   };
@@ -102,15 +140,14 @@ const Page = () => {
     setToggleSidebar(!toggleSidebar);
   };
 
+  //Fetch and put videos in redux
   useEffect(() => {
-    // Fetch course data from API
     fetch(`http://localhost:3001/courses/${courseId}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch(setCourse(data));
         dispatch(setChapters(data.chapters));
 
-        // Check if chapters and videos exist before accessing
         if (
           data.chapters &&
           data.chapters.length > 0 &&
@@ -127,8 +164,7 @@ const Page = () => {
       });
   }, [courseId, dispatch]);
 
-  // Function to extract YouTube video ID from URL
-  const extractYouTubeVideoId = (url: string) => {
+  const extractYouTubeVideoId = (url: string): string | null => {
     const regex =
       /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/;
     const match = url.match(regex);
@@ -139,13 +175,10 @@ const Page = () => {
     ? extractYouTubeVideoId(currentVideo.url)
     : null;
 
-  // References
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<YouTubePlayer | null>(null);
   const [playerReady, setPlayerReady] = useState(false);
 
-  // Load YouTube IFrame API
   useEffect(() => {
-    // If the API is already loaded, do nothing
     if (window.YT && window.YT.Player) {
       setPlayerReady(true);
       return;
@@ -158,8 +191,7 @@ const Page = () => {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
 
-    // This function will be called by the YouTube API when it's ready
-    (window as any).onYouTubeIframeAPIReady = () => {
+    window.onYouTubeIframeAPIReady = () => {
       setPlayerReady(true);
     };
   }, []);
@@ -172,11 +204,9 @@ const Page = () => {
     return allVideos;
   }, []);
 
-  // Initialize the player
   useEffect(() => {
     if (playerReady && videoId) {
       if (playerRef.current) {
-        // If player already exists, just load new video
         playerRef.current.loadVideoById(videoId);
       } else {
         playerRef.current = new window.YT.Player("player", {
@@ -190,17 +220,13 @@ const Page = () => {
   }, [playerReady, videoId]);
 
   const onPlayerStateChange = useCallback(
-    (event: any) => {
+    (event: YouTubeEvent) => {
       if (event.data === window.YT.PlayerState.ENDED) {
-        // Video has ended
         console.log("Video ended");
 
         if (!course?.chapters || !currentVideo) return;
 
-        // Get all videos
         const allVideos = getAllVideos(course.chapters);
-
-        // Find the index of the current video
         const currentVideoIndex = allVideos.findIndex(
           (video) => video.id === currentVideo.id
         );
@@ -209,11 +235,8 @@ const Page = () => {
           currentVideoIndex !== -1 &&
           currentVideoIndex + 1 < allVideos.length
         ) {
-          // Get the next video
           const nextVideo = allVideos[currentVideoIndex + 1];
           console.log("Next video is:", nextVideo);
-
-          // Dispatch the action to set the next video
           dispatch(setCurrentVideo(nextVideo));
         } else {
           console.log("No more videos.");
@@ -226,7 +249,6 @@ const Page = () => {
   useEffect(() => {
     if (playerReady && videoId) {
       if (playerRef.current) {
-        // Destroy existing player before creating a new one
         playerRef.current.destroy();
       }
 
@@ -236,49 +258,23 @@ const Page = () => {
           onStateChange: onPlayerStateChange,
         },
         playerVars: {
-          autoplay: 1, // Enable autoplay
-          rel: 0, // Don't show related videos
-          modestbranding: 1, // Hide YouTube logo
+          autoplay: 1,
+          rel: 0,
+          modestbranding: 1,
         },
       });
     }
   }, [playerReady, videoId, onPlayerStateChange]);
 
   return (
-    <div className=" overflow-x-hidden">
+    <div className="overflow-x-hidden">
       <HeaderClassRoom
         video={currentVideo}
         handleToggleSidebar={handleToggleSidebar}
       />
 
       {course ? (
-        <>
-          {videoId ? (
-            <div
-              style={{
-                position: "relative",
-                height: "540px",
-                backgroundColor: "#2d2f31",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                id="player"
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "50%",
-                  transform: "translateX(-50%) ",
-                  width: "80%",
-                  height: "535px",
-                  backgroundColor: "#424242",
-                }}
-              ></div>
-            </div>
-          ) : (
-            <p>No video available</p>
-          )}
-        </>
+        <>{videoId ? <VideoPlayer /> : <p>No video available</p>}</>
       ) : (
         <p>Course not found with this ID.</p>
       )}

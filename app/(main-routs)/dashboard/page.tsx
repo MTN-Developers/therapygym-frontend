@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import MainHome from "@/app/components/MainHome";
+import MainHome from "@/app/components/mainHome/MainHome";
 
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 
