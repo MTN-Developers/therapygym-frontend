@@ -1,0 +1,116 @@
+{
+  "courses": [
+    {
+      "id": 19,
+      "title": "استروجيم- Estrogym",
+      "course_id": 19,
+      "chapters": [
+        {
+          "id": 1,
+          "title": "سلسلة التشافي الذاتي 2024 الجزء الاول",
+          "videos": [
+            {
+              "id": 1,
+              "title": "إستَعدْ جودة حياتك وإستعِدّ للتشافي..✨#mtn #مجموعات_التشافي_الذاتي",
+              "url": "https://youtu.be/B-SoJmZb7ZQ?si=sEfBJ2XoGC1v173_"
+            },
+            {
+              "id": 2,
+              "title": "الانتباه لمشاعرك واحتياجاتك هو طريقك نحو الشفاء الذاتي . ✨",
+              "url": "https://youtu.be/oyKoC_srpPw?si=tdNJZhsaVakTVkN_"
+            },
+            {
+              "id": 3,
+              "title": "ندعوك الان كل واحد منكم علي حدا بحضور هذه المحاضرة الجماهيرية الثمينة 🌟",
+              "url": "https://youtu.be/C7B8wIZ0Z2I?si=bwnywoKUxiyslbwC"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "سلسلة التشافي الذاتي 2024 الجزء الثاني",
+          "videos": [
+            {
+              "id": 4,
+              "title": "الصحه تعني مشاعر مريحه 😇✨",
+              "url": "https://youtu.be/qne402VSD18?si=jyr-RejPJ7Fi0cnn"
+            },
+            {
+              "id": 5,
+              "title": "اكتشف تأثير مشاعرك على جسدك وعلاقتها بالمرض والشفاء ✨#MTN_Live#إدارة_اللحظة",
+              "url": "https://youtu.be/nJN0PiRnhAg?si=RHgaurWmXOzosvcb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Course 2",
+      "course_id": 18,
+      "chapters": [
+        {
+          "id": 1,
+          "title": "Introduction",
+          "videos": [
+            {
+              "id": 1,
+              "title": "Welcome Video",
+              "url": "https://youtu.be/CzcfeL7ymbU?si=zTTliSh8MrkmvEMj"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Getting Started",
+          "videos": [
+            {
+              "id": 2,
+              "title": "Installation Guide",
+              "url": "https://youtu.be/MNm1XhDjX1s?si=DkJMBdPc5fCCP3Ma"
+            },
+            {
+              "id": 3,
+              "title": "First Steps",
+              "url": "https://youtu.be/J2dB96MUL8s?si=HEH0t70JO_o-GGGB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Course 3",
+      "course_id": 17,
+      "chapters": [
+        {
+          "id": 1,
+          "title": "Introduction",
+          "videos": [
+            {
+              "id": 1,
+              "title": "Welcome Video",
+              "url": "https://youtu.be/CzcfeL7ymbU?si=zTTliSh8MrkmvEMj"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Getting Started",
+          "videos": [
+            {
+              "id": 2,
+              "title": "Installation Guide",
+              "url": "https://youtu.be/MNm1XhDjX1s?si=DkJMBdPc5fCCP3Ma"
+            },
+            {
+              "id": 3,
+              "title": "First Steps",
+              "url": "https://youtu.be/J2dB96MUL8s?si=HEH0t70JO_o-GGGB"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

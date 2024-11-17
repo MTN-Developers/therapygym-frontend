@@ -1,10 +1,11 @@
 // subscribedCoursesSlice.tsx
 import axiosInstance from "@/app/utils/axiosInstance";
-import { Course } from "@/interfaces";
+import { SubscribedCourseApi } from "@/interfaces";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
 interface SubscribedCoursesState {
-  courses: Course[];
+  courses: SubscribedCourseApi[];
   loading: boolean;
   error: string | null;
 }
@@ -16,15 +17,23 @@ const initialState: SubscribedCoursesState = {
 };
 
 export const fetchSubscribedCourses = createAsyncThunk<
-  Course[],
+  SubscribedCourseApi[],
   void,
   { rejectValue: string }
 >("subscribedCourses/fetch", async (_, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.get("/user/approved-courses");
     return response.data.courses;
-  } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || error.message);
+  } catch (error: unknown) {
+    let errorMessage = "An unknown error occurred";
+
+    if (error instanceof AxiosError) {
+      errorMessage = error.response?.data?.message || error.message;
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
+    return rejectWithValue(errorMessage);
   }
 });
 

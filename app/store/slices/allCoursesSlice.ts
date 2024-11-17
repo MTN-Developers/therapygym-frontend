@@ -1,6 +1,7 @@
 import axiosInstance from "@/app/utils/axiosInstance";
 import { Course } from "@/interfaces";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
 export const fetchAllCourses = createAsyncThunk<Course[]>(
   "allCourses",
@@ -9,8 +10,16 @@ export const fetchAllCourses = createAsyncThunk<Course[]>(
     try {
       const response = await axiosInstance.get("/getAllCourses");
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      return rejectWithValue(errorMessage);
     }
   }
 );

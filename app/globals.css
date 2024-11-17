@@ -10,6 +10,10 @@
   user-select: none;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 /* Apply gradient background to all menu items */
 .custom-menu .ant-menu-item {
   /* Gradient from #0d60d8 to #2a86f4 */

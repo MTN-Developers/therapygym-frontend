@@ -4,6 +4,7 @@ import { User } from "@/interfaces";
 // import * as jwt_decode from "jwt-decode";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { deleteCookie } from "cookies-next";
+import { AxiosError } from "axios";
 
 interface AuthState {
   user: User | null;
@@ -47,8 +48,16 @@ export const login = createAsyncThunk(
       // console.log("localStorage", localStorage);
 
       return { user, access_token, refresh_token };
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -78,11 +87,19 @@ export const refreshAccessToken = createAsyncThunk(
       // localStorage.setItem("tokenExpiry", tokenExpirey.toString());
 
       return { access_token };
-    } catch (error: any) {
+    } catch (error: unknown) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("tokenExpiry");
-      return rejectWithValue(error.response?.data?.message || error.message);
+      let errorMessage = "An unknown error occurred";
+
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      return rejectWithValue(errorMessage);
     }
   }
 );

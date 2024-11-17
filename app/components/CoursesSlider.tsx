@@ -3,33 +3,41 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Spin } from "antd";
-import { Course } from "@/interfaces"; // Ensure this interface is imported
+import { SubscribedCourseApi } from "@/interfaces"; // Ensure this interface is imported
 import Image from "next/image";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AppDispatch, RootState } from "../store/store";
-// import { useEffect } from "react";
-// import { fetchSubscribedCourses } from "../store/slices/subscribedCoursesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+import { fetchSubscribedCourses } from "../store/slices/subscribedCoursesSlice";
 import starIcon from "@/assets/images/Star 5.svg";
-import useSubscribedCourses from "../hooks/useSubscribedCourses";
+import { useRouter } from "next/navigation";
+// import useSubscribedCourses from "../hooks/useSubscribedCourses";
 
 const CoursesSlider = () => {
-  const { data: courses, error, isLoading } = useSubscribedCourses();
+  // const { data: courses, error, isLoading } = useSubscribedCourses();
+  const router = useRouter();
 
-  // const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // const {
-  //   courses,
-  //   loading: isLoading,
-  //   error,
-  // } = useSelector((state: RootState) => state.subscribedCourses);
+  const {
+    courses,
+    loading: isLoading,
+    error,
+  } = useSelector((state: RootState) => state.subscribedCourses);
 
-  // useEffect(() => {
-  //   if (courses.length === 0 && !isLoading && !error) {
-  //     dispatch(fetchSubscribedCourses());
-  //   }
-  // }, [dispatch, courses.length, isLoading, error]);
+  //handlers
 
-  // console.log("CoursesSlider initialized", courses);
+  const handleCourseClick = (courseId: number) => {
+    router.push(`/ClassRoom/${courseId}`);
+  };
+
+  useEffect(() => {
+    if (courses.length === 0 && !isLoading && !error) {
+      dispatch(fetchSubscribedCourses());
+    }
+  }, [dispatch, courses.length, isLoading, error]);
+
+  console.log("CoursesSlider initialized", courses);
 
   return (
     <div className="mt-5">
@@ -63,11 +71,12 @@ const CoursesSlider = () => {
             1024: { slidesPerView: 3 },
           }}
         >
-          {courses.map((course: Course) => (
-            <SwiperSlide key={course.id}>
+          {courses.map((course: SubscribedCourseApi) => (
+            <SwiperSlide key={course.course_id}>
               <div
                 dir="rtl"
-                className="relative flex flex-col items-center  shadow-xl mb-10 mx-4  w-full h-[366px] bg-gray-50  rounded-lg"
+                className="relative flex flex-col items-center cursor-pointer shadow-xl mb-10 mx-4  w-full h-[366px] bg-gray-50  rounded-lg"
+                onClick={() => handleCourseClick(course.course_id)}
               >
                 {/* Add more content as needed */}
                 <div className=" flex justify-center w-full bg-white rounded-t-lg  ">

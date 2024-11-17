@@ -55,6 +55,32 @@ export interface Course {
   updated_at: string;
 }
 
+export interface SubscribedCourseApi {
+  course_request_id: number;
+  course_id: number;
+  title: string;
+  logo: string;
+  calendar_image: string;
+}
+
+export interface IVideo {
+  id: number;
+  title: string;
+  url: string;
+}
+
+export interface IChapter {
+  id: number;
+  title: string;
+  videos: IVideo[];
+}
+export interface SubscribedCourse {
+  id: number;
+  title: string;
+  course_id: number;
+  chapters: IChapter[];
+}
+
 export interface Chapter {
   id: number;
   title: string;

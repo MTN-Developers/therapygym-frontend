@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Images configuration should be at the top level, not inside redirects
+  // output: "export", // Enable static export
   images: {
+    // unoptimized: true, // Disable image optimization for static export
     remotePatterns: [
       {
         protocol: "https",
@@ -11,7 +12,6 @@ const nextConfig = {
       },
     ],
   },
-  // Redirects as a separate configuration
   async redirects() {
     return [
       {

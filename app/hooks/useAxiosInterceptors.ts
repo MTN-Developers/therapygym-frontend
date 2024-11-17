@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/app/store/store";
+import { AppDispatch, RootState } from "@/app/store/store";
 import {
   refreshAccessToken,
   logout,
@@ -24,7 +24,7 @@ const onRefreshed = (token: string) => {
 };
 
 const useAxiosInterceptors = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const useAxiosInterceptors = () => {
           }
 
           // Wait for the token to be refreshed
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             subscribeTokenRefresh((newToken: string) => {
               originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
               resolve(axiosInstance(originalRequest));

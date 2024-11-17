@@ -74,10 +74,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     setIsMounted(true);
   }, []);
 
-  // console.log("user should be ", user);
-
-  //handlers
-
   const handleLogout = () => {
     dispatch(logout());
     router.push("/login");

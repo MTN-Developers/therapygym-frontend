@@ -47,14 +47,7 @@ const Page = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [router, user]);
-
   return (
-    // <PublicRoute>
     <div className="w-screen h-screen p-[34px]">
       <div className="w-full h-full rounded-3xl flex justify-between ">
         <div className="flex items-center justify-center flex-1">
@@ -119,7 +112,6 @@ const Page = () => {
         </div>
       </div>
     </div>
-    // </PublicRoute>
   );
 };
 
