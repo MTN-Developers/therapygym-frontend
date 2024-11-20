@@ -19,7 +19,7 @@ export default function CustomHeader() {
   // # end handlers
 
   return (
-    <div className="flex justify-between ps-10 lg:ps-0">
+    <div className="flex justify-between my-4 ps-10 lg:ps-0">
       <div className="relative  rounded-lg">
         <div className="absolute right-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
           {showSearchIcon && (

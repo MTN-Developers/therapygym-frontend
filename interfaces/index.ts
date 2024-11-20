@@ -119,3 +119,13 @@ export interface RegisterFormData {
   nationality: string;
   birthdate: Date | null;
 }
+
+export interface IEvent {
+  id: number;
+  location: string;
+  title: string;
+  date: string; // Format: YYYY-MM-DD
+  url: string; //
+  start?: Date; // Added for react-big-calendar
+  end?: Date; // Added for react-big-calendar
+}

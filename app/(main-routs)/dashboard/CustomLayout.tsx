@@ -272,9 +272,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               </div>
               {pathname === "/dashboard" ? (
                 <>
-                  <div className=" w-full pe-12">
+                 <div className=" w-full pe-12">
                     <CustomHeader />
-                  </div>
+                  </div> 
                 </>
               ) : null}
             </Header> */}

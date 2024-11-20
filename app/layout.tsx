@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 import type { Metadata } from "next";
 // import Providers from "./Providers";
 
