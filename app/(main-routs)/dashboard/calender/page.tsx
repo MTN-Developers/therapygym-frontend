@@ -3,7 +3,7 @@
 import CalendarComp from "@/app/components/calender/CalenderComp";
 import EventsBar from "@/app/components/calender/EventsBar";
 // import CalenderComp from "@/app/components/calender/CalenderComp";
-import CustomHeader from "@/app/components/CustomHeader";
+// import CustomHeader from "@/app/components/CustomHeader";
 import { IEvent } from "@/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -42,9 +42,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="bg-white p-6 min-h-screen">
-      <div className=" w-full ">
-        <CustomHeader />
-      </div>
+      <div className=" w-full ">{/* <CustomHeader /> */}</div>
       <h1
         dir="rtl"
         className="my-4 text-[color:var(--Text-text-black-primary,#1D1D1D)] [font-feature-settings:'liga'_off,'clig'_off] [font-family:PNU] text-2xl font-bold leading-[110%] "

@@ -12,7 +12,7 @@ import { RootState } from "../../store/store";
 const RightSidebar = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   return (
-    <div className="hidden  rounded-2xl lg:flex flex-col px-2 gap-3 py-2 shadow-md">
+    <div className="  rounded-2xl lg:flex flex-col px-2 gap-3 py-2 shadow-md">
       <div className="flex flex-col items-center content-center">
         <Image
           src={userPhoto}

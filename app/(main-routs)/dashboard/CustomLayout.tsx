@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Menu, Modal, theme } from "antd";
+import { Layout, Menu, Modal, theme, Button } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -14,13 +13,14 @@ import Link from "next/link";
 import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
-// import CustomHeader from "@/app/components/CustomHeader";
+import CustomHeader from "@/app/components/CustomHeader";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
+import menuIcon from "@/assets/images/menu-icon.svg";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 const items = [
   {
@@ -58,12 +58,13 @@ const items = [
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useAxiosInterceptors();
 
-  const [collapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // Retained isMounted
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const [isMounted, setIsMounted] = useState(false); // Add this line
-  console.log(isMounted);
+
+  console.log("user obj is ", user);
 
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -73,6 +74,12 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (isMounted && isAuthenticated === false) {
+      router.replace("/login");
+    }
+  }, [isMounted, isAuthenticated, router]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -90,9 +97,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const sidebarWidth = collapsed ? 80 : 266;
-  const headerHeight = 64;
 
   const pathname = usePathname();
 
@@ -119,14 +123,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const selectedKey = getActiveMenuItem();
 
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (isAuthenticated === undefined) {
-    // Authentication status is being determined
+  if (!isMounted || isAuthenticated === undefined) {
+    // Component is not yet mounted or authentication status is being determined
     return null; // or a loading indicator
   }
 
@@ -140,7 +138,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       {isMounted && (
         <>
           <Sider
-            width={sidebarWidth}
+            width={266}
+            collapsedWidth={0}
             collapsible
             collapsed={collapsed}
             trigger={null}
@@ -154,101 +153,93 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               bottom: 0,
             }}
           >
-            <div className="flex justify-center py-4">
-              <Image
-                src={mtnliveLogo}
-                alt="logo"
-                width={collapsed ? 40 : 150}
-                height={73}
-              />
-            </div>
-
-            <Menu
-              mode="inline"
-              selectedKeys={[selectedKey]}
-              className="flex-1 custom-menu"
-              style={{
-                background: "#0d63d9",
-                borderRight: "none",
-              }}
-            >
-              {items.map((item) => (
-                <Menu.Item key={item.id.toString()} className="flex">
-                  <Link href={item.link}>
-                    <Image
-                      src={item.icon}
-                      alt={`${item.label} icon`}
-                      width={20}
-                      height={20}
-                      className="inline me-4"
-                    />
-                    {!collapsed && item.label}
-                  </Link>
-                </Menu.Item>
-              ))}
-            </Menu>
-
             {!collapsed && (
-              <div
-                className="flex items-center justify-center p-4"
-                style={{
-                  position: "absolute",
-                  bottom: "10px",
-                  left: "0",
-                  right: "0",
-                }}
-              >
-                <div className="flex gap-2 items-center">
-                  <Image
-                    src={userPhoto}
-                    alt="user photo"
-                    width={35}
-                    height={35}
-                  />
-                  <div className="text-white flex flex-col">
-                    <p>{user?.name}</p>
-                    <p className="text-[12px]">Client</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      showLogoutModal();
-                    }}
-                  >
-                    <Image src={logoutIcon} alt="logout icon" />
-                  </button>
+              <>
+                <div className="flex justify-center py-4">
+                  <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
                 </div>
-                <Modal
-                  title="Logout"
-                  open={open}
-                  onOk={() => {
-                    hideLogoutModal();
-                    handleLogout();
+
+                <Menu
+                  mode="inline"
+                  selectedKeys={[selectedKey]}
+                  className="flex-1 custom-menu"
+                  style={{
+                    background: "#0d63d9",
+                    borderRight: "none",
                   }}
-                  onCancel={hideLogoutModal}
-                  okText="yes"
-                  cancelText="no"
                 >
-                  <p>Do you want to logout?</p>
-                </Modal>
-              </div>
+                  {items.map((item) => (
+                    <Menu.Item key={item.id.toString()} className="flex">
+                      <Link href={item.link}>
+                        <Image
+                          src={item.icon}
+                          alt={`${item.label} icon`}
+                          width={20}
+                          height={20}
+                          className="inline me-4"
+                        />
+                        {item.label}
+                      </Link>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+
+                <div
+                  className="flex items-center justify-center p-4"
+                  style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "0",
+                    right: "0",
+                  }}
+                >
+                  <div className="flex gap-2 items-center">
+                    <Image
+                      src={userPhoto}
+                      alt="user photo"
+                      width={35}
+                      height={35}
+                    />
+                    <div className="text-white flex flex-col">
+                      <p>{user?.name}</p>
+                      <p className="text-[12px]">Client</p>
+                    </div>
+                    <button onClick={showLogoutModal}>
+                      <Image src={logoutIcon} alt="logout icon" />
+                    </button>
+                  </div>
+                  <Modal
+                    title="Logout"
+                    open={open}
+                    onOk={() => {
+                      hideLogoutModal();
+                      handleLogout();
+                    }}
+                    onCancel={hideLogoutModal}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <p>Do you want to logout?</p>
+                  </Modal>
+                </div>
+              </>
             )}
           </Sider>
 
           <Layout
             style={{
-              marginLeft: collapsed ? 80 : 266,
+              marginLeft: collapsed ? 0 : 266,
               flex: 1,
+              transition: "margin-left 0.2s ease",
             }}
           >
-            {/* <Header
+            <Header
               style={{
                 padding: 0,
                 background: colorBgContainer,
                 display: "flex",
                 alignItems: "center",
-                paddingTop: "40px",
-
-                justifyContent: "space-between", // Ensures the button and the header are on the same line
+                justifyContent: "space-between",
               }}
             >
               <div
@@ -259,9 +250,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               >
                 <Button
                   type="text"
-                  icon={
-                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
-                  }
+                  icon={<Image src={menuIcon} alt="menu icon" />}
                   onClick={() => setCollapsed(!collapsed)}
                   style={{
                     fontSize: "16px",
@@ -270,19 +259,17 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                   }}
                 />
               </div>
-              {pathname === "/dashboard" ? (
-                <>
-                 <div className=" w-full pe-12">
-                    <CustomHeader />
-                  </div> 
-                </>
-              ) : null}
-            </Header> */}
+              {/* {pathname === "/dashboard" && ( */}
+              <div className="w-full">
+                <CustomHeader />
+              </div>
+              {/* )} */}
+            </Header>
 
             <Content
               style={{
                 overflowY: "auto",
-                height: `calc(100vh - ${headerHeight}px)`,
+                height: `calc(100vh - ${64}px)`,
                 background: colorBgContainer,
               }}
             >

@@ -5,18 +5,41 @@ export interface MenuItem {
   link: string; // Path
 }
 
+// export interface User {
+//   id: number;
+//   email: string;
+//   name: string;
+//   phone: string;
+//   work: string;
+//   city: string;
+//   nationality: string;
+//   birthdate: string;
+//   accessToken: string;
+//   refreshToken: string;
+//   accessTokenExpires: string | number;
+// }
+
 export interface User {
-  id: number;
-  email: string;
+  id: string;
   name: string;
+  email: string;
+  country: string;
   phone: string;
-  work: string;
-  city: string;
-  nationality: string;
-  birthdate: string;
-  accessToken: string;
-  refreshToken: string;
-  accessTokenExpires: string | number;
+  password: string;
+  reset_token: string | null;
+  reset_token_expires: string | null;
+  refresh_token: string;
+  role: UserRole;
+  updated_at: string; // Consider using Date if you parse it
+  created_at: string; // Consider using Date if you parse it
+  deleted_at: string | null;
+}
+
+// Optional: Define an enum for user roles if there are limited roles
+export enum UserRole {
+  Admin = "admin",
+  User = "user",
+  // Add other roles as needed
 }
 
 export interface Credentials {
