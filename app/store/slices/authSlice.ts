@@ -32,11 +32,14 @@ export const login = createAsyncThunk(
   ) => {
     try {
       const response = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
         credentials
       );
 
-      const { access_token, refresh_token, user, expires_at } = response.data;
+      console.log("response is ", response);
+
+      const { access_token, refresh_token, user, expires_at } =
+        response.data.data;
 
       const tokenExpirey = new Date(expires_at).getTime();
 
