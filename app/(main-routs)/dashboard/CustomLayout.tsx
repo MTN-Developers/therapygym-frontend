@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Menu, Modal, theme } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Button, Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -19,6 +19,8 @@ import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
+import { Header } from "antd/es/layout/layout";
+import CustomHeader from "@/app/components/CustomHeader";
 
 const { Content, Sider } = Layout;
 
@@ -58,16 +60,18 @@ const items = [
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useAxiosInterceptors();
 
-  const [collapsed] = useState(false);
+  // const [collapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const [isMounted, setIsMounted] = useState(false); // Add this line
   console.log(isMounted);
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  const isAuthenticated: boolean = true;
   const router = useRouter();
 
   useEffect(() => {
@@ -92,7 +96,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   } = theme.useToken();
 
   const sidebarWidth = collapsed ? 80 : 266;
-  const headerHeight = 64;
+  // const headerHeight = 64;
 
   const pathname = usePathname();
 
@@ -120,7 +124,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const selectedKey = getActiveMenuItem();
 
   useEffect(() => {
-    if (isAuthenticated === false) {
+    if (!isAuthenticated) {
       router.replace("/login");
     }
   }, [isAuthenticated, router]);
@@ -130,13 +134,21 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     return null; // or a loading indicator
   }
 
-  if (isAuthenticated === false) {
+  if (!isAuthenticated) {
     // User is not authenticated; we've already redirected
     return null;
   }
 
   return (
-    <Layout style={{ minHeight: "100vh", display: "flex" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+        height: "fit-content",
+        display: "flex",
+        background: "#EEE",
+        padding: 10,
+      }}
+    >
       {isMounted && (
         <>
           <Sider
@@ -147,8 +159,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             style={{
               zIndex: 50,
               background: "#0d63d9",
-              transition: "width 0.2s ease",
-              position: "fixed",
+              // transition: "width 0.2s ease",
+              // position: "fixed",
+              borderTopLeftRadius: "16px",
+              borderBottomLeftRadius: "16px",
               top: 0,
               left: 0,
               bottom: 0,
@@ -236,18 +250,18 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
           <Layout
             style={{
-              marginLeft: collapsed ? 80 : 266,
               flex: 1,
+              background: "transparent",
             }}
           >
-            {/* <Header
+            <Header
               style={{
                 padding: 0,
                 background: colorBgContainer,
                 display: "flex",
                 alignItems: "center",
                 paddingTop: "40px",
-
+                borderTopRightRadius: "16px",
                 justifyContent: "space-between", // Ensures the button and the header are on the same line
               }}
             >
@@ -272,18 +286,20 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               </div>
               {pathname === "/dashboard" ? (
                 <>
-                 <div className=" w-full pe-12">
+                  <div className=" w-full pe-12">
                     <CustomHeader />
-                  </div> 
+                  </div>
                 </>
               ) : null}
-            </Header> */}
+            </Header>
 
             <Content
+              className="px-6"
               style={{
-                overflowY: "auto",
-                height: `calc(100vh - ${headerHeight}px)`,
+                // height: `calc(100vh - ${headerHeight}px)`,
+                height: `fit-content`,
                 background: colorBgContainer,
+                borderBottomRightRadius: "16px",
               }}
             >
               {children}

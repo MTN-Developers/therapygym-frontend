@@ -1,25 +1,26 @@
 // middleware.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
-  const accessToken = req.cookies.get("access_token")?.value;
-  const pathname = req.nextUrl.pathname;
+// export function middleware(req: NextRequest) {
+export function middleware() {
+  // const accessToken = req.cookies.get("access_token")?.value;
+  // const pathname = req.nextUrl.pathname;
 
-  if (!accessToken && pathname !== "/login" && pathname !== "/register") {
-    const loginUrl = new URL("/login", req.url);
-    const response = NextResponse.redirect(loginUrl);
+  // if (!accessToken && pathname !== "/login" && pathname !== "/register") {
+  //   const loginUrl = new URL("/login", req.url);
+  //   const response = NextResponse.redirect(loginUrl);
 
-    // Optionally delete cookies if needed
-    response.cookies.delete("access_token");
-    response.cookies.delete("refresh_token");
-    response.cookies.delete("user");
-    return response;
-  }
+  //   // Optionally delete cookies if needed
+  //   response.cookies.delete("access_token");
+  //   response.cookies.delete("refresh_token");
+  //   response.cookies.delete("user");
+  //   return response;
+  // }
 
-  if (accessToken && (pathname === "/login" || pathname === "/register")) {
-    const dashboardUrl = new URL("/dashboard", req.url);
-    return NextResponse.redirect(dashboardUrl);
-  }
+  // if (accessToken && (pathname === "/login" || pathname === "/register")) {
+  //   const dashboardUrl = new URL("/dashboard", req.url);
+  //   return NextResponse.redirect(dashboardUrl);
+  // }
 
   // Allow the request to continue
   return NextResponse.next();
