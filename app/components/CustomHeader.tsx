@@ -4,8 +4,13 @@ import Image from "next/image";
 import SearchIcon from "../../assets/images/search-icon.svg";
 import billIcon from "../../assets/images/bill-icon.svg";
 import messageIcon from "../../assets/images/message-icon.svg";
+import menuIcon from "@/assets/images/menu-icon.svg";
 
-export default function CustomHeader() {
+export default function CustomHeader({
+  setCollapsed,
+}: {
+  setCollapsed: (collapsed: boolean) => void;
+}) {
   const [search, setSearch] = useState("");
 
   // Derived state for showing the search icon
@@ -20,7 +25,16 @@ export default function CustomHeader() {
 
   return (
     <div className="flex justify-between  lg:ps-0">
-      <div className="relative  rounded-lg">
+      <div className="relative flex items-center gap-2 rounded-lg">
+        <Image
+          width={24}
+          height={24}
+          src={menuIcon}
+          className="cursor-pointer"
+          alt="menu icon"
+          //@ts-expect-error onClick is not a valid prop for Button
+          onClick={() => setCollapsed((prev: boolean) => !prev)}
+        />
         <div className="absolute right-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
           {showSearchIcon && (
             <Image src={SearchIcon} alt="search" width={15} height={15} />

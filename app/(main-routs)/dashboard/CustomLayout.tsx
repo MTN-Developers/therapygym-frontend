@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 // import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, Modal, theme } from "antd";
+import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
@@ -19,7 +19,6 @@ import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 import CustomHeader from "@/app/components/CustomHeader";
-import menuIcon from "@/assets/images/menu-icon.svg";
 const { Content, Sider, Header } = Layout;
 
 const items = [
@@ -244,55 +243,42 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
           <Layout
             style={{
               flex: 1,
-              background: "transparent",
+              background: "red !important",
+              borderTopRightRadius: "16px",
+              borderTopLeftRadius: collapsed ? "16px" : "0",
+              borderBottomRightRadius: "16px",
+              borderBottomLeftRadius: collapsed ? "16px" : "0",
             }}
           >
-            <Header
-              style={{
-                padding: 0,
-                background: colorBgContainer,
-                display: "flex",
-                alignItems: "center",
-                paddingTop: "40px",
-                borderTopRightRadius: "16px",
-                justifyContent: "space-between", // Ensures the button and the header are on the same line
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  type="text"
-                  icon={<Image src={menuIcon} alt="menu icon" />}
-                  onClick={() => setCollapsed(!collapsed)}
-                  style={{
-                    fontSize: "16px",
-                    width: 64,
-                    height: 64,
-                  }}
-                />
-              </div>
-              {pathname === "/dashboard" ? (
-                <>
-                  <div className=" w-full pe-12">
-                    <CustomHeader />
-                  </div>
-                </>
-              ) : null}
-            </Header>
-
             <Content
-              className="px-6"
+              // padding: "56px 40px 40px 24px",
+              className="
+              pr-6 lg:pr-10 pt-6 lg:pt-10 pb-6 lg:pb-10 pl-6 
+              "
               style={{
-                // height: `calc(100vh - ${headerHeight}px)`,
                 height: `fit-content`,
                 background: colorBgContainer,
                 borderBottomRightRadius: "16px",
+                borderTopRightRadius: "16px",
+                borderTopLeftRadius: collapsed ? "16px" : "0",
+                borderBottomLeftRadius: collapsed ? "16px" : "0",
               }}
             >
+              <Header
+                style={{
+                  padding: 0,
+                  paddingRight: "0px !important",
+                  paddingLeft: "0px !important",
+                  height: "46px",
+                  background: colorBgContainer,
+                  alignItems: "center",
+                  borderTopRightRadius: "16px",
+                  justifyContent: "space-between", // Ensures the button and the header are on the same line
+                }}
+              >
+                <CustomHeader setCollapsed={setCollapsed} />
+              </Header>
+
               {children}
             </Content>
           </Layout>

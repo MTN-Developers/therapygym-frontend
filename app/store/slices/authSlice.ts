@@ -69,18 +69,22 @@ export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",
   async (_, { rejectWithValue }) => {
     try {
+      // console.log("SDSd");
       const refreshToken = localStorage.getItem("refreshToken");
+      // console.log(refreshToken);
       if (!refreshToken) {
         throw new Error("No refresh token available");
       }
 
       const response = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/refresh`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`,
         { refresh_token: refreshToken }
       );
 
-      const { access_token } = response.data;
+      // console.log(response, "response");
 
+      const { access_token } = response.data?.data;
+      console.log(access_token);
       // const decodedToken: { exp: number } = jwt_decode(access_token);
       // const tokenExpirey = decodedToken.exp * 1000;
 
@@ -91,9 +95,13 @@ export const refreshAccessToken = createAsyncThunk(
 
       return { access_token };
     } catch (error: unknown) {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("tokenExpiry");
+      console.log("error", error);
+      // localStorage.removeItem("accessToken");
+      // localStorage.removeItem("refreshToken");
+      // localStorage.removeItem("tokenExpiry");
+      deleteCookie("access_token");
+      deleteCookie("refresh_token");
+      deleteCookie("user");
       let errorMessage = "An unknown error occurred";
 
       if (error instanceof AxiosError) {
