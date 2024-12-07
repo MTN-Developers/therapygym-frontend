@@ -193,3 +193,18 @@ body {
 .rbc-toolbar {
   display: none !important;
 }
+
+.packages-modal .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  /* border: 2px solid !important; */
+}
+
+.packages-modal .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+}
+
+.packages-modal2 .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+  background-color: #0000008c !important;
+}

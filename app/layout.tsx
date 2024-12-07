@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Metadata } from "next";
 // import Providers from "./Providers";
 
@@ -27,6 +28,17 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap"
+          rel="stylesheet"
+        />
+
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
       </head>
       <body className="font-poppins">{children}</body>

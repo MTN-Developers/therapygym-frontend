@@ -44,50 +44,52 @@ const CoursesSlider = () => {
           slidesPerView={"auto"}
           className="w-full h-fit"
         >
-          {[...courses?.data?.data, ...courses?.data?.data]?.map(
-            (course, idx) => (
-              <SwiperSlide key={idx} className="!w-[217px]">
-                <Link
-                  href={`/dashboard/course/${course.id}`}
-                  dir="rtl"
-                  className="relative flex flex-col items-center cursor-pointer shadow-xl w-full h-[366px] bg-gray-50  rounded-lg"
-                >
-                  {/* Add more content as needed */}
-                  <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
-                    <Image
-                      src={course.banner_ar}
-                      width={217}
-                      height={150}
-                      alt="course image"
-                      className="w-[217px] h-[150px] object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <div className="w-full p-2">
-                    <h2 className="w-full text-[#636363] text-start font-poppins text-sm font-semibold leading-[20.26px]">
-                      {course.name_ar || "Course Status"}
-                    </h2>
-                    <h2 className=" text-[#353535] text-start font-[pnu] text-base font-bold mb-2 leading-[160%]">
-                      تقنية الاتزان العاطفي
-                    </h2>
-                    <p className=" text-[color:var(--Neutral-70,#595959)] text-right font-[pnu] text-sm font-normal leading-[160%]">
-                      دكتور أحمد الدملاوى
-                    </p>
-                    <div className="flex gap-2 mb-4 items-center justify-start">
-                      <Image src={starIcon} alt="star" width={20} height={20} />
-                      <p className="text-[#969696]  text-[14.182px] font-normal leading-[normal]">
-                        <span className="font-bold text-[#2d5482] ">4.2</span>{" "}
-                        (Over 12500)
-                      </p>
-                    </div>
-                    <p className="flex gap-3 text-xl">
-                      <span className="font-bold">$3000</span>
-                      <span className="line-through">$5000</span>
+          {courses?.data?.data?.map((course, idx) => (
+            <SwiperSlide key={idx} className="!w-[217px]">
+              <Link
+                href={`/dashboard/course/${course.id}`}
+                dir="rtl"
+                className="relative flex flex-col items-center cursor-pointer shadow-xl w-full h-[366px] bg-gray-50  rounded-lg"
+              >
+                {/* Add more content as needed */}
+                <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
+                  <Image
+                    src={course.banner_ar}
+                    width={217}
+                    height={150}
+                    alt="course image"
+                    className="w-[217px] h-[150px] object-cover rounded-t-lg"
+                  />
+                </div>
+                <div className="w-full p-2">
+                  <h2 className="w-full text-[#636363] text-start font-poppins text-sm font-semibold leading-[20.26px]">
+                    {course.category || "Course Status"}
+                  </h2>
+                  <h2 className=" text-[#353535] text-start font-[pnu] text-base font-bold mb-2 leading-[160%]">
+                    {course.name_ar}
+                  </h2>
+                  <p className=" text-[color:var(--Neutral-70,#595959)] text-right font-[pnu] text-sm font-normal leading-[160%]">
+                    دكتور أحمد الدملاوى
+                  </p>
+                  <div className="flex gap-2 mb-4 items-center justify-start">
+                    <Image src={starIcon} alt="star" width={20} height={20} />
+                    <p className="text-[#969696]  text-[14.182px] font-normal leading-[normal]">
+                      <span className="font-bold text-[#2d5482] ">4.2</span>{" "}
+                      (Over 12500)
                     </p>
                   </div>
-                </Link>
-              </SwiperSlide>
-            )
-          )}
+                  <p className="flex gap-3 text-xl">
+                    <span className="font-bold">
+                      ${course.price_after_discount}
+                    </span>
+                    <span className="line-through">
+                      ${course.original_price}
+                    </span>
+                  </p>
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
         </Swiper>
       )}
     </div>

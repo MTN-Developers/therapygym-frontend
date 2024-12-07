@@ -6,6 +6,10 @@ import cupIcon from "@/assets/images/Trophy.svg";
 import tvIcon from "@/assets/images/tv.png";
 import alertIcon from "@/assets/images/Alarm.svg";
 import { Button, Modal } from "antd";
+import Close from "@/assets/components/Close";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import Link from "next/link";
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [open_packages_modal, setOpenPackagesModal] = React.useState(false);
@@ -28,7 +32,13 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
       {open_packages_modal ? (
         <Modal
-          title="Basic Modal"
+          closeIcon={<Close />}
+          title=""
+          className="packages-modal"
+          rootClassName="packages-modal2"
+          cancelButtonProps={{ style: { display: "none" } }}
+          okButtonProps={{ style: { display: "none" } }}
+          width={1000}
           style={{
             background: "transparent",
           }}
@@ -36,9 +46,34 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           onOk={() => setOpenPackagesModal(false)}
           onCancel={() => setOpenPackagesModal(false)}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <div className="[font-family:Cairo] mt-4 flex flex-col w-full justify-center items-center">
+            <h2 className="text-white text-[62px] font-medium leading-[66px] mb-2">
+              أختر الباقة المناسبة لك
+            </h2>
+            <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
+              خيارات ميسورة التكلفة وقابلة للتطوير للجميع.
+            </p>
+
+            <div className="w-full">
+              <Swiper
+                spaceBetween={16}
+                slidesPerView={"auto"}
+                className="w-full h-fit"
+              >
+                {[
+                  ...course.packages,
+                  ...course.packages,
+                  ...course.packages,
+                  ...course.packages,
+                  ...course.packages,
+                ]?.map((pkg, idx) => (
+                  <SwiperSlide key={idx} className="!w-[306px] !lg:w-[415px] ">
+                    <PackageCard course_id={course.id} key={idx} pkg={pkg} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
         </Modal>
       ) : null}
       <div className="relative ">
@@ -53,13 +88,6 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           }}
           className="w-full lg:h-[245px] mb-[12px] object-cover"
         />
-        {/* <Image
-          src={playIcon}
-          alt="play icon"
-          width={70}
-          height={70}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-full cursor-pointer hover:shadow-2xl "
-        /> */}
       </div>
       <div className="w-full px-3 font-[pnu] ">
         <p className="font-bold mb-[12px]">هذا الكورس يحتوي علي :</p>
@@ -136,3 +164,75 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
 };
 
 export default RightSideCourseComp;
+
+const PackageCard = ({
+  pkg,
+  course_id,
+}: {
+  pkg: course_package;
+  course_id: string;
+}) => {
+  let duration = "";
+  switch (pkg.duration) {
+    case 1:
+      duration = "كل شهر";
+      break;
+    case 3:
+      duration = "كل 3 شهور";
+      break;
+    case 6:
+      duration = "كل 6 شهور";
+      break;
+    case 12:
+      duration = "سنويا";
+      break;
+  }
+
+  return (
+    <div
+      dir="rtl"
+      className="w-[306px] lg:w-[415px] max-w-full bg-white rounded-xl shadow-lg p-6 text-right border border-blue-200"
+    >
+      {/* Header */}
+      <div className="bg-blue-100 text-blue-700 rounded-full inline-block px-4 py-1 text-sm font-medium mb-4">
+        باقة شهرية
+      </div>
+
+      {/* Price */}
+      <h1 className="text-blue-800 text-4xl font-bold mb-4">
+        ${pkg.price_after_discount}
+        <span className="text-lg font-normal">/{duration}</span>
+      </h1>
+
+      {/* Subscription Content */}
+      <div className="text-gray-700 text-right mb-6">
+        <h2 className="text-xl font-bold mb-2">محتوى الاشتراك</h2>
+        <ul className="space-y-2">
+          <li className="flex items-center gap-2">
+            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
+            احصل على ٤ حلقات مسجلة
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>٣
+            لقاءات جماعية مباشرة مع الدكتور
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
+            مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف
+          </li>
+          <li className="flex items-center gap-2">
+            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
+            استمتع بالتواجد في مجتمع داعم ومؤثر وبيئة ملهمة
+          </li>
+        </ul>
+      </div>
+
+      {/* Subscribe Button */}
+      <Link href={`/dashboard/course/${course_id}/payment`}>
+        <Button className="bg-blue-700 text-white font-bold !py-3 !px-6 !h-[54px] font-[Cairo] rounded-lg w-full hover:bg-blue-800 transition">
+          اشترك الآن
+        </Button>
+      </Link>
+    </div>
+  );
+};

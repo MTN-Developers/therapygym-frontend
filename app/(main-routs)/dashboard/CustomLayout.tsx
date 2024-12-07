@@ -278,8 +278,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               >
                 <CustomHeader setCollapsed={setCollapsed} />
               </Header>
-
-              {children}
+              <div className="mt-6">{children}</div>
             </Content>
           </Layout>
         </>
