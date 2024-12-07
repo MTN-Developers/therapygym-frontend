@@ -228,7 +228,7 @@ const PackageCard = ({
       </div>
 
       {/* Subscribe Button */}
-      <Link href={`/dashboard/course/${course_id}/payment`}>
+      <Link href={`/dashboard/course/${course_id}/payment/${pkg.id}`}>
         <Button className="bg-blue-700 text-white font-bold !py-3 !px-6 !h-[54px] font-[Cairo] rounded-lg w-full hover:bg-blue-800 transition">
           اشترك الآن
         </Button>

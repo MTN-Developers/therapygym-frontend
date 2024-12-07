@@ -79,7 +79,7 @@ const useAxiosInterceptors = () => {
           !originalRequest._retry
         ) {
           originalRequest._retry = true;
-
+          console.log("Token expired. Refreshing token...");
           if (!isRefreshing) {
             isRefreshing = true;
             try {

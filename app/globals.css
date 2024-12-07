@@ -11,6 +11,15 @@
   font-weight: normal;
   font-style: normal;
 }
+:lang(ar) {
+  font-family: "Cairo", sans-serif;
+}
+
+/* Default font for other content (e.g., English) */
+body,
+:lang(en) {
+  font-family: "Roboto", sans-serif;
+}
 * {
   padding: 0;
   margin: 0;

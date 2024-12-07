@@ -40,7 +40,9 @@
     "swiper": "^11.1.14",
     "swr": "^2.2.5",
     "use-react-countries": "^2.0.1",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",

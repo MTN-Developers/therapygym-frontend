@@ -26,7 +26,7 @@ export default async function RootLayout({
   //
 
   return (
-    <html lang="en" className={`${poppins.variable}`}>
+    <html lang="ar" className={`${poppins.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

@@ -34,3 +34,7 @@ type course_package = {
   image_ar: string;
   image_en: string;
 };
+
+type getPackage = {
+  data: package;
+};
