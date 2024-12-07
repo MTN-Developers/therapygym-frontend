@@ -10,21 +10,26 @@ import Close from "@/assets/components/Close";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [open_packages_modal, setOpenPackagesModal] = React.useState(false);
+  const router = useRouter();
 
   const handlePurchaseButton = () => {
     switch (course.type) {
       case "standalone":
-        console.log("standalone");
+        router.push(`/dashboard/course/${course.id}/payment`);
         break;
       case "standalone_subscribe":
-        console.log("standalone_subscribe");
+        // Navigate to an options page or show a modal
+        router.push(`/dashboard/course/${course.id}/purchase-options`);
         break;
       case "subscribe":
-        console.log("subscribe");
         setOpenPackagesModal(true);
+        break;
+      default:
+        console.error("Unknown course type");
         break;
     }
   };

@@ -24,7 +24,7 @@ export default async function RootLayout({
   return (
     <Providers>
       <CustomLayout>
-        <NextTopLoader />
+        <NextTopLoader showSpinner={false} />
         {children}
       </CustomLayout>
     </Providers>

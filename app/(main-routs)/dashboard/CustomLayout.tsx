@@ -11,7 +11,7 @@ import supportIcon from "@/assets/images/support-icon.svg";
 import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import userPhoto from "../../../assets/images/user-photo.png";
+// import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/app/store/store";
@@ -19,36 +19,43 @@ import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 import CustomHeader from "@/app/components/CustomHeader";
+import useSWR from "swr";
+import { getOne } from "@/services/server";
 const { Content, Sider, Header } = Layout;
 
 const items = [
   {
     id: 1,
-    label: "Home",
+    label_en: "Home",
+    label_ar: "الرئيسية",
     icon: homeIcon,
     link: "/dashboard/",
   },
   {
     id: 2,
-    label: "All courses",
+    label_en: "All courses",
+    label_ar: "جميع الدورات",
     icon: coursesIcon,
     link: "/dashboard/all-courses",
   },
   {
     id: 3,
-    label: "Calendar",
+    label_en: "Calendar",
+    label_ar: "التقويم",
     icon: calenderIcon,
     link: "/dashboard/calender",
   },
   {
     id: 4,
-    label: "Discussion",
+    label_en: "Discussion",
+    label_ar: "المناقشات",
     icon: discussionIcon,
     link: "/dashboard/discussion",
   },
   {
     id: 5,
-    label: "MTN Support",
+    label_en: "MTN Support",
+    label_ar: "دعم متن",
     icon: supportIcon,
     link: "/dashboard/support",
   },
@@ -64,8 +71,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
-  console.log("user obj is ", user);
+  // console.log("user obj is ", user);
 
+  const { data } = useSWR<getUserProfile>("/user/me", getOne);
+  console.log(data);
   // const isAuthenticated = useSelector(
   //   (state: RootState) => state.auth.isAuthenticated
   // );
@@ -137,6 +146,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
+  const lang = "ar";
+
   return (
     <Layout
       style={{
@@ -145,6 +156,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         display: "flex",
         background: "#EEE",
         padding: 10,
+        direction: "rtl",
       }}
     >
       {isMounted && (
@@ -160,8 +172,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               background: "#0d63d9",
               // transition: "width 0.2s ease",
               // position: "fixed",
-              borderTopLeftRadius: "16px",
-              borderBottomLeftRadius: "16px",
+              borderTopLeftRadius: lang == "ar" ? "0px" : "16px",
+              borderBottomLeftRadius: lang == "ar" ? "0px" : "16px",
+              borderTopRightRadius: lang == "ar" ? "16px" : "0px",
+              borderBottomRightRadius: lang == "ar" ? "16px" : "0px",
               top: 0,
               left: 0,
               bottom: 0,
@@ -184,15 +198,15 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 >
                   {items.map((item) => (
                     <Menu.Item key={item.id.toString()} className="flex">
-                      <Link href={item.link}>
+                      <Link dir="rtl" href={item.link}>
                         <Image
                           src={item.icon}
-                          alt={`${item.label} icon`}
+                          alt={`${item.label_ar} icon`}
                           width={20}
                           height={20}
                           className="inline me-4"
                         />
-                        {item.label}
+                        {item.label_ar}
                       </Link>
                     </Menu.Item>
                   ))}
@@ -209,31 +223,34 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 >
                   <div className="flex gap-2 items-center">
                     <Image
-                      src={userPhoto}
+                      src={data?.data?.profile?.avatar as string}
                       alt="user photo"
                       width={35}
                       height={35}
                     />
                     <div className="text-white flex flex-col">
                       <p>{user?.name}</p>
-                      <p className="text-[12px]">Client</p>
+                      <p className="text-[12px]">{data?.data?.role}</p>
                     </div>
                     <button onClick={showLogoutModal}>
                       <Image src={logoutIcon} alt="logout icon" />
                     </button>
                   </div>
                   <Modal
-                    title="Logout"
+                    style={{
+                      direction: "rtl",
+                    }}
+                    title="تسجيل الخروج"
                     open={open}
                     onOk={() => {
                       hideLogoutModal();
                       handleLogout();
                     }}
                     onCancel={hideLogoutModal}
-                    okText="Yes"
-                    cancelText="No"
+                    okText="نعم"
+                    cancelText="لا"
                   >
-                    <p>Do you want to logout?</p>
+                    <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
                   </Modal>
                 </div>
               </>
@@ -244,24 +261,37 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             style={{
               flex: 1,
               background: "red !important",
-              borderTopRightRadius: "16px",
-              borderTopLeftRadius: collapsed ? "16px" : "0",
-              borderBottomRightRadius: "16px",
-              borderBottomLeftRadius: collapsed ? "16px" : "0",
+              // english
+              // borderTopRightRadius: "16px",
+              // borderTopLeftRadius: collapsed ? "16px" : "0",
+              // borderBottomRightRadius: "16px",
+              // borderBottomLeftRadius: collapsed ? "16px" : "0",
+
+              //ar
+              borderTopLeftRadius: "16px",
+              borderTopRightRadius: collapsed ? "16px" : "0",
+              borderBottomLeftRadius: "16px",
+              borderBottomRightRadius: collapsed ? "16px" : "0",
             }}
           >
             <Content
-              // padding: "56px 40px 40px 24px",
               className="
               pr-6 lg:pr-10 pt-6 lg:pt-10 pb-6 lg:pb-10 pl-6 
               "
               style={{
                 height: `fit-content`,
                 background: colorBgContainer,
-                borderBottomRightRadius: "16px",
-                borderTopRightRadius: "16px",
-                borderTopLeftRadius: collapsed ? "16px" : "0",
-                borderBottomLeftRadius: collapsed ? "16px" : "0",
+                //english
+                // borderBottomRightRadius: "16px",
+                // borderTopRightRadius: "16px",
+                // borderTopLeftRadius: collapsed ? "16px" : "0",
+                // borderBottomLeftRadius: collapsed ? "16px" : "0",
+
+                //ar
+                borderBottomLeftRadius: "16px",
+                borderTopLeftRadius: "16px",
+                borderTopRightRadius: collapsed ? "16px" : "0",
+                borderBottomRightRadius: collapsed ? "16px" : "0",
               }}
             >
               <Header

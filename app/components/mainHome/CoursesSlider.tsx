@@ -18,8 +18,8 @@ const CoursesSlider = () => {
 
   return (
     <div className="mt-5 w-full">
-      <h1 className="text-3xl font-bold font-poppins text-[#5d5d5d] py-4">
-        My Courses
+      <h1 className="text-3xl mb-2 font-bold font-poppins text-[#5d5d5d] py-4">
+        كورساتي
       </h1>
       {error && (
         <div className="">

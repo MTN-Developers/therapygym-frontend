@@ -11,6 +11,7 @@ import {
   setCredentials,
 } from "@/app/store/slices/authSlice";
 import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
@@ -25,6 +26,7 @@ const onRefreshed = (token: string) => {
 };
 
 const useAxiosInterceptors = () => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
@@ -69,6 +71,8 @@ const useAxiosInterceptors = () => {
           deleteCookie("refreshToken");
           deleteCookie("tokenExpiry");
           dispatch(logout()); // Clear user session from Redux
+          alert("Requires login. Please login again.");
+          router.push("/login");
           return Promise.reject(new Error("Requires login"));
         }
 
@@ -116,6 +120,8 @@ const useAxiosInterceptors = () => {
                 deleteCookie("accessToken");
                 deleteCookie("refreshToken");
                 deleteCookie("tokenExpiry");
+                alert("Failed to refresh token. Please login again.");
+                router.push("/login");
                 return Promise.reject(new Error("Failed to refresh token"));
               }
             } catch (error) {
@@ -124,6 +130,10 @@ const useAxiosInterceptors = () => {
               deleteCookie("accessToken");
               deleteCookie("refreshToken");
               deleteCookie("tokenExpiry");
+              alert("Failed to refresh token. Please login again.");
+
+              router.push("/login");
+
               return Promise.reject(error);
             }
           }

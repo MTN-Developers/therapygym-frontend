@@ -35,7 +35,7 @@ export default function CustomHeader({
           //@ts-expect-error onClick is not a valid prop for Button
           onClick={() => setCollapsed((prev: boolean) => !prev)}
         />
-        <div className="absolute right-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
+        <div className="absolute left-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
           {showSearchIcon && (
             <Image src={SearchIcon} alt="search" width={15} height={15} />
           )}

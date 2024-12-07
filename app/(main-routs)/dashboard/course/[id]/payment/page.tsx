@@ -1,5 +1,4 @@
 "use client";
-import PaymentForm from "@/app/components/payment/PaymentForm";
 import NotFoundComponent from "@/app/components/shared/NotFound";
 import { getOne } from "@/services/server";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -7,22 +6,19 @@ import { Spin } from "antd";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
-import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
+import CoursePaymentInfo from "@/app/components/payment/CoursePaymentInfo";
+import CoursePaymentForm from "@/app/components/payment/CoursePaymentForm";
 
 const Page = ({
   params,
 }: {
   params: {
-    packageId: string;
     id: string;
   };
 }) => {
-  const { id, packageId } = params;
+  const { id } = params;
   console.log(id, "Course ID");
-  const { data, isLoading } = useSWR<getPackage>(
-    `/package/${packageId}`,
-    getOne
-  );
+  const { data, isLoading } = useSWR<getCourse>(`/course/${id}`, getOne);
 
   if (isLoading) {
     return (
@@ -39,9 +35,7 @@ const Page = ({
   if (isLoading == false && data?.data == undefined) {
     return <NotFoundComponent />;
   }
-  if (isLoading == false && data?.data?.course_id != id) {
-    return <NotFoundComponent />;
-  }
+
   return (
     <div
       dir="rtl"
@@ -57,7 +51,7 @@ const Page = ({
             background: "transparent",
           }}
         >
-          <PaymentInvoice packageData={data?.data as course_package} />
+          <CoursePaymentInfo course={data?.data as SubscribedCourse} />
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
@@ -80,7 +74,7 @@ const Page = ({
             </p>
           </div>
 
-          <PaymentForm Package={data?.data as course_package} />
+          <CoursePaymentForm Course={data?.data as SubscribedCourse} />
         </div>
       </div>
     </div>
