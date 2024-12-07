@@ -5,7 +5,13 @@ export function middleware(req: NextRequest) {
   const accessToken = req.cookies.get("access_token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  if (!accessToken && pathname !== "/login" && pathname !== "/register") {
+  if (
+    !accessToken &&
+    pathname !== "/login" &&
+    pathname !== "/register" &&
+    pathname !== "/reset-password" &&
+    pathname !== "/request-reset-password"
+  ) {
     const loginUrl = new URL("/login", req.url);
     const response = NextResponse.redirect(loginUrl);
 

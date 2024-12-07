@@ -85,16 +85,22 @@ const Page = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <Link
+              href={"/request-reset-password"}
+              className=" text-gray-500 text-sm text-center  hover:cursor-pointer  hover:text-blue-600 underline"
+            >
+              Forgot Your Password?{" "}
+              <span className="text-blue-500 underline ">Reset Password</span>
+            </Link>{" "}
             <Button
               type="primary"
               size="large"
-              className=" w-full lg:w-[590px] mb-10 h-[52px]"
+              className=" w-full lg:w-[590px] mb-4 h-[52px]"
               htmlType="submit"
               loading={loading}
             >
               Login
             </Button>
-
             <div className="flex flex-col gap-4 items-center justify-center lg:hidden mb-[20px] ">
               <p className="text-gray-500">or</p>
               <div className="flex items-center justify-center gap-[48px]">
