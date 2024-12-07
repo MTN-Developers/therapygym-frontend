@@ -141,6 +141,7 @@ export interface RegisterFormData {
   city: string;
   nationality: string;
   birthdate: Date | null;
+  country: string;
 }
 
 export interface IEvent {

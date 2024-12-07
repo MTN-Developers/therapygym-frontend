@@ -3,13 +3,15 @@
 @tailwind utilities;
 
 /* Dashboard.css */
-
-@font-face {
-  font-family: "smooch";
-  src: url("./fonts/SmoochSans[wght].ttf") format(".ttf")
-    url("./fonts/SmoochSans[wght].ttf") format(".ttf");
-  font-weight: normal;
-  font-style: normal;
+@layer base {
+  @font-face {
+    font-family: "smooch";
+    font-display: swap;
+    src: url("./fonts/SmoochSans[wght].ttf") format(".ttf")
+      url("./fonts/SmoochSans[wght].ttf") format(".ttf");
+    font-weight: normal;
+    font-style: normal;
+  }
 }
 * {
   padding: 0;
@@ -192,4 +194,21 @@ body {
 
 .rbc-toolbar {
   display: none !important;
+}
+
+.ant-select-selector {
+  background-color: transparent !important;
+}
+
+.ant-input-affix-wrapper::before {
+  background-color: transparent !important;
+}
+
+.ant-input-affix-wrapper input {
+  background-color: transparent !important;
+}
+
+input::placeholder {
+  font-weight: lighter !important;
+  font-size: 14px !important;
 }
