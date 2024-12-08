@@ -137,6 +137,7 @@ export interface RegisterFormData {
   password: string;
   password_confirmation: string;
   phone: string;
+  gender: string;
   work: string;
   city: string;
   nationality: string;

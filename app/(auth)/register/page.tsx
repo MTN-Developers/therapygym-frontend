@@ -56,6 +56,7 @@ const RegisterPage = () => {
           password: data.password,
           phone: data.phone,
           country: data.country,
+          gender: data.gender,
         }
       );
 
