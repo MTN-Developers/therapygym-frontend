@@ -27,31 +27,31 @@ const items = [
     id: 1,
     label: "Home",
     icon: homeIcon,
-    link: "/dashboard/",
+    link: "/",
   },
   {
     id: 2,
     label: "All courses",
     icon: coursesIcon,
-    link: "/dashboard/all-courses",
+    link: "/all-courses",
   },
   {
     id: 3,
     label: "Calendar",
     icon: calenderIcon,
-    link: "/dashboard/calender",
+    link: "/calender",
   },
   {
     id: 4,
     label: "Discussion",
     icon: discussionIcon,
-    link: "/dashboard/discussion",
+    link: "/discussion",
   },
   {
     id: 5,
     label: "MTN Support",
     icon: supportIcon,
-    link: "/dashboard/support",
+    link: "/support",
   },
 ];
 
@@ -97,7 +97,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const getActiveMenuItem = () => {
-    if (pathname.startsWith("/dashboard/course/")) {
+    if (pathname.startsWith("/course/")) {
       return "2";
     }
 

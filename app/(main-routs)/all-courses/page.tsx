@@ -72,7 +72,7 @@ const Page = () => {
             >
               {courses?.map((course: Course) => (
                 <SwiperSlide key={course.id}>
-                  <Link href={`/dashboard/course/${course.id}`}>
+                  <Link href={`/course/${course.id}`}>
                     <div
                       dir="rtl"
                       className="relative flex flex-col items-center  shadow-lg mb-10 mx-4  w-full h-[366px] bg-gray-50  rounded-lg"
@@ -452,7 +452,7 @@ const Page = () => {
             >
               {courses?.map((course: Course) => (
                 <SwiperSlide key={course.id}>
-                  <Link href={`/dashboard/course/${course.id}`}>
+                  <Link href={`/course/${course.id}`}>
                     <div
                       dir="rtl"
                       className="relative flex flex-col items-center  shadow-lg mb-10 mx-4  w-full h-[366px] bg-gray-50  rounded-lg"

@@ -17,7 +17,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (accessToken && (pathname === "/login" || pathname === "/register")) {
-    const dashboardUrl = new URL("/dashboard", req.url);
+    const dashboardUrl = new URL("/", req.url);
     return NextResponse.redirect(dashboardUrl);
   }
 

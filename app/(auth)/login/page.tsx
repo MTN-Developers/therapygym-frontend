@@ -37,7 +37,7 @@ const Page = () => {
           path: "/",
         });
         setCookie("user", resultAction.payload.user, { path: "/" });
-        router.push("/dashboard"); // Redirect to dashboard or home page
+        router.push("/"); // Redirect to home page
       } else {
         message.error("Login failed");
       }

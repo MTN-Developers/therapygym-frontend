@@ -85,7 +85,7 @@ const RegisterPage = () => {
   useEffect(() => {
     setLoader(true);
     if (isAuthenticated) {
-      router.push("/dashboard");
+      router.push("/");
       setLoader(false);
     }
     setLoader(false);

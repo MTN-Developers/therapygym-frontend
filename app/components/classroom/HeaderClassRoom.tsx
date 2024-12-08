@@ -17,7 +17,7 @@ const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
 
   //handlers
   const handleGoHome = () => {
-    router.push("/dashboard");
+    router.push("/");
     router.refresh();
   };
 

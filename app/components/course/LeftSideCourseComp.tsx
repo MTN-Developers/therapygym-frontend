@@ -33,11 +33,11 @@ const LeftSideCourseComp = ({ items, onChange }: IProps) => {
             items={[
               {
                 title: "الصفحة الرئيسية",
-                href: "/dashboard",
+                href: "/",
               },
               {
                 title: "برامج القيادة الفعالة",
-                href: "/dashboard/all-courses",
+                href: "/all-courses",
               },
               {
                 title: " حياة الفطرة",

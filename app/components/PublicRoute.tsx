@@ -11,7 +11,7 @@ const PublicRoute = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [isAuthenticated, router]);
 
