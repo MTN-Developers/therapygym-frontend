@@ -1,5 +1,4 @@
 "use client";
-import PaymentForm from "@/app/components/payment/PaymentForm";
 import NotFoundComponent from "@/app/components/shared/NotFound";
 import { getOne } from "@/services/server";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -7,22 +6,19 @@ import { Spin } from "antd";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
-import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
+import CoursePaymentInfo from "@/app/components/payment/CoursePaymentInfo";
+import CoursePaymentForm from "@/app/components/payment/CoursePaymentForm";
 
 const Page = ({
   params,
 }: {
   params: {
-    packageId: string;
     id: string;
   };
 }) => {
-  const { id, packageId } = params;
+  const { id } = params;
   console.log(id, "Course ID");
-  const { data, isLoading } = useSWR<getPackage>(
-    `/package/${packageId}`,
-    getOne
-  );
+  const { data, isLoading } = useSWR<getCourse>(`/course/${id}`, getOne);
 
   if (isLoading) {
     return (
@@ -39,14 +35,9 @@ const Page = ({
   if (isLoading == false && data?.data == undefined) {
     return <NotFoundComponent />;
   }
-  if (isLoading == false && data?.data?.course_id != id) {
-    return <NotFoundComponent />;
-  }
+
   return (
-    <div
-      dir="rtl"
-      className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-full bg-white rounded-lg shadow-md"
-    >
+    <div className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-full bg-white rounded-lg shadow-md">
       <div className="w-full lg:w-1/2 h-[600px]  lg:flex relative">
         <div
           className="absolute w-full"
@@ -57,7 +48,7 @@ const Page = ({
             background: "transparent",
           }}
         >
-          <PaymentInvoice packageData={data?.data as course_package} />
+          <CoursePaymentInfo course={data?.data as SubscribedCourse} />
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
@@ -68,7 +59,7 @@ const Page = ({
               width={150}
               height={150}
               className="mb-4"
-              alt="Estro Gym Logo"
+              alt="MTN Live"
             />
 
             <p className="text-[32px] items-center gap-2 lg:text-4xl font-['Cairo'] font-medium leading-[normal] tracking-[0.72px]">
@@ -80,7 +71,7 @@ const Page = ({
             </p>
           </div>
 
-          <PaymentForm Package={data?.data as course_package} />
+          <CoursePaymentForm Course={data?.data as SubscribedCourse} />
         </div>
       </div>
     </div>

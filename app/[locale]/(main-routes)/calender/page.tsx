@@ -43,10 +43,7 @@ const Page: React.FC = () => {
   return (
     <div className="bg-white p-6 min-h-screen">
       <div className=" w-full ">{/* <CustomHeader /> */}</div>
-      <h1
-        dir="rtl"
-        className="my-4 text-[color:var(--Text-text-black-primary,#1D1D1D)] [font-feature-settings:'liga'_off,'clig'_off] [font-family:PNU] text-2xl font-bold leading-[110%] "
-      >
+      <h1 className="my-4 text-[color:var(--Text-text-black-primary,#1D1D1D)] [font-feature-settings:'liga'_off,'clig'_off] [font-family:PNU] text-2xl font-bold leading-[110%] ">
         {month} <span className="font-light">{year}</span>
       </h1>
       <div className="flex gap-4 justify-start ">

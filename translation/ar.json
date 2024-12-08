@@ -1,0 +1,26 @@
+{
+    "NavbarLinks": {
+        "home": "الرئيسية",
+        "homeTitle": "الصفحة الرئيسية",
+        "about": "حول",
+        "aboutTitle": "صفحة حول",
+        "profile": "الملف الشخصي",
+        "profileTitle": "صفحة الملف الشخصي"
+    },
+    "HomePage": {
+        "title": "الصفحة الرئيسية"
+    },
+    "AboutPage": {
+        "title": "حول"
+    },
+    "ProfilePage": {
+        "title": "الملف الشخصي"
+    },
+    "Sidebar": {
+        "Home": "الرئيسية",
+        "Courses": "الدورات",
+        "Calendar": "التقويم",
+        "Discussions": "المناقشات",
+        "Support": "الدعم"
+    }
+}

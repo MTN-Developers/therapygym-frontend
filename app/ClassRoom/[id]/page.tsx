@@ -263,10 +263,7 @@ const Page = () => {
         currentVideo={currentVideo}
       />
 
-      <div
-        dir="rtl"
-        className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30"
-      >
+      <div className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30">
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       </div>
       <WhatYouGainComp />

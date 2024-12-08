@@ -4,10 +4,7 @@ import checkIcon from "@/assets/images/CheckCircle.svg";
 
 const WhatYouGainComp = () => {
   return (
-    <div
-      dir="rtl"
-      className="  border-[15px] border-white shadow-sm lg:mx-[92px] lg:mb-16 lg:py-10 lg:px-5 bg-[#f7fbff] rounded-lg"
-    >
+    <div className="  border-[15px] border-white shadow-sm lg:mx-[92px] lg:mb-16 lg:py-10 lg:px-5 bg-[#f7fbff] rounded-lg">
       <h2 className="text-[#017AFD] text-right font-[pnu] text-2xl font-bold leading-8 tracking-[-0.24px]">
         ما سوف تحصل عليه في نهاية الكورس
       </h2>

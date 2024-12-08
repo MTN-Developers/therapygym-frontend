@@ -3,11 +3,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import loginBanner from "../../../assets/images/login-banner.jpg";
-import loginBannerMob from "../../../assets/images/login-banner-mob.png";
+import loginBanner from "@/assets/images/login-banner.jpg";
+import loginBannerMob from "@/assets/images/login-banner-mob.png";
 import { Button, Input, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import lockIcon from "../../../assets/images/lock-icon.svg";
+import lockIcon from "@/assets/images/lock-icon.svg";
 import { login } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";

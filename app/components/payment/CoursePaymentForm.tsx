@@ -67,7 +67,7 @@ const CoursePaymentForm = ({ Course }: { Course: SubscribedCourse }) => {
       } else {
         setLoading(false);
         message.success("تم الدفع بنجاح");
-        router.push(`/course/${Course.id}`);
+        router.push(`/courses/${Course.id}`);
       }
     } catch (error) {
       console.log(error);

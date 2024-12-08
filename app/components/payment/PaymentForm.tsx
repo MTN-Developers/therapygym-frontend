@@ -27,7 +27,7 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
 
   const calculatedGatewayFees = StripeNumber * 0.05;
 
-  const FINAL_PRICE = (StripeNumber + calculatedGatewayFees) * 100;
+  const FINAL_PRICE = StripeNumber + calculatedGatewayFees;
 
   const onSubmit = async () => {
     setLoading(true);
@@ -46,8 +46,8 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
         type: "package",
       });
 
-      console.log(CreateIntent?.data, "CreateIntent");
-      console.log(CreateIntent?.data?.clientSecret);
+      // console.log(CreateIntent?.data, "CreateIntent");
+      // console.log(CreateIntent?.data?.clientSecret);
       const { error } = await stripe.confirmCardPayment(
         CreateIntent?.data?.clientSecret,
         {
@@ -67,7 +67,7 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
       } else {
         setLoading(false);
         message.success("تم الدفع بنجاح");
-        router.push(`/course/${Package.course_id}`);
+        router.push(`/courses/${Package.course_id}`);
       }
     } catch (error) {
       console.log(error);

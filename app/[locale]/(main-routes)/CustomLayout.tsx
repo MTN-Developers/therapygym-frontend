@@ -12,7 +12,7 @@ import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 // import userPhoto from "../../../assets/images/user-photo.png";
-import logoutIcon from "../../../assets/images/login-icon.svg";
+import logoutIcon from "@/assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
@@ -21,48 +21,48 @@ import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 import CustomHeader from "@/app/components/CustomHeader";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+import { useTranslations } from "next-intl";
 const { Content, Sider, Header } = Layout;
-
-const items = [
-  {
-    id: 1,
-    label_en: "Home",
-    label_ar: "الرئيسية",
-    icon: homeIcon,
-    link: "/",
-  },
-  {
-    id: 2,
-    label_en: "All courses",
-    label_ar: "جميع الدورات",
-    icon: coursesIcon,
-    link: "/all-courses",
-  },
-  {
-    id: 3,
-    label_en: "Calendar",
-    label_ar: "التقويم",
-    icon: calenderIcon,
-    link: "/calender",
-  },
-  {
-    id: 4,
-    label_en: "Discussion",
-    label_ar: "المناقشات",
-    icon: discussionIcon,
-    link: "/discussion",
-  },
-  {
-    id: 5,
-    label_en: "MTN Support",
-    label_ar: "دعم متن",
-    icon: supportIcon,
-    link: "/support",
-  },
-];
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useAxiosInterceptors();
+  // const { locale } = useTranslationContext();
+  const t = useTranslations("Sidebar");
+  const items = [
+    {
+      id: 1,
+      label: t("Home"),
+      icon: homeIcon,
+      link: "/",
+    },
+    {
+      id: 2,
+      label: t("Courses"),
+
+      icon: coursesIcon,
+      link: "/courses",
+    },
+    {
+      id: 3,
+      label: t("Calendar"),
+      icon: calenderIcon,
+      link: "/calender",
+    },
+    {
+      id: 4,
+      label: t("Discussions"),
+      icon: discussionIcon,
+      link: "/discussion",
+    },
+    {
+      id: 5,
+      label: t("Support"),
+
+      icon: supportIcon,
+      link: "/support",
+    },
+  ];
 
   // const [collapsed] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -72,12 +72,11 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
 
   // console.log("user obj is ", user);
+  const { locale: lang } = useTranslationContext();
 
   const { data } = useSWR<getUserProfile>("/user/me", getOne);
-  console.log(data);
-  // const isAuthenticated = useSelector(
-  //   (state: RootState) => state.auth.isAuthenticated
-  // );
+
+  // console.log(data);
   const isAuthenticated: boolean = true;
   const router = useRouter();
 
@@ -114,7 +113,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const getActiveMenuItem = () => {
-    if (pathname.startsWith("/course/")) {
+    if (pathname.startsWith("/courses/")) {
       return "2";
     }
 
@@ -146,8 +145,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     return null;
   }
 
-  const lang = "ar";
-
   return (
     <Layout
       style={{
@@ -156,7 +153,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         display: "flex",
         background: "#EEE",
         padding: 10,
-        direction: "rtl",
       }}
     >
       {isMounted && (
@@ -170,8 +166,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             style={{
               zIndex: 50,
               background: "#0d63d9",
-              // transition: "width 0.2s ease",
-              // position: "fixed",
               borderTopLeftRadius: lang == "ar" ? "0px" : "16px",
               borderBottomLeftRadius: lang == "ar" ? "0px" : "16px",
               borderTopRightRadius: lang == "ar" ? "16px" : "0px",
@@ -198,15 +192,15 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 >
                   {items.map((item) => (
                     <Menu.Item key={item.id.toString()} className="flex">
-                      <Link dir="rtl" href={item.link}>
+                      <Link href={item.link}>
                         <Image
                           src={item.icon}
-                          alt={`${item.label_ar} icon`}
+                          alt={`${item.label} icon`}
                           width={20}
                           height={20}
                           className="inline me-4"
                         />
-                        {item.label_ar}
+                        {item.label}
                       </Link>
                     </Menu.Item>
                   ))}
@@ -237,9 +231,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                     </button>
                   </div>
                   <Modal
-                    style={{
-                      direction: "rtl",
-                    }}
+                    style={{}}
                     title="تسجيل الخروج"
                     open={open}
                     onOk={() => {
@@ -262,16 +254,19 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               flex: 1,
               background: "red !important",
               // english
-              // borderTopRightRadius: "16px",
-              // borderTopLeftRadius: collapsed ? "16px" : "0",
-              // borderBottomRightRadius: "16px",
-              // borderBottomLeftRadius: collapsed ? "16px" : "0",
-
-              //ar
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: collapsed ? "16px" : "0",
-              borderBottomLeftRadius: "16px",
-              borderBottomRightRadius: collapsed ? "16px" : "0",
+              ...(lang == "en"
+                ? {
+                    borderTopRightRadius: "16px",
+                    borderTopLeftRadius: collapsed ? "16px" : "0",
+                    borderBottomRightRadius: "16px",
+                    borderBottomLeftRadius: collapsed ? "16px" : "0",
+                  }
+                : {
+                    borderTopLeftRadius: "16px",
+                    borderTopRightRadius: collapsed ? "16px" : "0",
+                    borderBottomLeftRadius: "16px",
+                    borderBottomRightRadius: collapsed ? "16px" : "0",
+                  }),
             }}
           >
             <Content
@@ -281,17 +276,19 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               style={{
                 height: `fit-content`,
                 background: colorBgContainer,
-                //english
-                // borderBottomRightRadius: "16px",
-                // borderTopRightRadius: "16px",
-                // borderTopLeftRadius: collapsed ? "16px" : "0",
-                // borderBottomLeftRadius: collapsed ? "16px" : "0",
-
-                //ar
-                borderBottomLeftRadius: "16px",
-                borderTopLeftRadius: "16px",
-                borderTopRightRadius: collapsed ? "16px" : "0",
-                borderBottomRightRadius: collapsed ? "16px" : "0",
+                ...(lang == "en"
+                  ? {
+                      borderBottomRightRadius: "16px",
+                      borderTopRightRadius: "16px",
+                      borderTopLeftRadius: collapsed ? "16px" : "0",
+                      borderBottomLeftRadius: collapsed ? "16px" : "0",
+                    }
+                  : {
+                      borderBottomLeftRadius: "16px",
+                      borderTopLeftRadius: "16px",
+                      borderTopRightRadius: collapsed ? "16px" : "0",
+                      borderBottomRightRadius: collapsed ? "16px" : "0",
+                    }),
               }}
             >
               <Header

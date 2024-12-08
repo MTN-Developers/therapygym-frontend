@@ -16,8 +16,6 @@ const PaymentInvoice = ({ packageData }: { packageData: course_package }) => {
     getOne
   );
 
-  console.log(course);
-
   return (
     <div
       style={{

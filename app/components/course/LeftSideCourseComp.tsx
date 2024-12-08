@@ -17,7 +17,7 @@ interface IProps {
 
 const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   return (
-    <div dir="rtl" className="font-[pnu]">
+    <div className="font-[pnu]">
       <div className="mt-4 mb-8 right-4 z-10">
         <ConfigProvider
           theme={{

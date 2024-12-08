@@ -5,6 +5,10 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import billIcon from "../../assets/images/bill-icon.svg";
 import messageIcon from "../../assets/images/message-icon.svg";
 import menuIcon from "@/assets/images/menu-icon.svg";
+import { Dropdown, MenuProps } from "antd";
+import { IoLanguageOutline } from "react-icons/io5";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function CustomHeader({
   setCollapsed,
@@ -12,6 +16,15 @@ export default function CustomHeader({
   setCollapsed: (collapsed: boolean) => void;
 }) {
   const [search, setSearch] = useState("");
+  const { locale } = useTranslationContext();
+  // const t = useTranslations("NavbarLinks");
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLanguageChange = (NewLocale: "ar" | "en") => {
+    const path = pathname.split("/").slice(2).join("/");
+    router.push(`/${NewLocale}/${path}`);
+  };
 
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
@@ -22,6 +35,25 @@ export default function CustomHeader({
     setSearch(value);
   }
   // # end handlers
+
+  const items: MenuProps["items"] = [
+    {
+      label: "العربية",
+      key: "0",
+      onClick: () => handleLanguageChange("ar"),
+      style: {
+        background: locale === "ar" ? "#f5f5f5" : "",
+      },
+    },
+    {
+      label: "English",
+      key: "1",
+      onClick: () => handleLanguageChange("en"),
+      style: {
+        background: locale === "en" ? "#f5f5f5" : "",
+      },
+    },
+  ];
 
   return (
     <div className="flex justify-between  lg:ps-0">
@@ -35,7 +67,11 @@ export default function CustomHeader({
           //@ts-expect-error onClick is not a valid prop for Button
           onClick={() => setCollapsed((prev: boolean) => !prev)}
         />
-        <div className="absolute left-5 top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center">
+        <div
+          className={`absolute 
+            ${locale == "ar" ? "left-5" : "right-5"}
+             top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center`}
+        >
           {showSearchIcon && (
             <Image src={SearchIcon} alt="search" width={15} height={15} />
           )}
@@ -56,6 +92,16 @@ export default function CustomHeader({
         </div>
         <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           <Image src={messageIcon} alt="message" width={20} height={20} />
+        </div>
+
+        <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
+          <Dropdown
+            menu={{ items }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <IoLanguageOutline color="#167bf3" size={20} />
+          </Dropdown>
         </div>
       </div>
     </div>

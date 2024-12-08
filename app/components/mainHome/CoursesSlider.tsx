@@ -47,11 +47,9 @@ const CoursesSlider = () => {
           {courses?.data?.data?.map((course, idx) => (
             <SwiperSlide key={idx} className="!w-[217px]">
               <Link
-                href={`/dashboard/course/${course.id}`}
-                dir="rtl"
-                className="relative flex flex-col items-center cursor-pointer shadow-xl w-full h-[366px] bg-gray-50  rounded-lg"
+                href={`/courses/${course.id}`}
+                className="relative flex flex-col items-center cursor-pointer shadow-none w-full h-[366px] bg-gray-50  rounded-lg"
               >
-                {/* Add more content as needed */}
                 <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
                   <Image
                     src={course.banner_ar}

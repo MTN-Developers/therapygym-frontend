@@ -19,11 +19,11 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const handlePurchaseButton = () => {
     switch (course.type) {
       case "standalone":
-        router.push(`/dashboard/course/${course.id}/payment`);
+        router.push(`/courses/${course.id}/payment`);
         break;
       case "standalone_subscribe":
         // Navigate to an options page or show a modal
-        router.push(`/dashboard/course/${course.id}/purchase-options`);
+        router.push(`/courses/${course.id}/purchase-options`);
         break;
       case "subscribe":
         setOpenPackagesModal(true);
@@ -39,11 +39,11 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         <Modal
           closeIcon={<Close />}
           title=""
-          className="packages-modal"
+          className="packages-modal top-[50px]"
           rootClassName="packages-modal2"
           cancelButtonProps={{ style: { display: "none" } }}
           okButtonProps={{ style: { display: "none" } }}
-          width={1000}
+          width={1100}
           style={{
             background: "transparent",
           }}
@@ -194,10 +194,7 @@ const PackageCard = ({
   }
 
   return (
-    <div
-      dir="rtl"
-      className="w-[306px] lg:w-[415px] max-w-full bg-white rounded-xl shadow-lg p-6 text-right border border-blue-200"
-    >
+    <div className="w-[306px] lg:w-[415px] max-w-full bg-white rounded-xl shadow-lg p-6 text-right border border-blue-200">
       {/* Header */}
       <div className="bg-blue-100 text-blue-700 rounded-full inline-block px-4 py-1 text-sm font-medium mb-4">
         باقة شهرية
@@ -233,7 +230,7 @@ const PackageCard = ({
       </div>
 
       {/* Subscribe Button */}
-      <Link href={`/dashboard/course/${course_id}/payment/${pkg.id}`}>
+      <Link href={`/courses/${course_id}/payment/${pkg.id}`}>
         <Button className="bg-blue-700 text-white font-bold !py-3 !px-6 !h-[54px] font-[Cairo] rounded-lg w-full hover:bg-blue-800 transition">
           اشترك الآن
         </Button>

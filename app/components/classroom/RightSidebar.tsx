@@ -23,7 +23,6 @@ const RightSidebar = ({
 
   return (
     <div
-      dir="rtl"
       className={`lg:w-[495px] lg:h-[535px]   bg-[#2d2f31] transition-transform duration-300 text-white! font-[pnu] absolute top-[66px] right-0 transform ${
         toggleSidebar ? "translate-x-0" : "translate-x-full"
       }`}
