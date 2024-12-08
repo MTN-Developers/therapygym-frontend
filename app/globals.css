@@ -221,7 +221,7 @@ body {
 input::placeholder {
   font-weight: lighter !important;
   font-size: 14px !important;
-
+}
 .packages-modal .ant-modal-content {
   background-color: transparent !important;
   box-shadow: none !important;
