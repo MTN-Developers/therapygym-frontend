@@ -1,17 +1,21 @@
 "use client";
+
+import CoursesSlider from "./CoursesSlider";
+
 // import Image from "next/image";
 // import videoPlaceholder from "../../assets/images/video-placeholder.svg";
 // import playIcon from "../../assets/images/play-icon.svg";
-import CoursesSlider from "./CoursesSlider";
+// import CoursesSlider from "./CoursesSlider";
+// import RightSidebar from "./RightSidebar";
 // import CustomHeader from "./CustomHeader";
-import RightSidebar from "./RightSidebar";
-import dynamic from "next/dynamic";
+// import RightSidebar from "./RightSidebar";
+// import dynamic from "next/dynamic";
 
-const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
+// const Plyr = dynamic(() => import("plyr-react"), { ssr: false });
 const MainHome = () => {
   return (
     <>
-      <div className=" hidden my-5 lg:flex flex-nowrap justify-around content-center ">
+      {/* <div className=" hidden my-5 lg:flex flex-nowrap justify-around content-center ">
         <div className=" overflow-hidden  w-[854px]">
           <div className="relative w-[854px] h-[372px]">
             <div className="video-player  absolute left-0 top-0 h-full w-full">
@@ -33,12 +37,7 @@ const MainHome = () => {
               />
             </div>
 
-            <div className="absolute bottom-4 right-5 text-right">
-              {/* <h2 className="text-xl text-white font-[500]">
-              برنامج جلسة رجال - الحلقة الثالثة - الكسب عند الرجال
-            </h2> */}
-              {/* <p className="text-lg text-white font-[500] ">د / أحمد الدملاوى</p> */}
-            </div>
+            <div className="absolute bottom-4 right-5 text-right"></div>
             <div className="absolute top-2 left-2 bg-[#ff0000] rounded-2xl px-1 flex items-center gap-[5px]">
               <div className="w-[10px] h-[10px] rounded-full bg-white"></div>
               <span className="text-white font-bold">Live</span>
@@ -48,7 +47,6 @@ const MainHome = () => {
         </div>
         <RightSidebar />
       </div>
-      {/* Responsive component */}
       <div className=" lg:hidden flex flex-col gap-4 px-4 ">
         <div className="relative w-full h-[285px] ">
           <div className="video-player absolute left-0 top-0 h-full w-full">
@@ -69,18 +67,17 @@ const MainHome = () => {
             />
           </div>
 
-          <div className="absolute bottom-4 right-5 text-right">
-            {/* <h2 className="text-xl text-white font-[500]">
-              برنامج جلسة رجال - الحلقة الثالثة - الكسب عند الرجال
-            </h2> */}
-            {/* <p className="text-lg text-white font-[500] ">د / أحمد الدملاوى</p> */}
-          </div>
+          <div className="absolute bottom-4 right-5 text-right"></div>
           <div className="absolute top-2 left-2 bg-[#ff0000] rounded-2xl px-1 flex items-center gap-[5px]">
             <div className="w-[10px] h-[10px] rounded-full bg-white"></div>
             <span className="text-white font-bold">Live</span>
           </div>
         </div>
         <RightSidebar />
+      </div> */}
+
+      <div className="my-5 flex flex-nowrap justify-around content-center ">
+        <CoursesSlider />
       </div>
     </>
   );

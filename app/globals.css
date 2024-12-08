@@ -13,11 +13,20 @@
     font-style: normal;
   }
 }
+:lang(ar) {
+  font-family: "Cairo", sans-serif;
+}
+
+/* Default font for other content (e.g., English) */
+body,
+:lang(en) {
+  font-family: "Roboto", sans-serif;
+}
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  user-select: none;
+  /* user-select: none; */
 }
 
 body {
@@ -196,6 +205,7 @@ body {
   display: none !important;
 }
 
+
 .ant-select-selector {
   background-color: transparent !important;
 }
@@ -211,4 +221,18 @@ body {
 input::placeholder {
   font-weight: lighter !important;
   font-size: 14px !important;
+
+.packages-modal .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  /* border: 2px solid !important; */
+}
+
+.packages-modal .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+}
+
+.packages-modal2 .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+  background-color: #0000008c !important;
 }

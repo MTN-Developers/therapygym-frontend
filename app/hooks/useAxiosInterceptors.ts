@@ -10,6 +10,8 @@ import {
   logout,
   setCredentials,
 } from "@/app/store/slices/authSlice";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
@@ -24,6 +26,7 @@ const onRefreshed = (token: string) => {
 };
 
 const useAxiosInterceptors = () => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
@@ -36,45 +39,14 @@ const useAxiosInterceptors = () => {
         }
 
         let token = accessToken;
-        const tokenExpiry = localStorage.getItem("tokenExpiry");
 
-        // Check if token is about to expire
-        if (tokenExpiry && Date.now() > parseInt(tokenExpiry) - 60000) {
-          if (!isRefreshing) {
-            isRefreshing = true;
-            try {
-              await dispatch(refreshAccessToken());
-              isRefreshing = false;
-              token = localStorage.getItem("accessToken");
-
-              if (token) {
-                dispatch(
-                  setCredentials({
-                    accessToken: token,
-                    refreshToken: localStorage.getItem("refreshToken"),
-                  })
-                );
-                onRefreshed(token);
-              } else {
-                dispatch(logout());
-                return Promise.reject(new Error("Failed to refresh token"));
-              }
-            } catch (error) {
-              isRefreshing = false;
-              dispatch(logout());
-              return Promise.reject(error);
-            }
-          }
-
-          // Wait for the token to be refreshed
-          return new Promise((resolve) => {
-            subscribeTokenRefresh((newToken: string) => {
-              if (config.headers) {
-                config.headers["Authorization"] = `Bearer ${newToken}`;
-              }
-              resolve(config);
-            });
-          });
+        // If accessToken exists in the cookies, use it
+        if (!token) {
+          token =
+            document?.cookie
+              .split("; ")
+              .find((row) => row.startsWith("accessToken="))
+              ?.split("=")[1] || null;
         }
 
         if (token && config.headers) {
@@ -92,27 +64,52 @@ const useAxiosInterceptors = () => {
       async (error) => {
         const originalRequest = error.config;
 
+        // Check if the error response includes requiresLogin
+        if (error?.response?.data?.requiresLogin === true) {
+          // Delete cookies and logout
+          deleteCookie("accessToken");
+          deleteCookie("refreshToken");
+          deleteCookie("tokenExpiry");
+          dispatch(logout()); // Clear user session from Redux
+          alert("Requires login. Please login again.");
+          router.push("/login");
+          return Promise.reject(new Error("Requires login"));
+        }
+
+        // If token is expired (401) and requires login is false
         if (
           error.response &&
           error.response.status === 401 &&
-          !originalRequest._retry &&
-          !originalRequest.url.includes("/login") &&
-          !originalRequest.url.includes("/refresh")
+          !originalRequest._retry
         ) {
           originalRequest._retry = true;
-
+          console.log("Token expired. Refreshing token...");
           if (!isRefreshing) {
             isRefreshing = true;
             try {
+              // Dispatch the refresh token action
+              console.log("refreshing token");
               await dispatch(refreshAccessToken());
               isRefreshing = false;
-              const newToken = localStorage.getItem("accessToken");
+
+              // Retrieve the new access token from Redux or cookies
+              const newToken =
+                localStorage.getItem("accessToken") ||
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith("accessToken="))
+                  ?.split("=")[1];
 
               if (newToken) {
                 dispatch(
                   setCredentials({
                     accessToken: newToken,
-                    refreshToken: localStorage.getItem("refreshToken"),
+                    refreshToken:
+                      localStorage.getItem("refreshToken") ||
+                      document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith("refreshToken="))
+                        ?.split("=")[1],
                   })
                 );
                 onRefreshed(newToken);
@@ -120,12 +117,24 @@ const useAxiosInterceptors = () => {
                 return axiosInstance(originalRequest);
               } else {
                 dispatch(logout());
+                deleteCookie("accessToken");
+                deleteCookie("refreshToken");
+                deleteCookie("tokenExpiry");
+                alert("Failed to refresh token. Please login again.");
+                router.push("/login");
                 return Promise.reject(new Error("Failed to refresh token"));
               }
-            } catch (refreshError) {
+            } catch (error) {
               isRefreshing = false;
               dispatch(logout());
-              return Promise.reject(refreshError);
+              deleteCookie("accessToken");
+              deleteCookie("refreshToken");
+              deleteCookie("tokenExpiry");
+              alert("Failed to refresh token. Please login again.");
+
+              router.push("/login");
+
+              return Promise.reject(error);
             }
           }
 
