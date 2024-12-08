@@ -86,11 +86,11 @@ export interface SubscribedCourseApi {
   calendar_image: string;
 }
 
-export interface IVideo {
-  id: number;
-  title: string;
-  url: string;
-}
+// export interface IVideo {
+//   id: number;
+//   title: string;
+//   url: string;
+// }
 
 export interface IChapter {
   id: number;
@@ -153,4 +153,39 @@ export interface IEvent {
   url: string; //
   start?: Date; // Added for react-big-calendar
   end?: Date; // Added for react-big-calendar
+}
+
+/* start dev and build video page */
+
+export interface IVideo {
+  id: string;
+  title_ar: string;
+  title_en: string;
+  video_url: string;
+  updated_at: string;
+  created_at: string;
+  deleted_at: string | null;
+}
+
+export interface IVideoCategory {
+  data: IVideo[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}
+
+export interface ICourseVideosResponse {
+  data: {
+    introVideos: IVideoCategory;
+    endVideos: IVideoCategory;
+    giftVideos: IVideoCategory | null;
+    packageVideos: IVideo[];
+  };
+  status: number;
+  message: string;
 }
