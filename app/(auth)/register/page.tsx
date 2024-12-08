@@ -19,10 +19,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import CountrySelect from "@/app/components/auth/CountrySelect";
 import { validationSchema } from "@/app/utils/RegisterationValidation";
-import { RegisterFormData } from "@/interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
-
+import * as yup from "yup";
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -39,6 +38,8 @@ const RegisterPage = () => {
   });
 
   // console.log("Validation Errors:", errors); // Log validation errors
+
+  type RegisterFormData = yup.InferType<typeof validationSchema>;
 
   const onSubmit = async (data: RegisterFormData) => {
     // console.log("Form Data:", data); // Log form data
