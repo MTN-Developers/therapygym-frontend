@@ -11,45 +11,51 @@ import supportIcon from "@/assets/images/support-icon.svg";
 import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import userPhoto from "../../../assets/images/user-photo.png";
+// import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "../../../assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
-// import CustomHeader from "@/app/components/CustomHeader";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
-
-const { Content, Sider } = Layout;
+import CustomHeader from "@/app/components/CustomHeader";
+import useSWR from "swr";
+import { getOne } from "@/services/server";
+const { Content, Sider, Header } = Layout;
 
 const items = [
   {
     id: 1,
-    label: "Home",
+    label_en: "Home",
+    label_ar: "الرئيسية",
     icon: homeIcon,
     link: "/dashboard/",
   },
   {
     id: 2,
-    label: "All courses",
+    label_en: "All courses",
+    label_ar: "جميع الدورات",
     icon: coursesIcon,
     link: "/dashboard/all-courses",
   },
   {
     id: 3,
-    label: "Calendar",
+    label_en: "Calendar",
+    label_ar: "التقويم",
     icon: calenderIcon,
     link: "/dashboard/calender",
   },
   {
     id: 4,
-    label: "Discussion",
+    label_en: "Discussion",
+    label_ar: "المناقشات",
     icon: discussionIcon,
     link: "/dashboard/discussion",
   },
   {
     id: 5,
-    label: "MTN Support",
+    label_en: "MTN Support",
+    label_ar: "دعم متن",
     icon: supportIcon,
     link: "/dashboard/support",
   },
@@ -58,21 +64,32 @@ const items = [
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useAxiosInterceptors();
 
-  const [collapsed] = useState(false);
+  // const [collapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // Retained isMounted
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const [isMounted, setIsMounted] = useState(false); // Add this line
-  console.log(isMounted);
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  // console.log("user obj is ", user);
+
+  const { data } = useSWR<getUserProfile>("/user/me", getOne);
+  console.log(data);
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  const isAuthenticated: boolean = true;
   const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (isMounted && !isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isMounted, isAuthenticated, router]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -91,8 +108,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const sidebarWidth = collapsed ? 80 : 266;
-  const headerHeight = 64;
+  // const sidebarWidth = collapsed ? 80 : 266;
+  // const headerHeight = 64;
 
   const pathname = usePathname();
 
@@ -119,174 +136,179 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const selectedKey = getActiveMenuItem();
 
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (isAuthenticated === undefined) {
-    // Authentication status is being determined
+  if (!isMounted || isAuthenticated === undefined) {
+    // Component is not yet mounted or authentication status is being determined
     return null; // or a loading indicator
   }
 
-  if (isAuthenticated === false) {
+  if (!isAuthenticated) {
     // User is not authenticated; we've already redirected
     return null;
   }
 
+  const lang = "ar";
+
   return (
-    <Layout style={{ minHeight: "100vh", display: "flex" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+        height: "fit-content",
+        display: "flex",
+        background: "#EEE",
+        padding: 10,
+        direction: "rtl",
+      }}
+    >
       {isMounted && (
         <>
           <Sider
-            width={sidebarWidth}
+            width={266}
+            collapsedWidth={0}
             collapsible
             collapsed={collapsed}
             trigger={null}
             style={{
               zIndex: 50,
               background: "#0d63d9",
-              transition: "width 0.2s ease",
-              position: "fixed",
+              // transition: "width 0.2s ease",
+              // position: "fixed",
+              borderTopLeftRadius: lang == "ar" ? "0px" : "16px",
+              borderBottomLeftRadius: lang == "ar" ? "0px" : "16px",
+              borderTopRightRadius: lang == "ar" ? "16px" : "0px",
+              borderBottomRightRadius: lang == "ar" ? "16px" : "0px",
               top: 0,
               left: 0,
               bottom: 0,
             }}
           >
-            <div className="flex justify-center py-4">
-              <Image
-                src={mtnliveLogo}
-                alt="logo"
-                width={collapsed ? 40 : 150}
-                height={73}
-              />
-            </div>
-
-            <Menu
-              mode="inline"
-              selectedKeys={[selectedKey]}
-              className="flex-1 custom-menu"
-              style={{
-                background: "#0d63d9",
-                borderRight: "none",
-              }}
-            >
-              {items.map((item) => (
-                <Menu.Item key={item.id.toString()} className="flex">
-                  <Link href={item.link}>
-                    <Image
-                      src={item.icon}
-                      alt={`${item.label} icon`}
-                      width={20}
-                      height={20}
-                      className="inline me-4"
-                    />
-                    {!collapsed && item.label}
-                  </Link>
-                </Menu.Item>
-              ))}
-            </Menu>
-
             {!collapsed && (
-              <div
-                className="flex items-center justify-center p-4"
-                style={{
-                  position: "absolute",
-                  bottom: "10px",
-                  left: "0",
-                  right: "0",
-                }}
-              >
-                <div className="flex gap-2 items-center">
-                  <Image
-                    src={userPhoto}
-                    alt="user photo"
-                    width={35}
-                    height={35}
-                  />
-                  <div className="text-white flex flex-col">
-                    <p>{user?.name}</p>
-                    <p className="text-[12px]">Client</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      showLogoutModal();
-                    }}
-                  >
-                    <Image src={logoutIcon} alt="logout icon" />
-                  </button>
+              <>
+                <div className="flex justify-center py-4">
+                  <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
                 </div>
-                <Modal
-                  title="Logout"
-                  open={open}
-                  onOk={() => {
-                    hideLogoutModal();
-                    handleLogout();
+
+                <Menu
+                  mode="inline"
+                  selectedKeys={[selectedKey]}
+                  className="flex-1 custom-menu"
+                  style={{
+                    background: "#0d63d9",
+                    borderRight: "none",
                   }}
-                  onCancel={hideLogoutModal}
-                  okText="yes"
-                  cancelText="no"
                 >
-                  <p>Do you want to logout?</p>
-                </Modal>
-              </div>
+                  {items.map((item) => (
+                    <Menu.Item key={item.id.toString()} className="flex">
+                      <Link dir="rtl" href={item.link}>
+                        <Image
+                          src={item.icon}
+                          alt={`${item.label_ar} icon`}
+                          width={20}
+                          height={20}
+                          className="inline me-4"
+                        />
+                        {item.label_ar}
+                      </Link>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+
+                <div
+                  className="flex items-center justify-center p-4"
+                  style={{
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "0",
+                    right: "0",
+                  }}
+                >
+                  <div className="flex gap-2 items-center">
+                    <Image
+                      src={data?.data?.profile?.avatar as string}
+                      alt="user photo"
+                      width={35}
+                      height={35}
+                    />
+                    <div className="text-white flex flex-col">
+                      <p>{user?.name}</p>
+                      <p className="text-[12px]">{data?.data?.role}</p>
+                    </div>
+                    <button onClick={showLogoutModal}>
+                      <Image src={logoutIcon} alt="logout icon" />
+                    </button>
+                  </div>
+                  <Modal
+                    style={{
+                      direction: "rtl",
+                    }}
+                    title="تسجيل الخروج"
+                    open={open}
+                    onOk={() => {
+                      hideLogoutModal();
+                      handleLogout();
+                    }}
+                    onCancel={hideLogoutModal}
+                    okText="نعم"
+                    cancelText="لا"
+                  >
+                    <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+                  </Modal>
+                </div>
+              </>
             )}
           </Sider>
 
           <Layout
             style={{
-              marginLeft: collapsed ? 80 : 266,
               flex: 1,
+              background: "red !important",
+              // english
+              // borderTopRightRadius: "16px",
+              // borderTopLeftRadius: collapsed ? "16px" : "0",
+              // borderBottomRightRadius: "16px",
+              // borderBottomLeftRadius: collapsed ? "16px" : "0",
+
+              //ar
+              borderTopLeftRadius: "16px",
+              borderTopRightRadius: collapsed ? "16px" : "0",
+              borderBottomLeftRadius: "16px",
+              borderBottomRightRadius: collapsed ? "16px" : "0",
             }}
           >
-            {/* <Header
+            <Content
+              className="
+              pr-6 lg:pr-10 pt-6 lg:pt-10 pb-6 lg:pb-10 pl-6 
+              "
               style={{
-                padding: 0,
+                height: `fit-content`,
                 background: colorBgContainer,
-                display: "flex",
-                alignItems: "center",
-                paddingTop: "40px",
+                //english
+                // borderBottomRightRadius: "16px",
+                // borderTopRightRadius: "16px",
+                // borderTopLeftRadius: collapsed ? "16px" : "0",
+                // borderBottomLeftRadius: collapsed ? "16px" : "0",
 
-                justifyContent: "space-between", // Ensures the button and the header are on the same line
+                //ar
+                borderBottomLeftRadius: "16px",
+                borderTopLeftRadius: "16px",
+                borderTopRightRadius: collapsed ? "16px" : "0",
+                borderBottomRightRadius: collapsed ? "16px" : "0",
               }}
             >
-              <div
+              <Header
                 style={{
-                  display: "flex",
+                  padding: 0,
+                  paddingRight: "0px !important",
+                  paddingLeft: "0px !important",
+                  height: "46px",
+                  background: colorBgContainer,
                   alignItems: "center",
+                  borderTopRightRadius: "16px",
+                  justifyContent: "space-between", // Ensures the button and the header are on the same line
                 }}
               >
-                <Button
-                  type="text"
-                  icon={
-                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
-                  }
-                  onClick={() => setCollapsed(!collapsed)}
-                  style={{
-                    fontSize: "16px",
-                    width: 64,
-                    height: 64,
-                  }}
-                />
-              </div>
-              {pathname === "/dashboard" ? (
-                <>
-                 <div className=" w-full pe-12">
-                    <CustomHeader />
-                  </div> 
-                </>
-              ) : null}
-            </Header> */}
-
-            <Content
-              style={{
-                overflowY: "auto",
-                height: `calc(100vh - ${headerHeight}px)`,
-                background: colorBgContainer,
-              }}
-            >
-              {children}
+                <CustomHeader setCollapsed={setCollapsed} />
+              </Header>
+              <div className="mt-6">{children}</div>
             </Content>
           </Layout>
         </>

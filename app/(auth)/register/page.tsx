@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button, Input, DatePicker, message } from "antd";
+import { Button, Input, message } from "antd";
 import {
   UserOutlined,
   MailOutlined,
@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import registerBanner from "../../../assets/images/login-banner.svg";
+import registerBanner from "../../../assets/images/login-banner.jpg";
 
 import Link from "next/link";
 import CountrySelect from "@/app/components/auth/CountrySelect";
@@ -48,7 +48,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/register`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user`,
         {
           ...data,
           birthdate: dayjs(data.birthdate).format("YYYY-MM-DD"),
@@ -153,7 +153,7 @@ const RegisterPage = () => {
                 </p>
               )}
               {/* Username */}
-              <Controller
+              {/* <Controller
                 control={control}
                 name="username"
                 defaultValue=""
@@ -171,7 +171,7 @@ const RegisterPage = () => {
                 <p className="text-red-500 text-[14px]">
                   {errors.username.message}
                 </p>
-              )}
+              )} */}
               {/* Password */}
               <Controller
                 control={control}
@@ -238,7 +238,7 @@ const RegisterPage = () => {
                 </p>
               )}
               {/* Work */}
-              <Controller
+              {/* <Controller
                 control={control}
                 name="work"
                 defaultValue=""
@@ -255,9 +255,9 @@ const RegisterPage = () => {
                 <p className="text-red-500 text-[14px]">
                   {errors.work.message}
                 </p>
-              )}
+              )} */}
               {/* City */}
-              <Controller
+              {/* <Controller
                 control={control}
                 name="city"
                 defaultValue=""
@@ -274,7 +274,7 @@ const RegisterPage = () => {
                 <p className="text-red-500 text-[14px]">
                   {errors.city.message}
                 </p>
-              )}
+              )} */}
               {/* Nationality */}
               <CountrySelect
                 control={control}
@@ -282,7 +282,7 @@ const RegisterPage = () => {
                 name={"nationality"}
               />
               {/* Birthdate */}
-              <Controller
+              {/* <Controller
                 control={control}
                 name="birthdate"
                 render={({ field }) => (
@@ -306,7 +306,7 @@ const RegisterPage = () => {
                 <p className="text-red-500 text-[14px]">
                   {errors.birthdate.message}
                 </p>
-              )}
+              )} */}
               {/* Register Button */}
               <Button
                 type="primary"

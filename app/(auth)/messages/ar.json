@@ -1,0 +1,18 @@
+{
+  "login": {
+    "welcome": "مرحبا",
+    "email": "البريد الالكترونى",
+    "password": "رمزالمرور",
+    "login": "تسجيل الدخول",
+    "forgotPassword": "نسيت رمز المرور؟"
+  },
+  "HomePage": {
+    "title": "Landing page"
+  },
+  "AboutPage": {
+    "title": "About"
+  },
+  "ProfilePage": {
+    "title": "Profile"
+  }
+}

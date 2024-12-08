@@ -140,30 +140,6 @@ const Page = () => {
     setToggleSidebar(!toggleSidebar);
   };
 
-  //Fetch and put videos in redux
-  useEffect(() => {
-    fetch(`http://localhost:3001/courses/${courseId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(setCourse(data));
-        dispatch(setChapters(data.chapters));
-
-        if (
-          data.chapters &&
-          data.chapters.length > 0 &&
-          data.chapters[0].videos &&
-          data.chapters[0].videos.length > 0
-        ) {
-          dispatch(setCurrentVideo(data.chapters[0].videos[0]));
-        } else {
-          dispatch(setCurrentVideo(null));
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching course data:", error);
-      });
-  }, [courseId, dispatch]);
-
   const extractYouTubeVideoId = (url: string): string | null => {
     const regex =
       /(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.)?youtube\.com\/(?:watch\?v=|embed\/|v\/))([\w-]{11})/;
