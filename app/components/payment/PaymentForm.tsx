@@ -1,5 +1,4 @@
 "use client";
-// app/payment/page.js (or a component in this page)
 import React, { useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import Image from "next/image";
@@ -9,19 +8,20 @@ import { paymentSchema } from "@/app/utils/validations";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-// import { api } from "@/services/api";
 import ErrorMsg from "../shared/ErrorMsg";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { useTranslations } from "next-intl";
 
 const PaymentForm = ({ Package }: { Package: course_package }) => {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
+  const t = useTranslations("PaymentForm");
   const [loading, setLoading] = useState(false);
 
   const StripeNumber =
-    Number(Package?.price_after_discount) == 0
+    Number(Package?.price_after_discount) === 0
       ? Number(Package?.original_price)
       : Number(Package?.price_after_discount);
 
@@ -46,8 +46,6 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
         type: "package",
       });
 
-      // console.log(CreateIntent?.data, "CreateIntent");
-      // console.log(CreateIntent?.data?.clientSecret);
       const { error } = await stripe.confirmCardPayment(
         CreateIntent?.data?.clientSecret,
         {
@@ -57,7 +55,6 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
         }
       );
 
-      // let status = '';
       if (error) {
         setLoading(false);
         setError("cardInfo", {
@@ -66,12 +63,12 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
         });
       } else {
         setLoading(false);
-        message.success("تم الدفع بنجاح");
+        message.success(t("PaymentSuccess"));
         router.push(`/courses/${Package.course_id}`);
       }
     } catch (error) {
       console.log(error);
-      message.error("حدث خطأ ما. لم يتم الدفع");
+      message.error(t("PaymentError"));
       setLoading(false);
     }
   };
@@ -94,9 +91,9 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
       className="h-full w-full"
     >
       <div className="flex flex-col lg:flex-row lg:justify-between mt-10 gap-x-[75px] gap-y-16">
-        <div className="w-full  ">
+        <div className="w-full">
           <h2 className="self-stretch mb-7 text-[#252525] [font-family:Inter] text-2xl font-semibold leading-[normal]">
-            تفاصيل الدفع
+            {t("PaymentDetails")}
           </h2>
 
           <div className="flex flex-col gap-4">
@@ -109,7 +106,7 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
                   alt="Checkbox"
                 />
                 <p className="self-stretch text-[color:var(--Gray-700,#344054)] [font-family:Inter] text-[10.895px] font-medium leading-[15.564px]">
-                  Pay with Credit Card
+                  {t("PayWithCard")}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -166,7 +163,9 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
                   />
                 )}
               />
-              <ErrorMsg message={errors.cardInfo?.message as string} />
+              <ErrorMsg
+                message={errors.cardInfo?.message ? t("cardIsRequired") : ""}
+              />
             </div>
 
             <Button
@@ -175,7 +174,7 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
               htmlType="submit"
               loading={loading}
             >
-              {loading ? "جاري الدفع ..." : "ادفع الآن"}
+              {loading ? t("ProcessingPayment") : t("PayNow")}
             </Button>
           </div>
         </div>

@@ -10,70 +10,8 @@ import Image from "next/image";
 import strokGroup from "@/assets/images/Group 754.png";
 import strokOne from "@/assets/images/Pattern.png";
 import strokTwo from "@/assets/images/Pattern-1.png";
-const items: TabsProps["items"] = [
-  {
-    key: "1",
-    label: <span style={{ marginInline: 16 }}>عن الكورس</span>,
-    children: (
-      <div>
-        <h2 className="text-[#007AFE] text-start font-[pnu] w-fit text-2xl font-bold leading-8 mt-8 ">
-          عن الكورس
-        </h2>
-        <p className="w-full max-w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-          لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
-          النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها
-          التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد
-          مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف
-          التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
-          <span className="text-blue-500 font-bold cursor-pointer">
-            قرأة المزيد
-          </span>
-        </p>
-      </div>
-    ),
-  },
-  {
-    key: "2",
-    label: "عن المحاضر",
-    children: (
-      <div>
-        <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-          عن المحاضرة
-        </h2>
-        <p className="w-[701px] mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-          لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
-          النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى أن
-          تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد
-          الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
-          <span className="text-blue-500 font-bold cursor-pointer">
-            قرأة المزيد
-          </span>
-        </p>
-      </div>
-    ),
-  },
-  {
-    key: "3",
-    label: "أراء العملاء",
-    children: (
-      <div>
-        <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-          أراء العملاء{" "}
-        </h2>
-        <p className="w-[701px] mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-          لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
-          النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها
-          التطبيق لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك النص أو
-          العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى الحروف التى
-          يولدها التطبيق. لقد تم توليد هذا النص من ....{" "}
-          <span className="text-blue-500 font-bold cursor-pointer">
-            قرأة المزيد
-          </span>
-        </p>
-      </div>
-    ),
-  },
-];
+import { useTranslations } from "next-intl";
+
 const Page = ({
   params,
 }: {
@@ -81,16 +19,74 @@ const Page = ({
     id: string;
   };
 }) => {
+  const t = useTranslations("CoursePage");
+
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: <span style={{ marginInline: 16 }}>{t("AboutCourse")}</span>,
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] font-[pnu] w-fit text-2xl font-bold leading-8 mt-8 ">
+            {t("AboutCourse")}
+          </h2>
+          <p className="w-full max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+            {t("dummyText")}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              {t("ReadMore")}
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: t("AboutInstructor"),
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            {t("AboutInstructor")}
+          </h2>
+          <p className="w-[701px] mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+            {t("dummyText")}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              {t("ReadMore")}
+            </span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: t("CustomerReviews"),
+      children: (
+        <div>
+          <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+            {t("CustomerReviews")}
+          </h2>
+          <p className="w-[701px] mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+            {t("dummyText")}
+            <span className="text-blue-500 font-bold cursor-pointer">
+              {t("ReadMore")}
+            </span>
+          </p>
+        </div>
+      ),
+    },
+  ];
+
   const { id } = params;
   const {
     data: course,
     error,
     isLoading,
   } = useSWR<getCourse>(`/course/${id}`, getOne);
+
   if (isLoading) {
     return (
       <div style={{ textAlign: "center", padding: "50px" }}>
         <Spin size="default" indicator={<LoadingOutlined spin />} />
+        <p>{t("Loading")}</p>
       </div>
     );
   }
@@ -98,7 +94,9 @@ const Page = ({
   if (error) {
     return (
       <div style={{ textAlign: "center", padding: "50px" }}>
-        <p>Error: {error?.message}</p>
+        <p>
+          {t("Error")}: {error?.message}
+        </p>
       </div>
     );
   }
@@ -126,7 +124,7 @@ const Page = ({
         height={800}
         className="fixed top-12 z-10 pointer-events-none left-[176px] w-[180px]"
       />
-      <RightSideCourseComp course={course?.data as SubscribedCourse} />{" "}
+      <RightSideCourseComp course={course?.data as SubscribedCourse} />
       <LeftSideCourseComp
         course={course?.data as SubscribedCourse}
         items={items}

@@ -17,11 +17,18 @@ import google from "@/assets/images/google.svg";
 
 import { setCookie } from "cookies-next";
 import Link from "next/link";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+import { useTranslations } from "next-intl";
+import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { locale } = useTranslationContext();
+  // console.log(locale);
+
+  const t = useTranslations("Login");
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
@@ -59,18 +66,24 @@ const Page = () => {
             onSubmit={handleSubmit}
             className="  flex flex-col mx-auto lg:mx-0 lg:items-start justify-center gap-y-4"
           >
-            <div>
-              <h1 className="hidden lg:block text-[#0573F6]   [leading-trim:both] [text-edge:cap] [font-family:'Smooch_Sans']    text-[120px] font-bold leading-[normal]">
-                Welcome
+            <div className="flex items-center w-full justify-between">
+              <h1
+                className={`hidden lg:block text-[#0573F6]   
+                  
+                  ${locale == "ar" ? "font-['Cairo']" : "font-['Inter']"}
+                  text-5xl font-bold leading-[normal]`}
+              >
+                {t("Welcome")}
               </h1>
-              <p className="hidden lg:block relative bottom-4 text-start text-gray-600">
-                We are glad to see you back with us
-              </p>
+              <ChangeLanguage />
             </div>
+            <p className="hidden lg:block relative  text-start text-gray-600">
+              {t("We are glad to see you back with us")}
+            </p>
             <Input
               className="w-full lg:w-[590px] h-[52px] "
               size="large"
-              placeholder="Email"
+              placeholder={t("Email")}
               prefix={<UserOutlined />}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -78,7 +91,7 @@ const Page = () => {
             <Input.Password
               size="large"
               className="w-full lg:w-[590px] h-[52px]"
-              placeholder="Password"
+              placeholder={t("Password")}
               prefix={
                 <Image src={lockIcon} alt="lock-icon" width={14} height={14} />
               }
@@ -89,8 +102,11 @@ const Page = () => {
               href={"/request-reset-password"}
               className=" text-gray-500 text-sm text-center  hover:cursor-pointer  hover:text-blue-600 underline"
             >
-              Forgot Your Password?{" "}
-              <span className="text-blue-500 underline ">Reset Password</span>
+              {t("Forget Your Password?")}
+
+              <span className="text-blue-500 underline ">
+                {t("Reset Password")}
+              </span>
             </Link>{" "}
             <Button
               type="primary"
@@ -99,7 +115,7 @@ const Page = () => {
               htmlType="submit"
               loading={loading}
             >
-              Login
+              {t("Login")}
             </Button>
             <div className="flex flex-col gap-4 items-center justify-center lg:hidden mb-[20px] ">
               <p className="text-gray-500">or</p>
@@ -113,8 +129,8 @@ const Page = () => {
               href={"/register"}
               className=" text-gray-500 text-sm text-center  hover:cursor-pointer mb-10 hover:text-blue-600 underline"
             >
-              I don’t have an account |{" "}
-              <span className="text-blue-500 underline ">Signup</span>
+              {t("Dont have an account?")} |{" "}
+              <span className="text-blue-500 underline ">{t("SignUp")}</span>
             </Link>
           </form>
         </div>

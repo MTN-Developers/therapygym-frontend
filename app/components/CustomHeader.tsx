@@ -5,10 +5,9 @@ import SearchIcon from "../../assets/images/search-icon.svg";
 import billIcon from "../../assets/images/bill-icon.svg";
 import messageIcon from "../../assets/images/message-icon.svg";
 import menuIcon from "@/assets/images/menu-icon.svg";
-import { Dropdown, MenuProps } from "antd";
-import { IoLanguageOutline } from "react-icons/io5";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { usePathname, useRouter } from "next/navigation";
+import ChangeLanguage from "./shared/ChangeLanguage";
+import { useTranslations } from "next-intl";
 
 export default function CustomHeader({
   setCollapsed,
@@ -17,14 +16,7 @@ export default function CustomHeader({
 }) {
   const [search, setSearch] = useState("");
   const { locale } = useTranslationContext();
-  // const t = useTranslations("NavbarLinks");
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const handleLanguageChange = (NewLocale: "ar" | "en") => {
-    const path = pathname.split("/").slice(2).join("/");
-    router.push(`/${NewLocale}/${path}`);
-  };
+  const t = useTranslations("Header");
 
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
@@ -35,25 +27,6 @@ export default function CustomHeader({
     setSearch(value);
   }
   // # end handlers
-
-  const items: MenuProps["items"] = [
-    {
-      label: "العربية",
-      key: "0",
-      onClick: () => handleLanguageChange("ar"),
-      style: {
-        background: locale === "ar" ? "#f5f5f5" : "",
-      },
-    },
-    {
-      label: "English",
-      key: "1",
-      onClick: () => handleLanguageChange("en"),
-      style: {
-        background: locale === "en" ? "#f5f5f5" : "",
-      },
-    },
-  ];
 
   return (
     <div className="flex justify-between  lg:ps-0">
@@ -81,7 +54,7 @@ export default function CustomHeader({
           value={search}
           onChange={(e) => handleSearchInput(e)}
           type="search"
-          placeholder="Search Courses Here"
+          placeholder={t("SearchCourses")}
           aria-label="Search Courses"
           className="w-[150px] lg:w-[357px] h-[46px] shadow-md  px-4 bg-gradient-to-r from-[#f9f9f9] to-[#f9f9f9] rounded-lg text-blue-700 focus:outline-none focus:border-blue-500 transition-colors duration-300 pr-10"
         />
@@ -94,15 +67,7 @@ export default function CustomHeader({
           <Image src={messageIcon} alt="message" width={20} height={20} />
         </div>
 
-        <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
-          <Dropdown
-            menu={{ items }}
-            trigger={["click"]}
-            placement="bottomRight"
-          >
-            <IoLanguageOutline color="#167bf3" size={20} />
-          </Dropdown>
-        </div>
+        <ChangeLanguage />
       </div>
     </div>
   );

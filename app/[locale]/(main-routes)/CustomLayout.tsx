@@ -75,7 +75,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { locale: lang } = useTranslationContext();
 
   const { data } = useSWR<getUserProfile>("/user/me", getOne);
-
+  const logout_T = useTranslations("Logout");
   // console.log(data);
   const isAuthenticated: boolean = true;
   const router = useRouter();
@@ -232,17 +232,17 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                   </div>
                   <Modal
                     style={{}}
-                    title="تسجيل الخروج"
+                    title={logout_T("Logout")}
                     open={open}
                     onOk={() => {
                       hideLogoutModal();
                       handleLogout();
                     }}
                     onCancel={hideLogoutModal}
-                    okText="نعم"
-                    cancelText="لا"
+                    okText={logout_T("Confirm")}
+                    cancelText={logout_T("Cancel")}
                   >
-                    <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+                    <p>{logout_T("LogoutMsg")}</p>
                   </Modal>
                 </div>
               </>

@@ -5,6 +5,8 @@ import { Select } from "antd";
 //@ts-ignore
 import { useCountries } from "use-react-countries";
 import { Controller } from "react-hook-form";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const CountrySelect = ({
   control,
@@ -16,6 +18,7 @@ const CountrySelect = ({
   error: string;
 }) => {
   const { countries } = useCountries();
+  const t = useTranslations("CountrySelect");
 
   return (
     <div className="w-full h-[55px]">
@@ -29,21 +32,22 @@ const CountrySelect = ({
             allowClear
             value={field.value}
             onChange={(value) => field.onChange(value)}
-            placeholder="Select Country"
+            placeholder={t("SelectCountry")}
             optionFilterProp="labelText"
             filterOption={(input, option) =>
               option?.labelText?.toLowerCase().includes(input.toLowerCase())
             }
             options={countries.map((country: any) => ({
-              value: country.name, // Use country name as value
+              value: country.name,
               labelText: country.name,
               label: (
                 <div className="flex items-center">
-                  <img
+                  <Image
                     src={country.flags.png}
                     alt={country.name}
                     className="mx-2"
                     width={20}
+                    height={20}
                   />
                   {country.name}
                 </div>

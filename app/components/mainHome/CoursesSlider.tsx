@@ -9,6 +9,8 @@ import starIcon from "@/assets/images/Star 5.svg";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 const CoursesSlider = () => {
   const {
     data: courses,
@@ -16,14 +18,18 @@ const CoursesSlider = () => {
     isLoading,
   } = useSWR<getCourses>("/course", getOne);
 
+  const t = useTranslations("Home");
+  const { locale } = useTranslationContext();
   return (
     <div className="mt-5 w-full">
       <h1 className="text-3xl mb-2 font-bold font-poppins text-[#5d5d5d] py-4">
-        كورساتي
+        {t("MyCourses")}
       </h1>
       {error && (
         <div className="">
-          <h1 className="text-xl font-bold text-[#5d5d5d] py-4">Error.</h1>
+          <h1 className="text-xl font-bold text-[#5d5d5d] py-4">
+            {t("ErrorMsg")}
+          </h1>
         </div>
       )}
       {isLoading && (
@@ -35,7 +41,7 @@ const CoursesSlider = () => {
       )}
       {!courses?.data.data.length && !isLoading && (
         <h1 className="text-xl font-bold text-[#5d5d5d] py-4">
-          No courses found. Please subscribe to some courses to see them here.
+          {t("NoCourses")}
         </h1>
       )}
       {courses && courses?.data?.data?.length > 0 && (
@@ -64,11 +70,11 @@ const CoursesSlider = () => {
                     {course.category || "Course Status"}
                   </h2>
                   <h2 className=" text-[#353535] text-start font-[pnu] text-base font-bold mb-2 leading-[160%]">
-                    {course.name_ar}
+                    {locale == "ar" ? course.name_ar : course.name_en}
                   </h2>
-                  <p className=" text-[color:var(--Neutral-70,#595959)] text-right font-[pnu] text-sm font-normal leading-[160%]">
+                  {/* <p className=" text-[color:var(--Neutral-70,#595959)] text-right font-[pnu] text-sm font-normal leading-[160%]">
                     دكتور أحمد الدملاوى
-                  </p>
+                  </p> */}
                   <div className="flex gap-2 mb-4 items-center justify-start">
                     <Image src={starIcon} alt="star" width={20} height={20} />
                     <p className="text-[#969696]  text-[14.182px] font-normal leading-[normal]">

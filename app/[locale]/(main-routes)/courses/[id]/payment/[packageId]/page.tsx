@@ -8,6 +8,7 @@ import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
 import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
+import { useTranslations } from "next-intl";
 
 const Page = ({
   params,
@@ -18,13 +19,12 @@ const Page = ({
   };
 }) => {
   const { id, packageId } = params;
-  console.log(id, "Course ID");
+  const t = useTranslations("PaymentPage");
+
   const { data, isLoading } = useSWR<getPackage>(
     `/package/${packageId}`,
     getOne
   );
-
-  console.log(data, "Package Data");
 
   if (isLoading) {
     return (
@@ -34,22 +34,17 @@ const Page = ({
     );
   }
 
-  if (!data?.data && isLoading == false) {
+  if (!data?.data && isLoading === false) {
     return <NotFoundComponent />;
   }
 
-  if (isLoading == false && data?.data == undefined) {
+  if (isLoading === false && data?.data?.course_id !== id) {
     return <NotFoundComponent />;
   }
-  if (isLoading == false && data?.data?.course_id != id) {
-    return <NotFoundComponent />;
-  }
+
   return (
-    <div
-      dir="rtl"
-      className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-full bg-white rounded-lg shadow-md"
-    >
-      <div className="w-full lg:w-1/2 h-[600px]  lg:flex relative">
+    <div className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-fit bg-white rounded-lg shadow-md">
+      <div className="w-full lg:w-1/2 h-[600px] lg:flex relative">
         <div
           className="absolute w-full"
           style={{
@@ -74,11 +69,11 @@ const Page = ({
             />
 
             <p className="text-[32px] items-center gap-2 lg:text-4xl font-['Cairo'] font-medium leading-[normal] tracking-[0.72px]">
-              ادفع الأن
+              {t("PayNow")}
             </p>
 
             <p className="w-fit flex items-center gap-2 max-w-full text-[#8D93A1] font-['Cairo'] text-xs font-normal leading-[150%] tracking-[0.24px]">
-              قم بادخال بياناتك واستمتع بتجربه مستخدم ممتازه
+              {t("EnterDetails")}
             </p>
           </div>
 
