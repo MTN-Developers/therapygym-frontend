@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import { useCourses } from "@/app/hooks/useCourses";
-import CustomHeader from "@/app/components/CustomHeader";
+// import CustomHeader from "@/app/components/CustomHeader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Course } from "@/interfaces";
 import Image from "next/image";
@@ -49,7 +49,7 @@ const Page = () => {
       style={{ background: "#fff", padding: 24, minHeight: "100%" }}
       className="font-[pnu]"
     >
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <div dir="rtl" className="flex flex-col gap-10">
         <div className="w-full my-4 ">
           <div className="flex items-center justify-between mb-8">

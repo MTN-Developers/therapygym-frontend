@@ -3,15 +3,35 @@
 @tailwind utilities;
 
 /* Dashboard.css */
+@layer base {
+  @font-face {
+    font-family: "smooch";
+    font-display: swap;
+    src: url("./fonts/SmoochSans[wght].ttf") format(".ttf")
+      url("./fonts/SmoochSans[wght].ttf") format(".ttf");
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+:lang(ar) {
+  font-family: "Cairo", sans-serif;
+}
+
+/* Default font for other content (e.g., English) */
+body,
+:lang(en) {
+  font-family: "Roboto", sans-serif;
+}
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  user-select: none;
+  /* user-select: none; */
 }
 
 body {
   overflow-x: hidden;
+  font-family: "smooch", sans-serif;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -183,4 +203,36 @@ body {
 
 .rbc-toolbar {
   display: none !important;
+}
+
+
+.ant-select-selector {
+  background-color: transparent !important;
+}
+
+.ant-input-affix-wrapper::before {
+  background-color: transparent !important;
+}
+
+.ant-input-affix-wrapper input {
+  background-color: transparent !important;
+}
+
+input::placeholder {
+  font-weight: lighter !important;
+  font-size: 14px !important;
+}
+.packages-modal .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  /* border: 2px solid !important; */
+}
+
+.packages-modal .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+}
+
+.packages-modal2 .ant-modal-wrap {
+  backdrop-filter: blur(2px) !important;
+  background-color: #0000008c !important;
 }

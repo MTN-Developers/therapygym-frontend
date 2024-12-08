@@ -18,13 +18,13 @@ const CountrySelect = ({
   const { countries } = useCountries();
 
   return (
-    <div className="max-w-[364px] w-full">
+    <div className="w-full h-[55px]">
       <Controller
         name={name}
         control={control}
         render={({ field }) => (
           <Select
-            className="max-w-[364px] w-full"
+            className="h-full w-full !bg-transparent border rounded-lg border-[#8d8a8a] !focus:bg-transparent"
             showSearch
             allowClear
             value={field.value}
