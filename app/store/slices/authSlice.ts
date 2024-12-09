@@ -1,7 +1,6 @@
 // store/slices/authSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "@/interfaces";
-// import * as jwt_decode from "jwt-decode";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { deleteCookie } from "cookies-next";
 import { AxiosError } from "axios";
@@ -10,7 +9,7 @@ interface AuthState {
   user: User | null;
   accessToken: string | null;
   refreshToken: string | null;
-  isAuthenticated: boolean | undefined;
+  // isAuthenticated: boolean | undefined;
   loading: boolean;
   error: string | null;
 }
@@ -19,7 +18,7 @@ const initialState: AuthState = {
   user: null,
   accessToken: null,
   refreshToken: null,
-  isAuthenticated: undefined,
+  // isAuthenticated: undefined,
   loading: false,
   error: null,
 };
@@ -129,23 +128,21 @@ const authSlice = createSlice({
         const expiryTime = parseInt(tokenExpiry);
         if (expiryTime > Date.now()) {
           state.accessToken = accessToken;
-          state.isAuthenticated = true;
+          // state.isAuthenticated = true;
         } else {
           // Token has expired
-          state.isAuthenticated = false;
+          // state.isAuthenticated = false;
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("tokenExpiry");
         }
-      } else {
-        state.isAuthenticated = false;
       }
     },
     logout(state) {
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
-      state.isAuthenticated = false;
+      // state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
 
@@ -164,7 +161,7 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       // state.user = action.payload.user;
-      state.isAuthenticated = !!action.payload.accessToken;
+      // state.isAuthenticated = !!action.payload.accessToken;
     },
   },
   extraReducers: (builder) => {
@@ -178,7 +175,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.accessToken = action.payload.access_token;
       state.refreshToken = action.payload.refresh_token;
-      state.isAuthenticated = true;
+      // state.isAuthenticated = true;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -188,10 +185,10 @@ const authSlice = createSlice({
     // Handle token refresh
     builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
       state.accessToken = action.payload.access_token;
-      state.isAuthenticated = true;
+      // state.isAuthenticated = true;
     });
     builder.addCase(refreshAccessToken.rejected, (state) => {
-      state.isAuthenticated = false;
+      // state.isAuthenticated = false;
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;

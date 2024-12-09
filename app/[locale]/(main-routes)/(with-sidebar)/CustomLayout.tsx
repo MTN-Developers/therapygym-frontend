@@ -76,18 +76,18 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { data } = useSWR<getUserProfile>("/user/me", getOne);
   const logout_T = useTranslations("Logout");
   // console.log(data);
-  const isAuthenticated: boolean = true;
+  // const isAuthenticated: boolean = true;
   const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (isMounted && !isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isMounted, isAuthenticated, router]);
+  // useEffect(() => {
+  //   if (isMounted && !isAuthenticated) {
+  //     router.replace("/login");
+  //   }
+  // }, [isMounted, isAuthenticated, router]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -134,15 +134,15 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const selectedKey = getActiveMenuItem();
 
-  if (!isMounted || isAuthenticated === undefined) {
-    // Component is not yet mounted or authentication status is being determined
-    return null; // or a loading indicator
-  }
+  // if (!isMounted || isAuthenticated === undefined) {
+  //   // Component is not yet mounted or authentication status is being determined
+  //   return null; // or a loading indicator
+  // }
 
-  if (!isAuthenticated) {
-    // User is not authenticated; we've already redirected
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   // User is not authenticated; we've already redirected
+  //   return null;
+  // }
 
   return (
     <Layout
