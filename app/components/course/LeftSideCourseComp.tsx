@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Breadcrumb, ConfigProvider, Tabs } from "antd";
+import { Breadcrumb, Tabs } from "antd";
 import starIcon from "@/assets/images/Star.svg";
 import clockIcon from "@/assets/images/Clock@2x.svg";
 import usersIcon from "@/assets/images/Users.svg";
@@ -23,32 +23,22 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   return (
     <div className="font-[pnu]">
       <div className="mt-4 mb-8 right-4 z-10">
-        <ConfigProvider
-          theme={{
-            components: {
-              Breadcrumb: {
-                colorText: "blue",
-              },
+        <Breadcrumb
+          separator=">"
+          items={[
+            {
+              title: t("Home"),
+              href: "/",
             },
-          }}
-        >
-          <Breadcrumb
-            separator=">"
-            items={[
-              {
-                title: t("Home"),
-                href: "/",
-              },
-              {
-                title: course?.category,
-                href: "/all-courses",
-              },
-              {
-                title: locale == "ar" ? course.name_ar : course?.name_en, // Switch to `name_en` dynamically based on locale if needed
-              },
-            ]}
-          />
-        </ConfigProvider>
+            {
+              title: course?.category,
+              href: "/all-courses",
+            },
+            {
+              title: locale == "ar" ? course.name_ar : course?.name_en, // Switch to `name_en` dynamically based on locale if needed
+            },
+          ]}
+        />
         <div>
           <h1 className="text-[#353535] font-[pnu] text-[32px] font-bold leading-[160%]">
             {
