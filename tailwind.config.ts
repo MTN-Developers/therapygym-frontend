@@ -14,6 +14,7 @@ const config: Config = {
       },
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"],
+        smooch: ["var(--font-smooch)", "sans-serif"],
       },
     },
   },

@@ -1,6 +1,14 @@
 import React from "react";
+import { IVideo } from "@/interfaces";
+import dynamic from "next/dynamic";
+const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
+  ssr: false,
+});
+interface IProps {
+  src: IVideo;
+}
 
-const VideoPlayer = () => {
+const VideoPlayer = React.memo(({ src }: IProps) => {
   return (
     <div
       style={{
@@ -21,9 +29,13 @@ const VideoPlayer = () => {
           height: "535px",
           backgroundColor: "#424242",
         }}
-      ></div>
+      >
+        <PlyrVideo src={src.video_url} />
+      </div>
     </div>
   );
-};
+});
+
+VideoPlayer.displayName = "VideoPlayer";
 
 export default VideoPlayer;
