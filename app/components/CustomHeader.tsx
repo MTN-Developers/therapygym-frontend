@@ -8,6 +8,7 @@ import menuIcon from "@/assets/images/menu-icon.svg";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import ChangeLanguage from "./shared/ChangeLanguage";
 import { useTranslations } from "next-intl";
+import { Dropdown } from "antd";
 
 export default function CustomHeader({
   setCollapsed,
@@ -64,7 +65,17 @@ export default function CustomHeader({
           <Image src={billIcon} alt="bill" width={20} height={20} />
         </div>
         <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
-          <Image src={messageIcon} alt="message" width={20} height={20} />
+          <Dropdown
+            menu={{
+              items: [
+                { key: "1", label: "You Don't have any messages till now" },
+              ],
+            }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Image src={messageIcon} alt="message" width={20} height={20} />
+          </Dropdown>
         </div>
 
         <ChangeLanguage />

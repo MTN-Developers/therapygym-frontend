@@ -18,6 +18,8 @@ const CoursesSlider = () => {
     isLoading,
   } = useSWR<getCourses>("/course", getOne);
 
+  console.log(courses?.data?.data);
+
   const t = useTranslations("Home");
   const { locale } = useTranslationContext();
   return (
@@ -58,7 +60,7 @@ const CoursesSlider = () => {
               >
                 <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
                   <Image
-                    src={course.banner_ar}
+                    src={course.banner_ar ?? ""}
                     width={217}
                     height={150}
                     alt="course image"
@@ -72,7 +74,7 @@ const CoursesSlider = () => {
                   <h2 className=" text-[#353535] text-start font-[pnu] text-base font-bold mb-2 leading-[160%]">
                     {locale == "ar" ? course.name_ar : course.name_en}
                   </h2>
-                  {/* <p className=" text-[color:var(--Neutral-70,#595959)] text-right font-[pnu] text-sm font-normal leading-[160%]">
+                  {/* <p className=" text-[color:var(--Neutral-70,#595959)]  font-[pnu] text-sm font-normal leading-[160%]">
                     دكتور أحمد الدملاوى
                   </p> */}
                   <div className="flex gap-2 mb-4 items-center justify-start">

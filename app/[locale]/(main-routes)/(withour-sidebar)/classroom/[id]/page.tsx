@@ -13,62 +13,65 @@ import {
   setCurrentVideo,
 } from "@/app/store/slices/courseVideosSlice";
 import { RootState, useAppDispatch } from "@/app/store/store";
+import { useTranslations } from "next-intl";
+import useSWR from "swr";
+import { getOne } from "@/services/server";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 const Page = () => {
+  const t = useTranslations("ClassroomPage");
   const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
   const params = useParams();
   const courseId = params.id as string;
-
+  const { data } = useSWR<getCourse>(`course/${courseId}`, getOne);
   const dispatch = useAppDispatch();
 
+  const { locale } = useTranslationContext();
   const { courseVideos, currentVideo } = useSelector(
     (state: RootState) => state.courseVideos
   );
 
-  // console.log(courseVideos);
-  // const [activeTab, setActiveTab] = useState("package");
-
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: <span style={{ marginInline: 16 }}>عن الكورس</span>,
+      label: <span style={{ marginInline: 16 }}>{t("AboutCourse")}</span>,
       children: (
         <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            عن الكورس
+            {t("AboutCourse")}
           </h2>
-          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-            لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا
-            النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى
-            يولدها التطبيق...
+          <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
+            {locale == "ar"
+              ? data?.data?.description_ar
+              : data?.data?.description_en}
           </p>
         </div>
       ),
     },
     {
       key: "2",
-      label: "عن المحاضر",
+      label: t("AboutLecturer"),
       children: (
         <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            عن المحاضرة
+            {t("AboutLecturer")}
           </h2>
-          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-            لقد تم توليد هذا النص من مولد النص العربى...
+          <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
+            {t("PlaceholderText")}
           </p>
         </div>
       ),
     },
     {
       key: "3",
-      label: "أراء العملاء",
+      label: t("CustomerReviews"),
       children: (
         <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            أراء العملاء{" "}
+            {t("CustomerReviews")}
           </h2>
-          <p className="w-full mt-4 text-[#656565] text-right font-[pnu] text-base font-normal leading-[160%]">
-            لقد تم توليد هذا النص من مولد النص العربى...
+          <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
+            {t("PlaceholderText")}
           </p>
         </div>
       ),
@@ -83,12 +86,9 @@ const Page = () => {
     setToggleSidebar((prev) => !prev);
   };
 
-  // console.log(courseId);
   useEffect(() => {
     dispatch(fetchCourseVideos(courseId));
   }, [courseId, dispatch]);
-
-  // console.log(courseVideos);
 
   return (
     <div className="overflow-x-hidden">
@@ -100,7 +100,7 @@ const Page = () => {
       {courseVideos ? (
         <VideoPlayer src={currentVideo!} />
       ) : (
-        <p>Course not found with this ID.</p>
+        <p>{t("CourseNotFound")}</p>
       )}
 
       <RightSidebar
@@ -111,15 +111,8 @@ const Page = () => {
         currentVideo={currentVideo}
       />
 
-      <div
-        dir="rtl"
-        className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30"
-      >
-        <Tabs
-          defaultActiveKey="1"
-          items={items}
-          onChange={(key) => console.log(key)}
-        />
+      <div className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30">
+        <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />
       </div>
       <WhatYouGainComp />
     </div>

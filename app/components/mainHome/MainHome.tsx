@@ -37,7 +37,7 @@ const MainHome = () => {
               />
             </div>
 
-            <div className="absolute bottom-4 right-5 text-right"></div>
+            <div className="absolute bottom-4 right-5 "></div>
             <div className="absolute top-2 left-2 bg-[#ff0000] rounded-2xl px-1 flex items-center gap-[5px]">
               <div className="w-[10px] h-[10px] rounded-full bg-white"></div>
               <span className="text-white font-bold">Live</span>
@@ -67,7 +67,7 @@ const MainHome = () => {
             />
           </div>
 
-          <div className="absolute bottom-4 right-5 text-right"></div>
+          <div className="absolute bottom-4 right-5 "></div>
           <div className="absolute top-2 left-2 bg-[#ff0000] rounded-2xl px-1 flex items-center gap-[5px]">
             <div className="w-[10px] h-[10px] rounded-full bg-white"></div>
             <span className="text-white font-bold">Live</span>

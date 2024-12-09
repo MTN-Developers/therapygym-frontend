@@ -68,6 +68,7 @@ export const login = createAsyncThunk(
 export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",
   async (_, { rejectWithValue }) => {
+    console.log("refreshAccessToken Function (TEST)");
     try {
       // console.log("SDSd");
       const refreshToken = localStorage.getItem("refreshToken");
@@ -102,6 +103,7 @@ export const refreshAccessToken = createAsyncThunk(
       deleteCookie("access_token");
       deleteCookie("refresh_token");
       deleteCookie("user");
+      console.log("Delete Cookie from authSlice");
       let errorMessage = "An unknown error occurred";
 
       if (error instanceof AxiosError) {
@@ -156,6 +158,7 @@ const authSlice = createSlice({
       deleteCookie("access_token");
       deleteCookie("refresh_token");
       deleteCookie("user");
+      console.log("Delete Cookie from authSlice - 2");
     },
     setCredentials(state, action) {
       state.accessToken = action.payload.accessToken;

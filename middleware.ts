@@ -134,7 +134,7 @@ export function middleware(req: NextRequest) {
   if (!accessToken && !isAuthRoute && isLocaleValid) {
     const loginUrl = new URL(`/${locale}/login`, req.url);
     const response = NextResponse.redirect(loginUrl);
-
+    console.log("Redirecting to login page");
     // Optionally delete cookies if needed
     response.cookies.delete("access_token");
     response.cookies.delete("refresh_token");

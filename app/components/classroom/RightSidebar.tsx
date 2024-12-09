@@ -2,6 +2,8 @@ import { Collapse, List } from "antd";
 import Image from "next/image";
 import videoLibIcon from "@/assets/images/Video Library.svg";
 import { ICourseVideosResponse, IVideo } from "@/interfaces";
+import { useTranslations } from "next-intl";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 interface IProps {
   chapters: ICourseVideosResponse | null;
@@ -18,27 +20,29 @@ const RightSidebar = ({
   handleToggleSidebar,
   currentVideo,
 }: IProps) => {
+  const t = useTranslations("VideoPage.Sidebar");
+  const { locale } = useTranslationContext();
   const { Panel } = Collapse;
 
   const videoCategories = [
     {
       key: "introVideos",
-      title: "مقدمة",
+      title: t("Intro"),
       data: chapters?.data.introVideos.data || [],
     },
     {
       key: "endVideos",
-      title: "نهاية",
+      title: t("End"),
       data: chapters?.data.endVideos.data || [],
     },
     {
       key: "giftVideos",
-      title: "الهدايا",
+      title: t("Gifts"),
       data: chapters?.data.giftVideos?.data || [],
     },
     {
       key: "packageVideos",
-      title: "الكورس",
+      title: t("CourseVideos"),
       data: chapters?.data.packageVideos || [],
     },
   ];
@@ -55,14 +59,20 @@ const RightSidebar = ({
 
       {/* Sidebar */}
       <div
-        dir="rtl"
-        className={`fixed top-0 right-0 w-[80%] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
-          toggleSidebar ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 w-[80%] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
+          toggleSidebar
+            ? "translate-x-0"
+            : locale == "en"
+            ? "translate-x-[-100%]"
+            : "translate-x-[100%]"
+        }
+        
+        ${locale == "en" ? "left-0" : "right-0"}
+        `}
       >
         <Collapse accordion bordered={false} expandIconPosition="end">
           <p className="text-white font-[pnu] px-6 my-4 text-xl">
-            محتوى الكورس
+            {t("CourseContent")}
           </p>
           {videoCategories.map(
             (category) =>
@@ -100,7 +110,7 @@ const RightSidebar = ({
                               : "text-[#8d8d8d]"
                           }`}
                         >
-                          {video.title_ar}
+                          {locale === "ar" ? video.title_ar : video.title_en}
                         </p>
                       </List.Item>
                     )}
