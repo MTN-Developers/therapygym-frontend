@@ -13,13 +13,12 @@
     font-style: normal;
   }
 }
-:lang(ar) {
+main:lang(ar) * {
   font-family: "Cairo", sans-serif;
 }
 
 /* Default font for other content (e.g., English) */
-body,
-:lang(en) {
+main:lang(en) * {
   font-family: "Roboto", sans-serif;
 }
 * {
