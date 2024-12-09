@@ -61,15 +61,15 @@ jobs:
             
             docker pull mazinmtn/mtn_live_frontend:${VERSION}
             
-            if [ "\$(docker ps -q -f name=mtn_institute_frontend_staging)" ]; then
-              docker stop mtn_institute_frontend_staging
+            if [ "\$(docker ps -q -f name=mtn_live_frontend_staging)" ]; then
+              docker stop mtn_live_frontend_staging
             fi
 
-            if [ "\$(docker ps -aq -f status=exited -f name=mtn_institute_frontend_staging)" ]; then
-              docker rm mtn_institute_frontend_staging
+            if [ "\$(docker ps -aq -f status=exited -f name=mtn_live_frontend_staging)" ]; then
+              docker rm mtn_live_frontend_staging
             fi
 
-            docker run -d --restart unless-stopped -p "$PORT:$PORT" --name mtn_institute_frontend_staging \
+            docker run -d --restart unless-stopped -p "$PORT:$PORT" --name mtn_live_frontend_staging \
               -e PORT="$PORT" \
               -e NEXT_PUBLIC_BASE_URL="$NEXT_PUBLIC_BASE_URL" \
               -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="$NEXT_PUBLIC_STRIPE_PUBLIC_KEY" \
