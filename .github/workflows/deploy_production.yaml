@@ -19,8 +19,8 @@ jobs:
 
       - name: Overwrite .env.production file
         run: |
-          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" > .env.production
-          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}" > .env.production
+          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" > .env
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}" > .env
       - name: Extract version from package.json
         id: extract_version
         run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
@@ -78,5 +78,6 @@ jobs:
             docker image prune -f
           EOF
 
+
           # Clean up the private key
-          rm private_key
+          rm -f ~/.ssh/private_key
