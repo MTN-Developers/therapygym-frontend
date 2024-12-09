@@ -20,15 +20,6 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
   const t = useTranslations("PaymentForm");
   const [loading, setLoading] = useState(false);
 
-  const StripeNumber =
-    Number(Package?.price_after_discount) === 0
-      ? Number(Package?.original_price)
-      : Number(Package?.price_after_discount);
-
-  const calculatedGatewayFees = StripeNumber * 0.05;
-
-  const FINAL_PRICE = StripeNumber + calculatedGatewayFees;
-
   const onSubmit = async () => {
     setLoading(true);
 
