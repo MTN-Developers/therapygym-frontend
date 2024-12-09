@@ -216,7 +216,13 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 >
                   <div className="flex gap-2 items-center">
                     <Image
-                      src={data?.data?.profile?.avatar as string}
+                      src={
+                        (data?.data?.profile?.avatar as string) ??
+                        data?.data?.gender == "male"
+                          ? "/images/male.jpg"
+                          : "/images/female.jpg"
+                      }
+                      className="rounded-full"
                       alt="user photo"
                       width={35}
                       height={35}

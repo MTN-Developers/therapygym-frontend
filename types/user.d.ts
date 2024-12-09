@@ -5,6 +5,7 @@ type getUserProfile = {
     email: string;
     country: string;
     phone: string;
+    gender: "male" | "female";
     role: string;
     updated_at: Date;
     created_at: Date;
