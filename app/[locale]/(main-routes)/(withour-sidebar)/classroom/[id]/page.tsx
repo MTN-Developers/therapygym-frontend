@@ -33,7 +33,7 @@ const Page = () => {
       key: "1",
       label: <span style={{ marginInline: 16 }}>عن الكورس</span>,
       children: (
-        <div>
+        <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             عن الكورس
           </h2>
@@ -49,7 +49,7 @@ const Page = () => {
       key: "2",
       label: "عن المحاضر",
       children: (
-        <div>
+        <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             عن المحاضرة
           </h2>
@@ -63,7 +63,7 @@ const Page = () => {
       key: "3",
       label: "أراء العملاء",
       children: (
-        <div>
+        <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             أراء العملاء{" "}
           </h2>
