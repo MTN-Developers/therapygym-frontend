@@ -22,7 +22,7 @@ const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
   };
 
   return (
-    <div className=" flex justify-between items-center lg:px-[48px] w-full py-4 text-white font-[pnu] bg-[#424242]">
+    <div className=" flex justify-between items-center lg:px-[48px] px-4 w-full py-4 text-white font-[pnu] bg-[#424242]">
       <Image
         src={logo}
         alt="logo"
@@ -30,7 +30,7 @@ const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
         className="cursor-pointer"
       />
       <div className="flex items-center">
-        <p className="mx-6">{video?.title} </p>
+        <p className="mx-6">{video?.title_ar} </p>
         <Image
           src={shareIcon}
           alt="logo"
