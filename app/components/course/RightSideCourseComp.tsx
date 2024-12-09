@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
+  const [loading, setLoading] = React.useState(false);
   const [open_packages_modal, setOpenPackagesModal] = React.useState(false);
   const router = useRouter();
   const t = useTranslations("RightSideCourseComp");
@@ -38,6 +39,13 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
     }
   };
 
+  const handleRedirectToCourse = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      router.push(`/classroom/${course.id}`);
+    }, 2000);
+  };
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
       {open_packages_modal && (
@@ -146,10 +154,17 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           {t("DaysLeft")}
         </p>
         <Button
+          loading={loading}
           className="w-full bg-[#017AFD] text-white text-xl rounded-lg h-[56px] mb-3"
-          onClick={handlePurchaseButton}
+          onClick={
+            course?.status?.isPurchased || course?.status?.isSubscribed
+              ? handleRedirectToCourse
+              : handlePurchaseButton
+          }
         >
-          {t("SubscribeNow")}
+          {course?.status?.isPurchased || course?.status?.isSubscribed
+            ? t("ContinueYourJourney")
+            : t("SubscribeNow")}
         </Button>
         <p>
           <span className="text-red-400 text-xs">{t("Note")}:</span>{" "}

@@ -26,12 +26,12 @@ export const fetchCourseVideos = createAsyncThunk(
     try {
       // Retrieve the access_token from cookies
       const accessToken = getCookie("access_token");
-
+      // console.log(accessToken);
       if (!accessToken) {
         throw new Error("No access token found in cookies");
       }
 
-      const response = await axiosInstance.get<ICourseVideosResponse>(
+      const { data } = await axiosInstance.get<ICourseVideosResponse>(
         `${process.env.NEXT_PUBLIC_BASE_URL}/video/subscription/course/${courseId}`,
         {
           headers: {
@@ -39,8 +39,9 @@ export const fetchCourseVideos = createAsyncThunk(
           },
         }
       );
-
-      return response.data;
+      console.log(data);
+      return data;
+      // return response.data;
     } catch (error: unknown) {
       let errorMessage = "An unknown error occurred";
 

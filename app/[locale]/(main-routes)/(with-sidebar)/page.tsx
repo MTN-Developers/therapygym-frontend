@@ -5,7 +5,7 @@ import MainHome from "@/app/components/mainHome/MainHome";
 import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 
 export default function Home() {
-  useAxiosInterceptors();
+  // useAxiosInterceptors();
 
   return (
     <div>

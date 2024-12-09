@@ -25,6 +25,7 @@ const Page = () => {
     (state: RootState) => state.courseVideos
   );
 
+  // console.log(courseVideos);
   // const [activeTab, setActiveTab] = useState("package");
 
   const items: TabsProps["items"] = [
@@ -82,9 +83,12 @@ const Page = () => {
     setToggleSidebar((prev) => !prev);
   };
 
+  // console.log(courseId);
   useEffect(() => {
     dispatch(fetchCourseVideos(courseId));
   }, [courseId, dispatch]);
+
+  // console.log(courseVideos);
 
   return (
     <div className="overflow-x-hidden">

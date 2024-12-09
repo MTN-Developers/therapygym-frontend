@@ -17,7 +17,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import useAxiosInterceptors from "@/app/hooks/useAxiosInterceptors";
 import CustomHeader from "@/app/components/CustomHeader";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
@@ -26,7 +25,7 @@ import { useTranslations } from "next-intl";
 const { Content, Sider, Header } = Layout;
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
-  useAxiosInterceptors();
+  // useAxiosInterceptors();
   // const { locale } = useTranslationContext();
   const t = useTranslations("Sidebar");
   const items = [

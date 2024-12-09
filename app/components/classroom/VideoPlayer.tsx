@@ -1,7 +1,9 @@
 import React from "react";
-import PlyrVideo from "./PlyrVideo";
 import { IVideo } from "@/interfaces";
-
+import dynamic from "next/dynamic";
+const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
+  ssr: false,
+});
 interface IProps {
   src: IVideo;
 }
