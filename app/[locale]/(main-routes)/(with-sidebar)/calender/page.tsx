@@ -2,26 +2,17 @@
 
 import CalendarComp from "@/app/components/calender/CalenderComp";
 import EventsBar from "@/app/components/calender/EventsBar";
-// import CalenderComp from "@/app/components/calender/CalenderComp";
-// import CustomHeader from "@/app/components/CustomHeader";
 import { IEvent } from "@/interfaces";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useSWR from "swr";
 
 const Page: React.FC = () => {
-  //handlers
-  const fetchEvents = async (): Promise<IEvent[]> => {
-    const { data } = await axios.get<IEvent[]>("http://localhost:3001/events");
-    return data;
-  };
-
   const {
     data: events,
     error,
     isLoading,
-  } = useQuery<IEvent[], Error>({
-    queryKey: ["events"],
-    queryFn: () => fetchEvents(),
+  } = useSWR<IEvent[]>("http://localhost:3001/events", async (url: string) => {
+    const response = await fetch(url);
+    return response.json();
   });
 
   // Map events to include 'start' and 'end' as Date objects

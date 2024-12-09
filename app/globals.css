@@ -25,7 +25,7 @@ main:lang(en) * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /* user-select: none; */
+  user-select: none;
 }
 
 body {
@@ -203,7 +203,6 @@ body {
 .rbc-toolbar {
   display: none !important;
 }
-
 
 .ant-select-selector {
   background-color: transparent !important;
