@@ -79,5 +79,5 @@ jobs:
           EOF
 
           # Clean up the private key
-          rm private_key.pem
+          rm private_key
 
