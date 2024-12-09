@@ -34,7 +34,12 @@ const ChangeLanguage = () => {
 
   return (
     <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
-      <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
+      <Dropdown
+        rootClassName="!w-32"
+        menu={{ items }}
+        trigger={["click"]}
+        placement="bottomRight"
+      >
         <IoLanguageOutline color="#167bf3" size={20} />
       </Dropdown>
     </div>
