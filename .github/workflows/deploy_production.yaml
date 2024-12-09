@@ -48,11 +48,15 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           # Store private key securely
-          printf "%s" "$SSH_PRIVATE_KEY" > private_key.pem
-          chmod 600 private_key.pem
-
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/private_key
+          chmod 600 ~/.ssh/private_key
+          # Disable strict host checking (Optional but useful in CI/CD)
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" >> ~/.ssh/config
+          # Ensure known_hosts is configured (You can skip this if not needed)
+          ssh-keyscan -H $VM_IP >> ~/.ssh/known_hosts
           # SSH into the server and deploy the Docker container
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $VM_USER@$VM_IP << EOF
+          ssh -i ~/.ssh/private_key $VM_USER@$VM_IP << EOF
             echo "${{ secrets.DOCKER_PWD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
             
             docker pull mazinmtn/mtn_live_frontend:${VERSION}
