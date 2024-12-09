@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -8,6 +9,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async function (config: InternalAxiosRequestConfig) {
     if (typeof window === "undefined") {
+      const access_token = cookies().get("access_token");
+      config.headers["Authorization"] = `Bearer ${access_token}`;
       return config;
     } else {
       if (config.headers)
