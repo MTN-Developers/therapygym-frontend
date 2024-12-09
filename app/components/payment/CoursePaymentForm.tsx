@@ -40,10 +40,8 @@ const CoursePaymentForm = ({ Course }: { Course: SubscribedCourse }) => {
 
     try {
       const { data: CreateIntent } = await axiosInstance.post("/transaction", {
-        amount: FINAL_PRICE,
         item_id: Course.id,
-        currency: "USD",
-        type: "Course",
+        type: "course",
       });
 
       console.log(CreateIntent?.data, "CreateIntent");

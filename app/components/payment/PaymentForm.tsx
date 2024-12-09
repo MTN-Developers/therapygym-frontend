@@ -40,9 +40,7 @@ const PaymentForm = ({ Package }: { Package: course_package }) => {
 
     try {
       const { data: CreateIntent } = await axiosInstance.post("/transaction", {
-        amount: FINAL_PRICE,
         item_id: Package.id,
-        currency: "USD",
         type: "package",
       });
 
