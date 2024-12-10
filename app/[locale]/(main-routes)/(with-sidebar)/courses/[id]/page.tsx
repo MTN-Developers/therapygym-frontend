@@ -11,6 +11,7 @@ import strokGroup from "@/assets/images/Group 754.png";
 import strokOne from "@/assets/images/Pattern.png";
 import strokTwo from "@/assets/images/Pattern-1.png";
 import { useTranslations } from "next-intl";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 const Page = ({
   params,
@@ -20,6 +21,14 @@ const Page = ({
   };
 }) => {
   const t = useTranslations("CoursePage");
+  const { locale } = useTranslationContext();
+
+  const { id } = params;
+  const {
+    data: course,
+    error,
+    isLoading,
+  } = useSWR<getCourse>(`/course/${id}`, getOne);
 
   const items: TabsProps["items"] = [
     {
@@ -31,10 +40,12 @@ const Page = ({
             {t("AboutCourse")}
           </h2>
           <p className="w-full max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
-            {t("dummyText")}
-            <span className="text-blue-500 font-bold cursor-pointer">
+            {locale == "ar"
+              ? course?.data?.description_ar
+              : course?.data?.description_en}
+            {/* <span className="text-blue-500 font-bold cursor-pointer">
               {t("ReadMore")}
-            </span>
+            </span> */}
           </p>
         </div>
       ),
@@ -48,39 +59,29 @@ const Page = ({
             {t("AboutInstructor")}
           </h2>
           <p className="w-[701px] max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
-            {t("dummyText")}
-            <span className="text-blue-500 font-bold cursor-pointer">
-              {t("ReadMore")}
-            </span>
+            {t("AboutInstructorText")}
           </p>
         </div>
       ),
     },
-    {
-      key: "3",
-      label: t("CustomerReviews"),
-      children: (
-        <div>
-          <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            {t("CustomerReviews")}
-          </h2>
-          <p className="w-[701px] max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
-            {t("dummyText")}
-            <span className="text-blue-500 font-bold cursor-pointer">
-              {t("ReadMore")}
-            </span>
-          </p>
-        </div>
-      ),
-    },
+    // {
+    //   key: "3",
+    //   label: t("CustomerReviews"),
+    //   children: (
+    //     <div>
+    //       <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+    //         {t("CustomerReviews")}
+    //       </h2>
+    //       <p className="w-[701px] max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+    //         {t("dummyText")}
+    //         <span className="text-blue-500 font-bold cursor-pointer">
+    //           {t("ReadMore")}
+    //         </span>
+    //       </p>
+    //     </div>
+    //   ),
+    // },
   ];
-
-  const { id } = params;
-  const {
-    data: course,
-    error,
-    isLoading,
-  } = useSWR<getCourse>(`/course/${id}`, getOne);
 
   if (isLoading) {
     return (
