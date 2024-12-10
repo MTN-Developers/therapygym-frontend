@@ -59,7 +59,7 @@ const RightSidebar = ({
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 w-[80%] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
+        className={`fixed top-0 w-[80%] lg:h-[608px] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
           toggleSidebar
             ? "translate-x-0"
             : locale == "en"

@@ -1,6 +1,7 @@
 "use client";
 
 import CoursesSlider from "./CoursesSlider";
+import MyCourses from "./MyCourses";
 
 // import Image from "next/image";
 // import videoPlaceholder from "../../assets/images/video-placeholder.svg";
@@ -76,6 +77,9 @@ const MainHome = () => {
         <RightSidebar />
       </div> */}
 
+      <div className="my-5 flex flex-nowrap justify-around content-center ">
+        <MyCourses />
+      </div>
       <div className="my-5 flex flex-nowrap justify-around content-center ">
         <CoursesSlider />
       </div>

@@ -21,7 +21,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   const t = useTranslations("LeftSideCourseComp");
   const { locale } = useTranslationContext();
   return (
-    <div className="font-[pnu]">
+    <div className="font-[pnu] max-w-full">
       <div className="mt-4 mb-8 right-4 z-10">
         <Breadcrumb
           separator=">"
@@ -32,7 +32,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
             },
             {
               title: course?.category,
-              href: "/all-courses",
+              href: "/",
             },
             {
               title: locale == "ar" ? course.name_ar : course?.name_en, // Switch to `name_en` dynamically based on locale if needed
@@ -45,7 +45,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
               locale == "ar" ? course.name_ar : course?.name_en // Switch to `name_en` dynamically based on locale if needed
             }
           </h1>
-          <p className="w-[607px] text-[rgba(33,33,33,0.60)] font-[pnu] mb-6 text-base font-normal leading-[160%]">
+          <p className="w-[607px] max-w-full text-[rgba(33,33,33,0.60)] font-[pnu] mb-6 text-base font-normal leading-[160%]">
             {
               locale == "ar" ? course.description_ar : course?.description_en // Switch to `description_en` dynamically based on locale if needed
             }

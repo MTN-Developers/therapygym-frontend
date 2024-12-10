@@ -11,21 +11,27 @@ import { getOne } from "@/services/server";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-const CoursesSlider = () => {
+import React from "react";
+const MyCourses = () => {
   const {
     data: courses,
     error,
     isLoading,
   } = useSWR<getCourses>("/course", getOne);
 
-  console.log(courses?.data?.data);
+  const MyCourses = React.useMemo(() => {
+    const my_courses = courses?.data?.data?.filter(
+      (courses) => courses.status?.isSubscribed || courses.status?.isPurchased
+    );
+    return my_courses || [];
+  }, [courses?.data?.data]);
 
   const t = useTranslations("Home");
   const { locale } = useTranslationContext();
   return (
     <div className="mt-5 w-full">
       <h1 className="text-3xl mb-2 font-bold font-poppins text-[#5d5d5d] py-4">
-        {t("AllCourses")}
+        {t("MyCourses")}
       </h1>
       {error && (
         <div className="">
@@ -41,18 +47,18 @@ const CoursesSlider = () => {
           </div>
         </>
       )}
-      {!courses?.data.data.length && !isLoading && (
+      {!MyCourses.length && !isLoading && (
         <h1 className="text-xl font-bold text-[#5d5d5d] py-4">
-          {t("NoCourses")}
+          {t("YouDon'tHaveCourses")}
         </h1>
       )}
-      {courses && courses?.data?.data?.length > 0 && (
+      {courses && MyCourses?.length > 0 && (
         <Swiper
           spaceBetween={16}
           slidesPerView={"auto"}
           className="w-full h-fit"
         >
-          {courses?.data?.data?.map((course, idx) => (
+          {MyCourses?.map((course, idx) => (
             <SwiperSlide key={idx} className="!w-[217px]">
               <Link
                 href={`/courses/${course.id}`}
@@ -106,4 +112,4 @@ const CoursesSlider = () => {
   );
 };
 
-export default CoursesSlider;
+export default MyCourses;

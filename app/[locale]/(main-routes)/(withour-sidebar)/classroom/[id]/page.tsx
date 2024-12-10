@@ -90,6 +90,8 @@ const Page = () => {
     dispatch(fetchCourseVideos(courseId));
   }, [courseId, dispatch]);
 
+ 
+
   return (
     <div className="overflow-x-hidden">
       <HeaderClassRoom
