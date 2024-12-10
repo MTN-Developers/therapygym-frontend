@@ -36,8 +36,10 @@
     },
     "Home": {
         "MyCourses": "كورساتي",
+        "AllCourses": "الكورسات المتاحة",
         "ErrorMsg": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
-        "NoCourses": "لا توجد دورات متاحة حاليا"
+        "NoCourses": "لا توجد دورات متاحة حاليا",
+        "YouDon'tHaveCourses": "ليس لديك دورات حاليا"
     },
     "Header": {
         "SearchCourses": "ابحث عن الدورات"
@@ -58,8 +60,9 @@
         "dummyText": "لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من "
     },
     "RightSideCourseComp": {
-        "LifetimeAccess": "الوصول مدى الحياة",
-        "MoneyBackGuarantee": "ضمان استعادة الأموال لمدة 30 يومًا",
+        "LifetimeAccess": "3 لقاءات جماعية مباشرة / شهر",
+        "MoneyBackGuarantee": "يوجد 4 انواع من الإشتراكات",
+        "MeetingTime": "مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف",
         "Certificate": "شهادة إتمام قابلة للمشاركة",
         "MultiDeviceAccess": "المشاهدة على الهاتف المحمول والكمبيوتر والتلفزيون",
         "DaysLeft": "باقي يومين على هذا العرض",
@@ -81,6 +84,10 @@
         "ThreeMonths": "كل 3 شهور",
         "SixMonths": "كل 6 شهور",
         "Yearly": "سنويا",
+        "MonthlyPackage": "باقة شهرية",
+        "QuarterlyPackage": "باقة كل 3 شهور",
+        "HalfAnnualPackage": "باقة كل 6 شهور",
+        "AnnualPackage": "باقة سنوية",
         "SubscriptionPackage": "باقة شهرية",
         "SubscriptionContent": "محتوى الاشتراك",
         "RecordedEpisodes": "احصل على ٤ حلقات مسجلة",
@@ -132,7 +139,8 @@
         "GenderInvalid": "يجب أن يكون الجنس إما ذكر أو أنثى",
         "PhoneRequired": "رقم الهاتف مطلوب",
         "PhoneDigitsOnly": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
-        "CountryRequired": "الجنسية مطلوبة"
+        "CountryRequired": "الجنسية مطلوبة",
+        "CountryCodeRequired": "كود الدولة مطلوب"
     },
     "RegisterPage": {
         "SignUpNow": "سجل الآن",
@@ -148,6 +156,7 @@
         "PrivacyPolicy": "سياسة الخصوصية",
         "AgreeMessage": "بتسجيلك، أنت توافق على",
         "CreateAccount": "إنشاء حساب",
+        "CountryCodeRequired": "كود الدولة مطلوب",
         "AlreadyHaveAccount": "لديك حساب بالفعل؟",
         "Login": "تسجيل الدخول",
         "Or": "أو",
@@ -158,6 +167,9 @@
     },
     "CountrySelect": {
         "SelectCountry": "اختر الدولة"
+    },
+    "CountryCodeSelect": {
+        "SelectCountry": "اختر كود الدولة"
     },
     "ResetPasswordPage": {
         "Heading": "إعادة تعيين كلمة المرور",

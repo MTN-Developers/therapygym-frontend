@@ -18,5 +18,6 @@ export const useValidationSchema = () => {
       .required(t("PhoneRequired"))
       .matches(/^\d+$/, t("PhoneDigitsOnly")),
     country: Yup.string().required(t("CountryRequired")),
+    country_code: Yup.string().required(t("CountryCodeRequired")),
   });
 };

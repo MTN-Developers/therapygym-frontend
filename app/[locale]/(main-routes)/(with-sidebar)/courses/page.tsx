@@ -1,7 +1,8 @@
+import CoursesSlider from "@/app/components/mainHome/CoursesSlider";
 import React from "react";
 
 const page = () => {
-  return <div>All Courses</div>;
+  return <CoursesSlider />;
 };
 
 export default page;
