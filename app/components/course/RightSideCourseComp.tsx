@@ -64,7 +64,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           onCancel={() => setOpenPackagesModal(false)}
         >
           <div className="[font-family:Cairo] mt-4 flex flex-col w-full justify-center items-center">
-            <h2 className="text-white text-[62px] font-medium leading-[66px] mb-2">
+            <h2 className="text-white text-[22px] lg:text-[62px] font-medium leading-[33px] lg:leading-[66px] mb-2">
               {t("ChoosePackage")}
             </h2>
             <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
@@ -139,34 +139,44 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           {t("MultiDeviceAccess")}
         </p>
         <div className="flex justify-between items-center mb-3">
-          <div>
-            <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
-              ${course.original_price}
-            </span>
+          {course?.original_price == course?.price_after_discount ? (
             <span className="text-2xl font-bold">
               ${course.price_after_discount}
             </span>
-          </div>
-          <div>
-            <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
-              <span className="text-[15px] font-bold mx-2">OFF</span>
-              <span>
-                {Math.round(
-                  ((course.original_price - course.price_after_discount) /
-                    course.original_price) *
-                    100
-                )}
-                %
+          ) : (
+            <div>
+              <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
+                ${course.original_price}
               </span>
-            </button>
+              <span className="text-2xl font-bold">
+                ${course.price_after_discount}
+              </span>
+            </div>
+          )}
+          <div>
+            {course?.original_price == course?.price_after_discount ? null : (
+              <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
+                <span className="text-[15px] font-bold mx-2">OFF</span>
+                <span>
+                  {Math.round(
+                    ((course.original_price - course.price_after_discount) /
+                      course.original_price) *
+                      100
+                  )}
+                  %
+                </span>
+              </button>
+            )}
           </div>
         </div>
-        <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
-          <span>
-            <Image src={alertIcon} alt="icon" width={20} height={20} />
-          </span>
-          {t("DaysLeft")}
-        </p>
+        {course?.original_price == course?.price_after_discount ? null : (
+          <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
+            <span>
+              <Image src={alertIcon} alt="icon" width={20} height={20} />
+            </span>
+            {t("DaysLeft")}
+          </p>
+        )}
         <Button
           loading={loading}
           className="w-full bg-[#017AFD] text-white text-xl rounded-lg h-[56px] mb-3"

@@ -78,9 +78,6 @@ const CoursesSlider = () => {
                       {locale == "ar" ? course.name_ar : course.name_en}
                     </h2>
                   </Tooltip>
-                  {/* <p className=" text-[color:var(--Neutral-70,#595959)]  font-[pnu] text-sm font-normal leading-[160%]">
-                    دكتور أحمد الدملاوى
-                  </p> */}
                   <div className="flex gap-2 mb-4 items-center justify-start">
                     <Image src={starIcon} alt="star" width={20} height={20} />
                     <p className="text-[#969696]  text-[14.182px] font-normal leading-[normal]">
@@ -92,9 +89,12 @@ const CoursesSlider = () => {
                     <span className="font-bold">
                       ${course.price_after_discount}
                     </span>
-                    <span className="line-through">
-                      ${course.original_price}
-                    </span>
+                    {course.price_after_discount ==
+                    course.original_price ? null : (
+                      <span className="line-through">
+                        ${course.original_price}
+                      </span>
+                    )}
                   </p>
                 </div>
               </Link>
