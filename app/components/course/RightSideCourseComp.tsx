@@ -64,7 +64,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           onCancel={() => setOpenPackagesModal(false)}
         >
           <div className="[font-family:Cairo] mt-4 flex flex-col w-full justify-center items-center">
-            <h2 className="text-white text-[62px] font-medium leading-[66px] mb-2">
+            <h2 className="text-white text-[22px] lg:text-[62px] font-medium leading-[33px] lg:leading-[66px] mb-2">
               {t("ChoosePackage")}
             </h2>
             <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
