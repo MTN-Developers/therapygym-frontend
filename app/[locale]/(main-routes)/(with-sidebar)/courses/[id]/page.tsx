@@ -47,7 +47,7 @@ const Page = ({
           <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             {t("AboutInstructor")}
           </h2>
-          <p className="w-[701px] mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+          <p className="w-[701px] max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
             {t("dummyText")}
             <span className="text-blue-500 font-bold cursor-pointer">
               {t("ReadMore")}
@@ -64,7 +64,7 @@ const Page = ({
           <h2 className="text-[#007AFE] font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             {t("CustomerReviews")}
           </h2>
-          <p className="w-[701px] mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
+          <p className="w-[701px] max-w-full mt-4 text-[#656565] font-[pnu] text-base font-normal leading-[160%]">
             {t("dummyText")}
             <span className="text-blue-500 font-bold cursor-pointer">
               {t("ReadMore")}

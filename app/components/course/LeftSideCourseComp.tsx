@@ -21,7 +21,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   const t = useTranslations("LeftSideCourseComp");
   const { locale } = useTranslationContext();
   return (
-    <div className="font-[pnu]">
+    <div className="font-[pnu] max-w-full">
       <div className="mt-4 mb-8 right-4 z-10">
         <Breadcrumb
           separator=">"

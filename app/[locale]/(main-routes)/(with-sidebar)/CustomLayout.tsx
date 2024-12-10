@@ -25,41 +25,40 @@ import { useTranslations } from "next-intl";
 const { Content, Sider, Header } = Layout;
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
-  // useAxiosInterceptors();
-  // const { locale } = useTranslationContext();
+  const { locale } = useTranslationContext();
   const t = useTranslations("Sidebar");
   const items = [
     {
       id: 1,
       label: t("Home"),
       icon: homeIcon,
-      link: "/",
+      link: `/${locale}`,
     },
     {
       id: 2,
       label: t("Courses"),
 
       icon: coursesIcon,
-      link: "/courses",
+      link: `/${locale}/courses`,
     },
     {
       id: 3,
       label: t("Calendar"),
       icon: calenderIcon,
-      link: "/calender",
+      link: `/${locale}/calender`,
     },
     {
       id: 4,
       label: t("Discussions"),
       icon: discussionIcon,
-      link: "/discussion",
+      link: `/${locale}/discussion`,
     },
     {
       id: 5,
       label: t("Support"),
 
       icon: supportIcon,
-      link: "/support",
+      link: `/${locale}/support`,
     },
   ];
 
@@ -82,12 +81,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // useEffect(() => {
-  //   if (isMounted && !isAuthenticated) {
-  //     router.replace("/login");
-  //   }
-  // }, [isMounted, isAuthenticated, router]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -130,19 +123,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   };
 
   const selectedKey = getActiveMenuItem();
-
-  console.log("Current pathname:", pathname);
-  console.log("Selected menu key:", selectedKey);
-
-  // if (!isMounted || isAuthenticated === undefined) {
-  //   // Component is not yet mounted or authentication status is being determined
-  //   return null; // or a loading indicator
-  // }
-
-  // if (!isAuthenticated) {
-  //   // User is not authenticated; we've already redirected
-  //   return null;
-  // }
 
   return (
     <Layout
@@ -236,7 +216,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                     </button>
                   </div>
                   <Modal
-                    style={{}}
+                    style={{
+                      fontFamily: locale == "ar" ? "Cairo" : "Roboto",
+                      direction: locale == "ar" ? "rtl" : "ltr",
+                    }}
                     title={logout_T("Logout")}
                     open={open}
                     onOk={() => {
