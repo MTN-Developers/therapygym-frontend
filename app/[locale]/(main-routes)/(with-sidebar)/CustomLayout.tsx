@@ -149,7 +149,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         display: "flex",
         background: "#EEE",
         padding: 10,
-        overflow: "hidden",
       }}
     >
       {isMounted && (
@@ -281,6 +280,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               "
               style={{
                 height: `fit-content`,
+                overflowX: "hidden",
                 background: colorBgContainer,
                 ...(lang == "en"
                   ? {
