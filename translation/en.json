@@ -219,6 +219,9 @@
             "CourseVideos": "Course Videos"
         }
     },
+    "VideoPlayer": {
+        "NoVideos": "There are no videos yet."
+    },
     "ClassroomPage": {
         "CourseNotFound": "Course not found with this ID.",
         "AboutCourse": "About the Course",

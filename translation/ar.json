@@ -219,6 +219,9 @@
             "CourseVideos": "الكورس"
         }
     },
+    "VideoPlayer": {
+        "NoVideos": "لا توجد فيديوهات حتى الآن."
+    },
     "ClassroomPage": {
         "CourseNotFound": "لم يتم العثور على دورة بهذا المعرف.",
         "AboutCourse": "عن الكورس",
