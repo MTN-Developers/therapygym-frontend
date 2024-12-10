@@ -10,9 +10,9 @@ import lockIcon from "@/assets/images/lock-icon.svg";
 import { login } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-import facebook from "@/assets/images/facebook.svg";
-import twitter from "@/assets/images/Twitter.svg";
-import google from "@/assets/images/google.svg";
+// import facebook from "@/assets/images/facebook.svg";
+// import twitter from "@/assets/images/Twitter.svg";
+// import google from "@/assets/images/google.svg";
 
 import { setCookie } from "cookies-next";
 import Link from "next/link";
@@ -116,14 +116,14 @@ const Page = () => {
             >
               {t("Login")}
             </Button>
-            <div className="flex flex-col gap-4 items-center justify-center lg:hidden mb-[20px] ">
+            {/* <div className="flex flex-col gap-4 items-center justify-center lg:hidden mb-[20px] ">
               <p className="text-gray-500">or</p>
               <div className="flex items-center justify-center gap-[48px]">
                 <Image src={twitter} alt="twitter" />
                 <Image src={facebook} alt="facebook" />
                 <Image src={google} alt="google" />
               </div>
-            </div>
+            </div> */}
             <Link
               href={"/register"}
               className=" text-gray-500 text-sm text-center  hover:cursor-pointer mb-10 hover:text-blue-600 underline"
