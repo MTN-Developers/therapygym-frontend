@@ -20,13 +20,15 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomHeader from "@/app/components/CustomHeader";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
+import { useScreen } from "usehooks-ts";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
 const { Content, Sider, Header } = Layout;
-
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { locale } = useTranslationContext();
   const t = useTranslations("Sidebar");
+  const screenWidth = useScreen();
+
   const items = [
     {
       id: 1,
@@ -124,6 +126,21 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const selectedKey = getActiveMenuItem();
 
+  useEffect(() => {
+    setIsMounted(true);
+    // Adjust the state of the sidebar based on screen width
+    const handleResize = () => {
+      setCollapsed(screenWidth.width < 795);
+    };
+
+    // Call handleResize on mount to set the initial state
+    handleResize();
+
+    // Optional: If you want to handle dynamic resizing uncomment below
+    // window.addEventListener('resize', handleResize);
+    // return () => window.removeEventListener('resize', handleResize);
+  }, [screenWidth]);
+
   return (
     <Layout
       style={{
@@ -132,6 +149,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         display: "flex",
         background: "#EEE",
         padding: 10,
+        overflow: "hidden",
       }}
     >
       {isMounted && (
@@ -140,8 +158,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             width={266}
             collapsedWidth={0}
             collapsible
-            collapsed={collapsed}
             trigger={null}
+            collapsed={collapsed}
+            onCollapse={(collapsed) => setCollapsed(!collapsed)}
             style={{
               zIndex: 50,
               background: "#0d63d9",
@@ -152,89 +171,88 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               top: 0,
               left: 0,
               bottom: 0,
+              overflow: "hidden",
             }}
           >
-            {!collapsed && (
-              <>
-                <div className="flex justify-center py-4">
-                  <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
-                </div>
+            <>
+              <div className="flex justify-center py-4">
+                <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
+              </div>
 
-                <Menu
-                  mode="inline"
-                  selectedKeys={[selectedKey]}
-                  className="flex-1 custom-menu"
-                  style={{
-                    background: "#0d63d9",
-                    borderRight: "none",
-                  }}
-                >
-                  {items.map((item) => (
-                    <Menu.Item key={item.id.toString()} className="flex">
-                      <Link href={item.link}>
-                        <Image
-                          src={item.icon}
-                          alt={`${item.label} icon`}
-                          width={20}
-                          height={20}
-                          className="inline me-4"
-                        />
-                        {item.label}
-                      </Link>
-                    </Menu.Item>
-                  ))}
-                </Menu>
+              <Menu
+                mode="inline"
+                selectedKeys={[selectedKey]}
+                className="flex-1 custom-menu"
+                style={{
+                  background: "#0d63d9",
+                  borderRight: "none",
+                }}
+              >
+                {items.map((item) => (
+                  <Menu.Item key={item.id.toString()} className="flex">
+                    <Link href={item.link}>
+                      <Image
+                        src={item.icon}
+                        alt={`${item.label} icon`}
+                        width={20}
+                        height={20}
+                        className="inline me-4"
+                      />
+                      {item.label}
+                    </Link>
+                  </Menu.Item>
+                ))}
+              </Menu>
 
-                <div
-                  className="flex items-center justify-center p-4"
-                  style={{
-                    position: "absolute",
-                    bottom: "10px",
-                    left: "0",
-                    right: "0",
-                  }}
-                >
-                  <div className="flex gap-2 items-center">
-                    <Image
-                      src={
-                        (data?.data?.profile?.avatar as string) ??
-                        data?.data?.gender == "male"
-                          ? "/images/male.jpg"
-                          : "/images/female.jpg"
-                      }
-                      className="rounded-full"
-                      alt="user photo"
-                      width={35}
-                      height={35}
-                    />
-                    <div className="text-white flex flex-col">
-                      <p>{user?.name}</p>
-                      <p className="text-[12px]">{data?.data?.role}</p>
-                    </div>
-                    <button onClick={showLogoutModal}>
-                      <Image src={logoutIcon} alt="logout icon" />
-                    </button>
+              <div
+                className="flex items-center justify-center p-4"
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "0",
+                  right: "0",
+                }}
+              >
+                <div className="flex gap-2 items-center">
+                  <Image
+                    src={
+                      (data?.data?.profile?.avatar as string) ??
+                      data?.data?.gender == "male"
+                        ? "/images/male.jpg"
+                        : "/images/female.jpg"
+                    }
+                    className="rounded-full"
+                    alt="user photo"
+                    width={35}
+                    height={35}
+                  />
+                  <div className="text-white flex flex-col">
+                    <p>{user?.name}</p>
+                    <p className="text-[12px]">{data?.data?.role}</p>
                   </div>
-                  <Modal
-                    style={{
-                      fontFamily: locale == "ar" ? "Cairo" : "Roboto",
-                      direction: locale == "ar" ? "rtl" : "ltr",
-                    }}
-                    title={logout_T("Logout")}
-                    open={open}
-                    onOk={() => {
-                      hideLogoutModal();
-                      handleLogout();
-                    }}
-                    onCancel={hideLogoutModal}
-                    okText={logout_T("Confirm")}
-                    cancelText={logout_T("Cancel")}
-                  >
-                    <p>{logout_T("LogoutMsg")}</p>
-                  </Modal>
+                  <button onClick={showLogoutModal}>
+                    <Image src={logoutIcon} alt="logout icon" />
+                  </button>
                 </div>
-              </>
-            )}
+                <Modal
+                  style={{
+                    fontFamily: locale == "ar" ? "Cairo" : "Roboto",
+                    direction: locale == "ar" ? "rtl" : "ltr",
+                  }}
+                  title={logout_T("Logout")}
+                  open={open}
+                  onOk={() => {
+                    hideLogoutModal();
+                    handleLogout();
+                  }}
+                  onCancel={hideLogoutModal}
+                  okText={logout_T("Confirm")}
+                  cancelText={logout_T("Cancel")}
+                >
+                  <p>{logout_T("LogoutMsg")}</p>
+                </Modal>
+              </div>
+            </>
           </Sider>
 
           <Layout
