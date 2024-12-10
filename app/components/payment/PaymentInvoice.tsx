@@ -26,7 +26,7 @@ const PaymentInvoice = ({ packageData }: { packageData: course_package }) => {
       style={{
         background: "rgb(245 248 251 / 59%)",
       }}
-      className="w-full m-auto rounded-2xl !font-[Cairo] h-full lg:w-[432px] max-w-full p-10 shrink-0"
+      className="w-full m-auto rounded-2xl !font-[Cairo] h-full lg:w-[432px] max-w-full p-4 lg:p-10 shrink-0"
     >
       <div
         id="course-info"
