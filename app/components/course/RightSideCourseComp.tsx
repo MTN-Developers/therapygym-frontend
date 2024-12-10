@@ -6,7 +6,7 @@ import dollarIcon from "@/assets/images/CurrencyDollarSimple.svg";
 import cupIcon from "@/assets/images/Trophy.svg";
 import tvIcon from "@/assets/images/tv.png";
 import alertIcon from "@/assets/images/Alarm.svg";
-import { Button, Modal } from "antd";
+import { Button, Modal, Tooltip } from "antd";
 import Close from "@/assets/components/Close";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import { IoCalendarOutline } from "react-icons/io5";
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [loading, setLoading] = React.useState(false);
@@ -56,7 +57,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           rootClassName="packages-modal2"
           cancelButtonProps={{ style: { display: "none" } }}
           okButtonProps={{ style: { display: "none" } }}
-          width={1100}
+          width={1350}
           style={{ background: "transparent" }}
           open={open_packages_modal}
           onOk={() => setOpenPackagesModal(false)}
@@ -71,15 +72,22 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
             </p>
             <div className="w-full">
               <Swiper
+                lang="ar"
+                dir={locale == "ar" ? "rtl" : "ltr"}
+                direction="horizontal"
                 spaceBetween={16}
                 slidesPerView={"auto"}
                 className="w-full h-fit"
               >
-                {course.packages?.map((pkg, idx) => (
-                  <SwiperSlide key={idx} className="!w-[306px] !lg:w-[415px]">
-                    <PackageCard course_id={course.id} pkg={pkg} />
-                  </SwiperSlide>
-                ))}
+                {course.packages
+                  ?.sort(
+                    (a, b) => a.price_after_discount - b.price_after_discount
+                  )
+                  .map((pkg, idx) => (
+                    <SwiperSlide key={idx} className="!w-[306px] !lg:w-[415px]">
+                      <PackageCard course_id={course.id} pkg={pkg} />
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </div>
           </div>
@@ -99,10 +107,16 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         />
       </div>
       <div className="w-full px-3 font-[pnu]">
-        <p className="font-bold mb-[12px]">{t("LifetimeAccess")}</p>
+        {/* <p className="font-bold mb-[12px]">{t("LifetimeAccess")}</p> */}
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
             <Image src={clockIcon} alt="icon" width={20} height={20} />
+          </span>
+          {t("MeetingTime")}
+        </p>
+        <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
+          <span>
+            <IoCalendarOutline color="#0D63D9" size={17} />
           </span>
           {t("LifetimeAccess")}
         </p>
@@ -185,7 +199,12 @@ const PackageCard = ({
   course_id: string;
 }) => {
   const t = useTranslations("PackageCard");
-
+  const { locale } = useTranslationContext();
+  const description =
+    locale == "ar"
+      ? pkg.description_ar.split("\n").filter(Boolean)
+      : pkg.description_en.split("\n");
+  console.log(description, "description");
   let duration = "";
   switch (pkg.duration) {
     case 1:
@@ -202,11 +221,30 @@ const PackageCard = ({
       break;
   }
 
+  let packageDuration = "";
+  switch (pkg.duration) {
+    case 1:
+      packageDuration = t("MonthlyPackage");
+      break;
+    case 3:
+      packageDuration = t("QuarterlyPackage");
+      break;
+    case 6:
+      packageDuration = t("HalfAnnualPackage");
+      break;
+    case 12:
+      packageDuration = t("AnnualPackage");
+      break;
+  }
+
   return (
-    <div className="w-[306px] lg:w-[415px] max-w-full bg-white rounded-xl shadow-lg p-6 border border-blue-200">
+    <div
+      dir={locale == "ar" ? "rtl" : "ltr"}
+      className="w-[306px] lg:w-[415px] max-w-full bg-white rounded-xl shadow-lg p-6 border border-blue-200"
+    >
       {/* Header */}
-      <div className="bg-blue-100 text-blue-700 rounded-full inline-block px-4 py-1 text-sm font-medium mb-4">
-        {t("SubscriptionPackage")}
+      <div className="bg-blue-100  text-blue-700 rounded-full inline-block px-4 py-1 text-sm font-medium mb-4">
+        {packageDuration}
       </div>
 
       {/* Price */}
@@ -219,22 +257,14 @@ const PackageCard = ({
       <div className="text-gray-700  mb-6">
         <h2 className="text-xl font-bold mb-2">{t("SubscriptionContent")}</h2>
         <ul className="space-y-2">
-          <li className="flex items-center gap-2">
-            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
-            {t("RecordedEpisodes")}
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
-            {t("LiveMeetings")}
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
-            {t("MeetingDuration")}
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
-            {t("CommunitySupport")}
-          </li>
+          {description.map((desc, idx) => (
+            <li key={idx} className="flex items-center gap-2">
+              <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
+              <Tooltip title={desc}>
+                <span className="w-full max-w-full truncate">{desc}</span>
+              </Tooltip>
+            </li>
+          ))}
         </ul>
       </div>
 

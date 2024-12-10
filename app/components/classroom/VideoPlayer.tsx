@@ -1,14 +1,19 @@
 import React from "react";
 import { IVideo } from "@/interfaces";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+
 const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
   ssr: false,
 });
+
 interface IProps {
   src: IVideo;
 }
 
 const VideoPlayer = React.memo(({ src }: IProps) => {
+  const t = useTranslations("VideoPlayer");
+
   return (
     <div
       style={{
@@ -30,7 +35,13 @@ const VideoPlayer = React.memo(({ src }: IProps) => {
           backgroundColor: "#424242",
         }}
       >
-        <PlyrVideo src={src.video_url} />
+        {src ? (
+          <PlyrVideo src={src.video_url} />
+        ) : (
+          <div className="text-white font-bold w-full h-full flex items-center justify-center">
+            <p>{t("NoVideos")}</p>
+          </div>
+        )}
       </div>
     </div>
   );

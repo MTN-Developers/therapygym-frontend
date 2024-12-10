@@ -2,6 +2,16 @@
 import { ConfigProvider } from "antd";
 import Providers from "./Providers";
 import "./globals.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "MTN Live System",
+  description: "Developed By MTN Software Team 2024",
+  keywords:
+    "MTN, Live, Live System, 2024, Live Stream, live, stream, mtn-live, managethenow.net, mtnlive, livestream, videos, therapy gym, Therapy",
+  applicationName: "MTN Live",
+  creator: "MTN Software Team 2024",
+};
 export default async function RootLayout({
   children,
   params: { locale },
@@ -9,7 +19,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }>) {
-  // const messages = await getMessages();
   return (
     <html dir={`${locale === "ar" ? "rtl" : "ltr"}`} lang={locale}>
       <head>

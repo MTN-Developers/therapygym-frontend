@@ -25,41 +25,40 @@ import { useTranslations } from "next-intl";
 const { Content, Sider, Header } = Layout;
 
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
-  // useAxiosInterceptors();
-  // const { locale } = useTranslationContext();
+  const { locale } = useTranslationContext();
   const t = useTranslations("Sidebar");
   const items = [
     {
       id: 1,
       label: t("Home"),
       icon: homeIcon,
-      link: "/",
+      link: `/${locale}`,
     },
     {
       id: 2,
       label: t("Courses"),
 
       icon: coursesIcon,
-      link: "/courses",
+      link: `/${locale}/courses`,
     },
     {
       id: 3,
       label: t("Calendar"),
       icon: calenderIcon,
-      link: "/calender",
+      link: `/${locale}/calender`,
     },
     {
       id: 4,
       label: t("Discussions"),
       icon: discussionIcon,
-      link: "/discussion",
+      link: `/${locale}/discussion`,
     },
     {
       id: 5,
       label: t("Support"),
 
       icon: supportIcon,
-      link: "/support",
+      link: `/${locale}/support`,
     },
   ];
 
@@ -82,12 +81,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // useEffect(() => {
-  //   if (isMounted && !isAuthenticated) {
-  //     router.replace("/login");
-  //   }
-  // }, [isMounted, isAuthenticated, router]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -112,37 +105,24 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const getActiveMenuItem = () => {
-    if (pathname.startsWith("/courses/")) {
-      return "2";
-    }
-
+    // Split the pathname into segments
     const pathSegments = pathname.split("/").filter(Boolean);
-    const pathSecondSegment = pathSegments[1];
 
-    if (!pathSecondSegment) {
-      return "1";
-    }
+    // Skip the locale segment if present (e.g., "en" or "ar")
+    const basePath =
+      pathSegments.length > 1
+        ? `/${pathSegments[1]}`
+        : `/${pathSegments[0] || ""}`;
 
-    const activeItem = items.find((item) => {
-      const itemLinkSegments = item.link.split("/").filter(Boolean);
-      const itemSecondSegment = itemLinkSegments[1];
-      return pathSecondSegment === itemSecondSegment;
-    });
+    // Find the item whose link matches the base path
+    const activeItem = items.find((item) => item.link === basePath);
 
+    console.log("Base path for active menu:", basePath);
+    // Return the item ID or default to "1" (Home)
     return activeItem ? activeItem.id.toString() : "1";
   };
 
   const selectedKey = getActiveMenuItem();
-
-  // if (!isMounted || isAuthenticated === undefined) {
-  //   // Component is not yet mounted or authentication status is being determined
-  //   return null; // or a loading indicator
-  // }
-
-  // if (!isAuthenticated) {
-  //   // User is not authenticated; we've already redirected
-  //   return null;
-  // }
 
   return (
     <Layout
@@ -236,7 +216,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                     </button>
                   </div>
                   <Modal
-                    style={{}}
+                    style={{
+                      fontFamily: locale == "ar" ? "Cairo" : "Roboto",
+                      direction: locale == "ar" ? "rtl" : "ltr",
+                    }}
                     title={logout_T("Logout")}
                     open={open}
                     onOk={() => {
