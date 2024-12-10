@@ -20,15 +20,6 @@ const CoursePaymentForm = ({ Course }: { Course: SubscribedCourse }) => {
   const elements = useElements();
   const [loading, setLoading] = useState(false);
 
-  const StripeNumber =
-    Number(Course?.price_after_discount) == 0
-      ? Number(Course?.original_price)
-      : Number(Course?.price_after_discount);
-
-  const calculatedGatewayFees = StripeNumber * 0.05;
-
-  const FINAL_PRICE = (StripeNumber + calculatedGatewayFees) * 100;
-
   const onSubmit = async () => {
     setLoading(true);
 
@@ -40,10 +31,8 @@ const CoursePaymentForm = ({ Course }: { Course: SubscribedCourse }) => {
 
     try {
       const { data: CreateIntent } = await axiosInstance.post("/transaction", {
-        amount: FINAL_PRICE,
         item_id: Course.id,
-        currency: "USD",
-        type: "Course",
+        type: "course",
       });
 
       console.log(CreateIntent?.data, "CreateIntent");
