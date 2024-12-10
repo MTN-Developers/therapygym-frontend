@@ -30,7 +30,15 @@ const VideoPlayer = React.memo(({ src }: IProps) => {
           backgroundColor: "#424242",
         }}
       >
-        <PlyrVideo src={src.video_url} />
+        {src ? (
+          <PlyrVideo src={src.video_url} />
+        ) : (
+          <>
+            <div className="text-white font-bold w-full h-full flex items-center justify-center">
+              <p> There is no Videos yet .</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
