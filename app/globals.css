@@ -25,7 +25,6 @@ main:lang(en) * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  user-select: none;
   /* user-select: none; */
 }
 
