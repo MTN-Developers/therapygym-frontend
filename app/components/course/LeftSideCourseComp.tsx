@@ -32,7 +32,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
             },
             {
               title: course?.category,
-              href: "/all-courses",
+              href: "/",
             },
             {
               title: locale == "ar" ? course.name_ar : course?.name_en, // Switch to `name_en` dynamically based on locale if needed

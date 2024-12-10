@@ -105,23 +105,20 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const getActiveMenuItem = () => {
-    if (pathname.startsWith("/courses/")) {
-      return "2";
-    }
-
+    // Split the pathname into segments
     const pathSegments = pathname.split("/").filter(Boolean);
-    const pathSecondSegment = pathSegments[1];
 
-    if (!pathSecondSegment) {
-      return "1";
-    }
+    // Skip the locale segment if present (e.g., "en" or "ar")
+    const basePath =
+      pathSegments.length > 1
+        ? `/${pathSegments[1]}`
+        : `/${pathSegments[0] || ""}`;
 
-    const activeItem = items.find((item) => {
-      const itemLinkSegments = item.link.split("/").filter(Boolean);
-      const itemSecondSegment = itemLinkSegments[1];
-      return pathSecondSegment === itemSecondSegment;
-    });
+    // Find the item whose link matches the base path
+    const activeItem = items.find((item) => item.link === basePath);
 
+    console.log("Base path for active menu:", basePath);
+    // Return the item ID or default to "1" (Home)
     return activeItem ? activeItem.id.toString() : "1";
   };
 
