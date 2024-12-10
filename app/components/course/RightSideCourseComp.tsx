@@ -139,34 +139,44 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           {t("MultiDeviceAccess")}
         </p>
         <div className="flex justify-between items-center mb-3">
-          <div>
-            <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
-              ${course.original_price}
-            </span>
+          {course?.original_price == course?.price_after_discount ? (
             <span className="text-2xl font-bold">
               ${course.price_after_discount}
             </span>
-          </div>
-          <div>
-            <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
-              <span className="text-[15px] font-bold mx-2">OFF</span>
-              <span>
-                {Math.round(
-                  ((course.original_price - course.price_after_discount) /
-                    course.original_price) *
-                    100
-                )}
-                %
+          ) : (
+            <div>
+              <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
+                ${course.original_price}
               </span>
-            </button>
+              <span className="text-2xl font-bold">
+                ${course.price_after_discount}
+              </span>
+            </div>
+          )}
+          <div>
+            {course?.original_price == course?.price_after_discount ? null : (
+              <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
+                <span className="text-[15px] font-bold mx-2">OFF</span>
+                <span>
+                  {Math.round(
+                    ((course.original_price - course.price_after_discount) /
+                      course.original_price) *
+                      100
+                  )}
+                  %
+                </span>
+              </button>
+            )}
           </div>
         </div>
-        <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
-          <span>
-            <Image src={alertIcon} alt="icon" width={20} height={20} />
-          </span>
-          {t("DaysLeft")}
-        </p>
+        {course?.original_price == course?.price_after_discount ? null : (
+          <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
+            <span>
+              <Image src={alertIcon} alt="icon" width={20} height={20} />
+            </span>
+            {t("DaysLeft")}
+          </p>
+        )}
         <Button
           loading={loading}
           className="w-full bg-[#017AFD] text-white text-xl rounded-lg h-[56px] mb-3"
