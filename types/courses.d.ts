@@ -23,6 +23,10 @@ type SubscribedCourse = {
   banner_ar: string;
   banner_en: string;
   calender: string;
+  primary_color: string;
+  secondary_color: string;
+  accent_color: string;
+  promo_video: string | null;
   category: string;
   original_price: number;
   price_after_discount: number;

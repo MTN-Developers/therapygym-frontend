@@ -28,22 +28,22 @@ const RightSidebar = ({
     {
       key: "introVideos",
       title: t("Intro"),
-      data: chapters?.data.introVideos.data || [],
-    },
-    {
-      key: "endVideos",
-      title: t("End"),
-      data: chapters?.data.endVideos.data || [],
-    },
-    {
-      key: "giftVideos",
-      title: t("Gifts"),
-      data: chapters?.data.giftVideos?.data || [],
+      data: chapters?.data.introVideos || [],
     },
     {
       key: "packageVideos",
       title: t("CourseVideos"),
       data: chapters?.data.packageVideos || [],
+    },
+    {
+      key: "giftVideos",
+      title: t("Gifts"),
+      data: chapters?.data.giftVideos || [],
+    },
+    {
+      key: "endVideos",
+      title: t("End"),
+      data: chapters?.data.endVideos || [],
     },
   ];
 
@@ -59,7 +59,7 @@ const RightSidebar = ({
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 w-[80%] lg:h-[608px] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
+        className={`fixed top-0 w-[80%] lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
           toggleSidebar
             ? "translate-x-0"
             : locale == "en"
@@ -76,6 +76,7 @@ const RightSidebar = ({
           </p>
           {videoCategories.map(
             (category) =>
+              Array.isArray(category.data) &&
               category.data.length > 0 && (
                 <Panel
                   key={category.key}
@@ -88,7 +89,7 @@ const RightSidebar = ({
                 >
                   <List
                     style={{ background: "#2d2f31" }}
-                    dataSource={category.data}
+                    dataSource={category.data as IVideo[]}
                     renderItem={(video) => (
                       <List.Item
                         key={video.id}
