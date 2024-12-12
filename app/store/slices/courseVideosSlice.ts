@@ -81,10 +81,16 @@ const courseVideosSlice = createSlice({
 
         // Automatically select first video if available
         const allVideos = [
-          ...(action.payload.data.introVideos.data || []),
-          ...(action.payload.data.endVideos.data || []),
-          ...(action.payload.data.giftVideos?.data || []),
+          ...(Array.isArray(action.payload.data.introVideos)
+            ? action.payload.data.introVideos
+            : []),
+          ...(Array.isArray(action.payload.data.giftVideos)
+            ? action.payload.data.giftVideos
+            : []),
           ...action.payload.data.packageVideos,
+          ...(Array.isArray(action.payload.data.endVideos)
+            ? action.payload.data.endVideos
+            : []),
         ];
 
         state.currentVideo = allVideos.length > 0 ? allVideos[0] : null;
