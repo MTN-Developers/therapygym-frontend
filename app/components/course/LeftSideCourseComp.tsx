@@ -1,15 +1,13 @@
 "use client";
 import React from "react";
 import { Breadcrumb, Tabs } from "antd";
-import starIcon from "@/assets/images/Star.svg";
-import clockIcon from "@/assets/images/Clock@2x.svg";
-import usersIcon from "@/assets/images/Users.svg";
-import notebookIcon from "@/assets/images/Notebook.svg";
+import { LuUsersRound } from "react-icons/lu";
+import { SlNotebook } from "react-icons/sl";
 import type { TabsProps } from "antd";
-import Image from "next/image";
-
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
+import Clock from "@/assets/svgs/Clock@2x";
+import Star from "@/assets/svgs/Star";
 
 interface IProps {
   items: TabsProps["items"];
@@ -52,24 +50,22 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
           </p>
           <div className="flex gap-4 mb-4 flex-wrap">
             <p className="flex items-center gap-1">
-              <Image src={starIcon} alt="star icon" width={20} height={20} />
+              <Star color={course.primary_color} />
+              {/* <Image src={starIcon} alt="star icon" width={20} height={20} /> */}
               <span className="font-bold">4.8</span> (451,444 {t("StarRating")})
             </p>
             <p className="flex items-center gap-1">
-              <Image src={clockIcon} alt="clock icon" width={20} height={20} />4{" "}
-              {t("WeeksDuration")}
+              {<Clock color={course.primary_color} />}
+              {/* <Image src={clockIcon} alt="clock icon" width={20} height={20} /> */}
+              4 {t("WeeksDuration")}
             </p>
             <p className="flex items-center gap-1">
-              <Image src={usersIcon} alt="users icon" width={20} height={20} />
+              <LuUsersRound color={course?.primary_color} size={19} />
               {t("SubscribersCount")} 350
             </p>
             <p className="flex items-center gap-1">
-              <Image
-                src={notebookIcon}
-                alt="notebook icon"
-                width={20}
-                height={20}
-              />
+              <SlNotebook color={course?.primary_color} size={19} />
+
               {t("ArabicLanguage")}
             </p>
           </div>
@@ -77,7 +73,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
             <p className="text-[color:var(--Neutral-70,#595959)] text-sm font-medium leading-[22px] tracking-[-0.14px]">
               {t("ProvidedBy")}
             </p>
-            <p className="text-[#017AFD] text-base font-medium leading-[22px] underline">
+            <p className="color-primary text-base font-medium leading-[22px] underline">
               {t("Doctor")}{" "}
             </p>
           </div>

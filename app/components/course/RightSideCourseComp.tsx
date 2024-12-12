@@ -1,10 +1,6 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import clockIcon from "@/assets/images/Clock@2x.svg";
-import dollarIcon from "@/assets/images/CurrencyDollarSimple.svg";
-import cupIcon from "@/assets/images/Trophy.svg";
-import tvIcon from "@/assets/images/tv.png";
 import alertIcon from "@/assets/images/Alarm.svg";
 import { Button, Modal, Tooltip } from "antd";
 import Close from "@/assets/components/Close";
@@ -14,7 +10,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { IoCalendarOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoTvOutline } from "react-icons/io5";
+import dynamic from "next/dynamic";
+import Trophy from "@/assets/svgs/Trophy";
+import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
+import Clock from "@/assets/svgs/Clock@2x";
+import Play from "@/assets/svgs/Play";
+const PlyrVideo = dynamic(
+  () => import("@/app/components/classroom/PlyrVideo"),
+  {
+    ssr: false,
+  }
+);
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [loading, setLoading] = React.useState(false);
@@ -22,6 +29,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const router = useRouter();
   const t = useTranslations("RightSideCourseComp");
   const { locale } = useTranslationContext();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const handlePurchaseButton = () => {
     switch (course.type) {
@@ -47,8 +55,28 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
       router.push(`/classroom/${course.id}`);
     }, 2000);
   };
+
+  const handlePlayVideo = () => {
+    setIsModalOpen(true);
+  };
+
+  console.log(isModalOpen, "isModalOpen");
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
+      {isModalOpen ? (
+        <Modal
+          width={1100}
+          rootClassName="banner-video-modal"
+          footer={null}
+          closeIcon={null}
+          open={isModalOpen}
+          onOk={() => setIsModalOpen(false)}
+          onCancel={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)}
+        >
+          <PlyrVideo src={course?.promo_video as string} />
+        </Modal>
+      ) : null}
       {open_packages_modal && (
         <Modal
           closeIcon={<Close />}
@@ -105,36 +133,47 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           }}
           className="w-full lg:h-[245px] mb-[12px] object-cover"
         />
+        {course?.promo_video ? (
+          <div
+            onClick={handlePlayVideo}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-full cursor-pointer hover:shadow-2xl "
+          >
+            <Play color={course?.primary_color} />
+          </div>
+        ) : null}
+        {/* <IoPlayCircleOutline  width={70} height={70} /> */}
       </div>
       <div className="w-full px-3 font-[pnu]">
         {/* <p className="font-bold mb-[12px]">{t("LifetimeAccess")}</p> */}
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={clockIcon} alt="icon" width={20} height={20} />
+            {<Clock color={course.primary_color} />}
+            {/* <Image src={clockIcon} alt="icon" width={20} height={20} /> */}
           </span>
           {t("MeetingTime")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <IoCalendarOutline color="#0D63D9" size={17} />
+            <IoCalendarOutline color={course?.primary_color} size={17} />
           </span>
           {t("LifetimeAccess")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={dollarIcon} alt="icon" width={20} height={20} />
+            <CurrencyDollarSimple color={course.primary_color} />
+            {/* <Image src={dollarIcon} alt="icon" width={20} height={20} /> */}
           </span>
           {t("MoneyBackGuarantee")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={cupIcon} alt="icon" width={20} height={20} />
+            <Trophy color={course.primary_color} />
           </span>
           {t("Certificate")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={tvIcon} alt="icon" width={20} height={20} />
+            <IoTvOutline color={course?.primary_color} size={19} />
           </span>
           {t("MultiDeviceAccess")}
         </p>
@@ -179,7 +218,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         )}
         <Button
           loading={loading}
-          className="w-full bg-[#017AFD] text-white text-xl rounded-lg h-[56px] mb-3"
+          className="w-full primary-bg text-white text-xl rounded-lg h-[56px] mb-3"
           onClick={
             course?.status?.isPurchased || course?.status?.isSubscribed
               ? handleRedirectToCourse

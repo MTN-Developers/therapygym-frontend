@@ -160,9 +160,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             trigger={null}
             collapsed={collapsed}
             onCollapse={(collapsed) => setCollapsed(!collapsed)}
+            className="primary-bg"
             style={{
               zIndex: 50,
-              background: "#0d63d9",
               borderTopLeftRadius: lang == "ar" ? "0px" : "16px",
               borderBottomLeftRadius: lang == "ar" ? "0px" : "16px",
               borderTopRightRadius: lang == "ar" ? "16px" : "0px",
@@ -181,9 +181,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               <Menu
                 mode="inline"
                 selectedKeys={[selectedKey]}
-                className="flex-1 custom-menu"
+                className="flex-1 custom-menu primary-bg"
                 style={{
-                  background: "#0d63d9",
+                  // background: "#=",
                   borderRight: "none",
                 }}
               >

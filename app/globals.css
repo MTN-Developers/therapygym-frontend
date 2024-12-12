@@ -13,6 +13,38 @@
     font-style: normal;
   }
 }
+
+:root {
+  --plyr-color-main: #0d63d9;
+  --main-color: #0d63d9;
+  --main-color: #0d63d9;
+}
+
+
+.primary-bg{
+  background-color: var(--main-color);
+}
+.border-primary{
+  border: 1px solid var(--main-color) !important;
+}
+.color-primary{
+  color: var(--main-color);
+}
+
+.ant-tabs-tab-btn{
+  color: var(--main-color) !important ;
+}
+
+.primary-stroke{
+  stroke-opacity: 1;
+  stroke: var(--main-color);
+  color: var(--main-color);
+}
+
+.ant-tabs-ink-bar{
+  background-color: var(--main-color) !important;
+}
+
 main:lang(ar) * {
   font-family: "Cairo", sans-serif;
 }
@@ -85,15 +117,14 @@ body {
 .custom-menu .ant-menu-item:hover {
   background: linear-gradient(
     to right,
-    #0d63d9,
-    #2a86f4
+    var(--main-color),
   ); /* Adjusted gradient on hover */
   color: white !important; /* Ensure text remains visible */
 }
 
 /* Maintain gradient when selected */
 .custom-menu .ant-menu-item-selected {
-  background: linear-gradient(to right, #0d63d9, #2a86f4) !important;
+  background: linear-gradient(to right, var(--main-color)) !important;
   color: white !important; /* Ensure text remains visible */
 }
 
@@ -233,4 +264,8 @@ input::placeholder {
 .packages-modal2 .ant-modal-wrap {
   backdrop-filter: blur(2px) !important;
   background-color: #0000008c !important;
+}
+
+.banner-video-modal .ant-modal-content {
+  padding: 0px !important;
 }
