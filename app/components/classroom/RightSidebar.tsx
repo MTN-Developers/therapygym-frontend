@@ -31,14 +31,14 @@ const RightSidebar = ({
       data: chapters?.data.introVideos || [],
     },
     {
-      key: "packageVideos",
-      title: t("CourseVideos"),
-      data: chapters?.data.packageVideos || [],
-    },
-    {
       key: "giftVideos",
       title: t("Gifts"),
       data: chapters?.data.giftVideos || [],
+    },
+    {
+      key: "packageVideos",
+      title: t("CourseVideos"),
+      data: chapters?.data.packageVideos || [],
     },
     {
       key: "endVideos",
