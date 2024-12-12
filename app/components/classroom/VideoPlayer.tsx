@@ -2,9 +2,20 @@ import React from "react";
 import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import dynamic from "next/dynamic";
 import RightSidebar from "@/app/components/classroom/RightSidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+
 const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
   ssr: false,
 });
+
+const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => {
+  return <PlyrVideo src={src} />;
+});
+
+MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
+
 interface IProps {
   src: IVideo;
   courseVideos: ICourseVideosResponse;
@@ -13,12 +24,13 @@ interface IProps {
 }
 
 const VideoPlayer = React.memo(
-  ({
-    src,
-    currentVideo,
-    handleVideoSelect,
-    courseVideos,
-  }: IProps) => {
+  ({ src, currentVideo, handleVideoSelect, courseVideos }: IProps) => {
+    const isSidebarOpen = useSelector(
+      (state: RootState) => state.sidebar.isSidebarOpen
+    );
+
+    const { locale } = useTranslationContext();
+
     return (
       <div
         style={{
@@ -40,15 +52,23 @@ const VideoPlayer = React.memo(
             backgroundColor: "#424242",
           }}
         >
-          <div className="h-full">
+          <div
+            className="relative"
+            style={{
+              [locale === "ar" ? "right" : "left"]: isSidebarOpen
+                ? "350px"
+                : "0",
+              width: isSidebarOpen ? "80%" : "100%",
+              height: "535px",
+              transition: "all 0.3s ease", // Smooth transition for resizing
+            }}
+          >
             {src ? (
-              <PlyrVideo src={src.video_url} />
+              <MemoizedPlyrVideo src={src.video_url} />
             ) : (
-              <>
-                <div className="text-white font-bold w-full h-full flex items-center justify-center">
-                  <p> There is no Videos yet .</p>
-                </div>
-              </>
+              <div className="text-white font-bold w-full h-full flex items-center justify-center">
+                <p> There is no Videos yet.</p>
+              </div>
             )}
           </div>
           <RightSidebar
