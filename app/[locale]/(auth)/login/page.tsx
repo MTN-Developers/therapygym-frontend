@@ -59,7 +59,7 @@ const Page = () => {
   return (
     <div className="w-full lg:h-screen ">
       {/* <div className="hidden md:block"> */}
-      <div className="z-10 w-full h-full  flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-start ">
+      <div className="z-10 w-full h-full gap-x-14 flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-start ">
         <div className="lg:flex relative bottom-[30px] lg:bottom-0 px-4  items-center justify-start flex-1 lg:pl-10 ">
           <form
             onSubmit={handleSubmit}

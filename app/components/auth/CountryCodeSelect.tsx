@@ -8,7 +8,7 @@ import { Controller } from "react-hook-form";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-const CountrySelect = ({
+const CountryCodeSelect = ({
   control,
   name,
   error,
@@ -18,10 +18,10 @@ const CountrySelect = ({
   error: string;
 }) => {
   const { countries } = useCountries();
-  const t = useTranslations("CountrySelect");
+  const t = useTranslations("CountryCodeSelect");
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <Controller
         name={name}
         control={control}
@@ -38,7 +38,7 @@ const CountrySelect = ({
               option?.labelText?.toLowerCase().includes(input.toLowerCase())
             }
             options={countries.map((country: any) => ({
-              value: country.name,
+              value: country.countryCallingCode,
               labelText: `${country.name} (${country.countryCallingCode})`,
               label: (
                 <div className="flex items-center">
@@ -61,4 +61,4 @@ const CountrySelect = ({
   );
 };
 
-export default CountrySelect;
+export default CountryCodeSelect;

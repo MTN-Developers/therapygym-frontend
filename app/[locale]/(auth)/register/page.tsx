@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import loginBannerMob from "@/assets/images/login-banner-mob.png";
 import loginBanner from "@/assets/images/login-banner.jpg";
@@ -21,20 +21,23 @@ import { useValidationSchema } from "@/app/utils/RegisterationValidation";
 import * as yup from "yup";
 import { useTranslations } from "next-intl";
 import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
+import CountryCodeSelect from "@/app/components/auth/CountryCodeSelect";
+import { useCheckPhone } from "@/app/hooks/useCheckPhone";
+import { useTranslationContext } from "@/contexts/TranslationContext";
 
 const RegisterPage = () => {
   const t = useTranslations("RegisterPage");
   const validationSchema = useValidationSchema();
-  const [loading, setLoading] = useState(false);
-  // const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  // const [loader, setLoader] = useState(false);
+  const { locale } = useTranslationContext();
 
   const router = useRouter();
+  const { handleCheckPhoneNumber } = useCheckPhone();
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -42,17 +45,52 @@ const RegisterPage = () => {
   type RegisterFormData = yup.InferType<typeof validationSchema>;
 
   const onSubmit = async (data: RegisterFormData) => {
-    setLoading(true);
+    const new_user = {
+      ...data,
+      phone: `${data.country_code}${
+        data.phone.startsWith("0") ? data.phone.slice(1) : data.phone
+      }`,
+    };
+
+    if (new_user.country_code) {
+      //@ts-expect-error country_code is not in RegisterFormData
+      delete new_user.country_code;
+    }
+
+    const { isPhoneValid, isMsgSent, status } = await handleCheckPhoneNumber({
+      phoneNumber: new_user.phone,
+    });
+
+    if (!isPhoneValid || !status) {
+      setError("phone", {
+        type: "manual",
+        message:
+          locale === "en" ? "Invalid phone number" : "رقم الهاتف غير صحيح",
+      });
+      return;
+    }
+    if (!isMsgSent) {
+      setError("phone", {
+        type: "manual",
+        message:
+          locale === "en"
+            ? "This number does not have a whatsapp account"
+            : "هذا الرقم لا يحتوي علي حساب واتساب",
+      });
+      return;
+    }
+
+    // setLoading(true);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/user`,
         {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          phone: data.phone,
-          country: data.country,
-          gender: data.gender,
+          name: new_user.name,
+          email: new_user.email,
+          password: new_user.password,
+          phone: new_user.phone,
+          country: new_user.country,
+          gender: new_user.gender,
         }
       );
 
@@ -71,25 +109,11 @@ const RegisterPage = () => {
         message.error(t("UnexpectedError"));
       }
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   setLoader(true);
-  //   if (isAuthenticated) {
-  //     router.push("/");
-  //     setLoader(false);
-  //   }
-  //   setLoader(false);
-  // }, [router, isAuthenticated]);
-
-  // if (loader) {
-  //   return null;
-  // }
-
   return (
-    <div className="w-full h-screen lg:h-screen flex items-center justify-center">
+    <div className="w-full min-h-screen h-fit  flex items-center justify-center">
       <div className="w-full h-full rounded-3xl flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-between">
         <div className="flex justify-center items-center lg:items-start lg:justify-start flex-1 bg-gradient-to-br from-blue-400 to-white lg:bg-none">
           <form
@@ -106,62 +130,76 @@ const RegisterPage = () => {
             <p className="text-start text-[32px] text-white lg:text-gray-700">
               {t("WelcomeMessage")}
             </p>
-            <Controller
-              control={control}
-              name="name"
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  className="lg:w-[590px] border border-[#8d8a8a] bg-transparent focus:bg-transparent h-[55px] font-bold"
-                  size="large"
-                  placeholder={t("FirstName")}
-                  {...field}
-                />
+            <div className="flex flex-col w-full">
+              <Controller
+                control={control}
+                name="name"
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    className="lg:w-[590px] border border-[#8d8a8a] bg-transparent focus:bg-transparent h-[55px] font-bold"
+                    size="large"
+                    placeholder={t("FirstName")}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.name && (
+                <p className="text-red-500 text-[14px]">
+                  {errors.name.message}
+                </p>
               )}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-[14px]">{errors.name.message}</p>
-            )}
-            <Controller
-              control={control}
-              name="email"
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  className="lg:w-[590px] border border-[#8d8a8a] h-[55px] bg-transparent focus:bg-transparent font-bold"
-                  size="large"
-                  placeholder={t("EmailAddress")}
-                  {...field}
-                />
+            </div>
+            <div className="flex flex-col w-full">
+              <Controller
+                control={control}
+                name="email"
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    className="lg:w-[590px] border border-[#8d8a8a] h-[55px] bg-transparent focus:bg-transparent font-bold"
+                    size="large"
+                    placeholder={t("EmailAddress")}
+                    {...field}
+                  />
+                )}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-[14px]">
+                  {errors.email.message}
+                </p>
               )}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-[14px]">{errors.email.message}</p>
-            )}
-            <Controller
-              control={control}
-              name="gender"
-              defaultValue=""
-              render={({ field }) => (
-                <Select
-                  placeholder={t("Gender")}
-                  allowClear
-                  optionFilterProp="label"
-                  className="h-[55px] w-full bg-transparent rounded-lg border border-[#8d8a8a] focus:bg-transparent lg:w-[590px]"
-                  onChange={(value) => field.onChange(value)}
-                  options={[
-                    { value: "male", label: t("Male") },
-                    { value: "female", label: t("Female") },
-                  ]}
-                />
+            </div>
+            <div className="flex flex-col w-full">
+              <Controller
+                control={control}
+                name="gender"
+                defaultValue=""
+                render={({ field }) => (
+                  <Select
+                    placeholder={t("Gender")}
+                    allowClear
+                    optionFilterProp="label"
+                    className="h-[55px] w-full bg-transparent rounded-lg border border-[#8d8a8a] focus:bg-transparent lg:w-[590px]"
+                    onChange={(value) => field.onChange(value)}
+                    options={[
+                      { value: "male", label: t("Male") },
+                      { value: "female", label: t("Female") },
+                    ]}
+                  />
+                )}
+              />
+              {errors.gender && (
+                <p className="text-red-500 text-[14px]">
+                  {errors.gender.message}
+                </p>
               )}
-            />
-            {errors.gender && (
-              <p className="text-red-500 text-[14px]">
-                {errors.gender.message}
-              </p>
-            )}
-            <div className="flex flex-col-reverse lg:flex-row-reverse w-full items-center justify-between gap-4">
+            </div>
+            <div
+              className={`flex flex-col-reverse ${
+                locale == "en" ? "lg:flex-row-reverse" : "lg:flex-row"
+              } w-full items-center justify-between gap-4`}
+            >
               <div className="w-full">
                 <Controller
                   control={control}
@@ -186,12 +224,17 @@ const RegisterPage = () => {
                   </p>
                 )}
               </div>
-              <CountrySelect
+              <CountryCodeSelect
                 control={control}
-                error={errors["country"]?.message as string}
-                name={"country"}
+                error={errors["country_code"]?.message as string}
+                name={"country_code"}
               />
             </div>
+            <CountrySelect
+              control={control}
+              error={errors["country"]?.message as string}
+              name={"country"}
+            />
             <Controller
               control={control}
               name="password"
@@ -225,7 +268,7 @@ const RegisterPage = () => {
               size="large"
               className="lg:w-[590px] w-full h-[55px] text-[26px]"
               htmlType="submit"
-              loading={loading}
+              loading={isSubmitting}
             >
               {t("CreateAccount")}
             </Button>
