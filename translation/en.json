@@ -95,7 +95,8 @@
         "LiveMeetings": "3 live group meetings with the instructor",
         "MeetingDuration": "Meeting duration ranges from 1 to 1.5 hours",
         "CommunitySupport": "Enjoy being part of a supportive and inspiring community",
-        "SubscribeNow": "Subscribe Now"
+        "SubscribeNow": "Subscribe Now",
+        "InsteadOf": "instead of"
     },
     "LeftSideCourseComp": {
         "Home": "Home",
