@@ -1,9 +1,8 @@
 import axiosInstance from "@/app/utils/axiosInstance";
-import { Course } from "@/interfaces";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
-export const fetchAllCourses = createAsyncThunk<Course[]>(
+export const fetchAllCourses = createAsyncThunk<SubscribedCourse[]>(
   "allCourses",
   async (_, { rejectWithValue }) => {
     // fetch all courses
@@ -25,13 +24,15 @@ export const fetchAllCourses = createAsyncThunk<Course[]>(
 );
 
 interface AllCoursesState {
-  courses: Course[];
+  courses: SubscribedCourse[];
+  currentCourse: SubscribedCourse | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AllCoursesState = {
   courses: [],
+  currentCourse: null,
   loading: false,
   error: null,
 };
@@ -39,7 +40,11 @@ const initialState: AllCoursesState = {
 const AllCourses = createSlice({
   name: "AllCourses",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentCourse: (state, action) => {
+      state.currentCourse = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllCourses.pending, (state) => {
@@ -58,3 +63,4 @@ const AllCourses = createSlice({
 });
 
 export default AllCourses.reducer;
+export const { setCurrentCourse } = AllCourses.actions;

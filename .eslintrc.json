@@ -1,3 +1,21 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+	"extends": "next/core-web-vitals",
+	"rules": {
+		"no-unused-vars": [
+			"error", // or "error"
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"caughtErrorsIgnorePattern": "^_"
+			}
+		]
+		// "@typescript-eslint/no-unused-vars": [
+		//   "warn", // or "error"
+		//   {
+		//     "argsIgnorePattern": "^_",
+		//     "varsIgnorePattern": "^_",
+		//     "caughtErrorsIgnorePattern": "^_"
+		//   }
+		// ]
+	}
 }

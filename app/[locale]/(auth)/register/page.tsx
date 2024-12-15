@@ -8,7 +8,7 @@ import logo from "@/assets/images/logo-mtn-blank.svg";
 import facebook from "@/assets/images/facebook.svg";
 import twitter from "@/assets/images/Twitter.svg";
 import google from "@/assets/images/google.svg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, message, Select } from "antd";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
@@ -24,6 +24,9 @@ import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
 import CountryCodeSelect from "@/app/components/auth/CountryCodeSelect";
 import { useCheckPhone } from "@/app/hooks/useCheckPhone";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import { TriggerLogin } from "@/app/utils/triggerLogin";
+import { setCookie } from "cookies-next";
+import { useAppDispatch } from "@/app/store/store";
 
 const RegisterPage = () => {
   const t = useTranslations("RegisterPage");
@@ -42,8 +45,10 @@ const RegisterPage = () => {
     resolver: yupResolver(validationSchema),
   });
 
+  const searchParams = useSearchParams();
   type RegisterFormData = yup.InferType<typeof validationSchema>;
-
+  const course_id = searchParams.get("course_id");
+  const dispatch = useAppDispatch();
   const onSubmit = async (data: RegisterFormData) => {
     const new_user = {
       ...data,
@@ -53,7 +58,6 @@ const RegisterPage = () => {
     };
 
     if (new_user.country_code) {
-      //@ts-expect-error country_code is not in RegisterFormData
       delete new_user.country_code;
     }
 
@@ -96,7 +100,22 @@ const RegisterPage = () => {
 
       if (response.status === 201 || response.status === 200) {
         message.success(t("RegistrationSuccess"));
-        router.push("/login");
+        // if (course_id && packages.some((p) => p.id == course_id)) {
+        if (course_id) {
+          TriggerLogin({
+            dispatch: dispatch,
+            message,
+            router,
+            course_id,
+            setCookie: setCookie,
+            user: {
+              email: new_user.email,
+              password: new_user.password,
+            },
+          });
+        } else {
+          router.push("/auth/login");
+        }
       } else {
         message.error(t("RegistrationFailed"));
       }
