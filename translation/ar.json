@@ -95,7 +95,8 @@
         "LiveMeetings": "٣ لقاءات جماعية مباشرة مع الدكتور",
         "MeetingDuration": "مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف",
         "CommunitySupport": "استمتع بالتواجد في مجتمع داعم ومؤثر وبيئة ملهمة",
-        "SubscribeNow": "اشترك الآن"
+        "SubscribeNow": "اشترك الآن",
+        "InsteadOf": "بدلا من"
     },
     "LeftSideCourseComp": {
         "Home": "الصفحة الرئيسية",
@@ -216,7 +217,7 @@
             "CourseContent": "محتوى الكورس",
             "Intro": "مقدمة",
             "End": "نهاية",
-            "Gifts": "الهدايا",
+            "Gifts": "المسجلة",
             "CourseVideos": "الكورس"
         }
     },
