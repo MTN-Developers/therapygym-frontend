@@ -1,10 +1,6 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import clockIcon from "@/assets/images/Clock@2x.svg";
-import dollarIcon from "@/assets/images/CurrencyDollarSimple.svg";
-import cupIcon from "@/assets/images/Trophy.svg";
-import tvIcon from "@/assets/images/tv.png";
 import alertIcon from "@/assets/images/Alarm.svg";
 import { Button, Modal, Tooltip } from "antd";
 import Close from "@/assets/components/Close";
@@ -14,7 +10,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { IoCalendarOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoClose, IoTvOutline } from "react-icons/io5";
+import dynamic from "next/dynamic";
+import Trophy from "@/assets/svgs/Trophy";
+import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
+import Clock from "@/assets/svgs/Clock@2x";
+import Play from "@/assets/svgs/Play";
+const PlyrVideo = dynamic(
+  () => import("@/app/components/classroom/PlyrVideo"),
+  {
+    ssr: false,
+  }
+);
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [loading, setLoading] = React.useState(false);
@@ -22,6 +29,13 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const router = useRouter();
   const t = useTranslations("RightSideCourseComp");
   const { locale } = useTranslationContext();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    return () => {
+      if (course?.status?.isSubscribed == false) setIsModalOpen(true);
+    };
+  }, [course?.status?.isSubscribed]);
 
   const handlePurchaseButton = () => {
     switch (course.type) {
@@ -47,8 +61,38 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
       router.push(`/classroom/${course.id}`);
     }, 2000);
   };
+
+  const handlePlayVideo = () => {
+    setIsModalOpen(true);
+  };
+
+  console.log(isModalOpen, "isModalOpen");
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
+      {isModalOpen ? (
+        <Modal
+          width={1100}
+          rootClassName="banner-video-modal"
+          className="relative"
+          footer={null}
+          closeIcon={null}
+          open={isModalOpen}
+          onOk={() => setIsModalOpen(false)}
+          onCancel={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)}
+        >
+          <div
+            style={{
+              background: course?.primary_color,
+            }}
+            onClick={() => setIsModalOpen(false)}
+            className="absolute -top-[10px] -right-[10px] rounded-full z-50 cursor-pointer flex justify-between items-center px-2 py-2"
+          >
+            <IoClose color="#FFF" />
+          </div>
+          <PlyrVideo src={course?.promo_video as string} />
+        </Modal>
+      ) : null}
       {open_packages_modal && (
         <Modal
           closeIcon={<Close />}
@@ -64,7 +108,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           onCancel={() => setOpenPackagesModal(false)}
         >
           <div className="[font-family:Cairo] mt-4 flex flex-col w-full justify-center items-center">
-            <h2 className="text-white text-[62px] font-medium leading-[66px] mb-2">
+            <h2 className="text-white text-[22px] lg:text-[62px] font-medium leading-[33px] lg:leading-[66px] mb-2">
               {t("ChoosePackage")}
             </h2>
             <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
@@ -105,71 +149,92 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           }}
           className="w-full lg:h-[245px] mb-[12px] object-cover"
         />
+        {course?.promo_video ? (
+          <div
+            onClick={handlePlayVideo}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-full cursor-pointer hover:shadow-2xl "
+          >
+            <Play color={course?.primary_color} />
+          </div>
+        ) : null}
+        {/* <IoPlayCircleOutline  width={70} height={70} /> */}
       </div>
       <div className="w-full px-3 font-[pnu]">
         {/* <p className="font-bold mb-[12px]">{t("LifetimeAccess")}</p> */}
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={clockIcon} alt="icon" width={20} height={20} />
+            {<Clock color={course.primary_color} />}
+            {/* <Image src={clockIcon} alt="icon" width={20} height={20} /> */}
           </span>
           {t("MeetingTime")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <IoCalendarOutline color="#0D63D9" size={17} />
+            <IoCalendarOutline color={course?.primary_color} size={17} />
           </span>
           {t("LifetimeAccess")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={dollarIcon} alt="icon" width={20} height={20} />
+            <CurrencyDollarSimple color={course.primary_color} />
+            {/* <Image src={dollarIcon} alt="icon" width={20} height={20} /> */}
           </span>
           {t("MoneyBackGuarantee")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={cupIcon} alt="icon" width={20} height={20} />
+            <Trophy color={course.primary_color} />
           </span>
           {t("Certificate")}
         </p>
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <Image src={tvIcon} alt="icon" width={20} height={20} />
+            <IoTvOutline color={course?.primary_color} size={19} />
           </span>
           {t("MultiDeviceAccess")}
         </p>
         <div className="flex justify-between items-center mb-3">
-          <div>
-            <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
-              ${course.original_price}
-            </span>
+          {course?.original_price == course?.price_after_discount ? (
             <span className="text-2xl font-bold">
               ${course.price_after_discount}
             </span>
-          </div>
-          <div>
-            <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
-              <span className="text-[15px] font-bold mx-2">OFF</span>
-              <span>
-                {Math.round(
-                  ((course.original_price - course.price_after_discount) /
-                    course.original_price) *
-                    100
-                )}
-                %
+          ) : (
+            <div>
+              <span className="text-[#8C94A3] text-base font-normal line-through mx-2">
+                ${course.original_price}
               </span>
-            </button>
+              <span className="text-2xl font-bold">
+                ${course.price_after_discount}
+              </span>
+            </div>
+          )}
+          <div>
+            {course?.original_price == course?.price_after_discount ? null : (
+              <button className="flex items-center bg-[#e9eef4] text-red-400 px-3 py-2 text-xl rounded">
+                <span className="text-[15px] font-bold mx-2">OFF</span>
+                <span>
+                  {Math.round(
+                    ((course.original_price - course.price_after_discount) /
+                      course.original_price) *
+                      100
+                  )}
+                  %
+                </span>
+              </button>
+            )}
           </div>
         </div>
-        <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
-          <span>
-            <Image src={alertIcon} alt="icon" width={20} height={20} />
-          </span>
-          {t("DaysLeft")}
-        </p>
+        {course?.original_price == course?.price_after_discount ? null : (
+          <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
+            <span>
+              <Image src={alertIcon} alt="icon" width={20} height={20} />
+            </span>
+            {t("DaysLeft")}
+          </p>
+        )}
         <Button
           loading={loading}
-          className="w-full bg-[#017AFD] text-white text-xl rounded-lg h-[56px] mb-3"
+          className="w-full primary-bg text-white text-xl rounded-lg h-[56px] mb-3"
           onClick={
             course?.status?.isPurchased || course?.status?.isSubscribed
               ? handleRedirectToCourse

@@ -48,6 +48,7 @@ const RightSidebar = React.memo(
       },
     ];
 
+
     // Get the keys for all non-empty categories
     const activeKeys = videoCategories
       .filter((category) => category.data.length > 0)
