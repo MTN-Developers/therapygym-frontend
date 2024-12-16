@@ -20,28 +20,32 @@
   --main-color: #0d63d9;
 }
 
+/* side bar width */
 
-.primary-bg{
+.bar {
+  scrollbar-width: none;
+}
+.primary-bg {
   background-color: var(--main-color);
 }
-.border-primary{
+.border-primary {
   border: 1px solid var(--main-color) !important;
 }
-.color-primary{
+.color-primary {
   color: var(--main-color);
 }
 
-.ant-tabs-tab-btn{
+.ant-tabs-tab-btn {
   color: var(--main-color) !important ;
 }
 
-.primary-stroke{
+.primary-stroke {
   stroke-opacity: 1;
   stroke: var(--main-color);
   color: var(--main-color);
 }
 
-.ant-tabs-ink-bar{
+.ant-tabs-ink-bar {
   background-color: var(--main-color) !important;
 }
 
@@ -117,7 +121,7 @@ body {
 .custom-menu .ant-menu-item:hover {
   background: linear-gradient(
     to right,
-    var(--main-color),
+    var(--main-color)
   ); /* Adjusted gradient on hover */
   color: white !important; /* Ensure text remains visible */
 }
