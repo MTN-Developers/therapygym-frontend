@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import alertIcon from "@/assets/images/Alarm.svg";
+// import alertIcon fWrom "@/assets/images/Alarm.svg";
 import { Button, Modal, Tooltip } from "antd";
 import Close from "@/assets/components/Close";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -66,7 +66,6 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
     setIsModalOpen(true);
   };
 
-  console.log(isModalOpen, "isModalOpen");
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
       {isModalOpen ? (
@@ -193,7 +192,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           </span>
           {t("MultiDeviceAccess")}
         </p>
-        <div className="flex justify-between items-center mb-3">
+        {/* <div className="flex justify-between items-center mb-3">
           {course?.original_price == course?.price_after_discount ? (
             <span className="text-2xl font-bold">
               ${course.price_after_discount}
@@ -223,15 +222,15 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
               </button>
             )}
           </div>
-        </div>
-        {course?.original_price == course?.price_after_discount ? null : (
+        </div> */}
+        {/* {course?.original_price == course?.price_after_discount ? null : (
           <p className="flex items-center gap-2 font-bold text-[#e34444] mb-[12px] text-sm">
             <span>
               <Image src={alertIcon} alt="icon" width={20} height={20} />
             </span>
             {t("DaysLeft")}
           </p>
-        )}
+        )} */}
         <Button
           loading={loading}
           className="w-full primary-bg text-white text-xl rounded-lg h-[56px] mb-3"
@@ -245,10 +244,10 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
             ? t("ContinueYourJourney")
             : t("SubscribeNow")}
         </Button>
-        <p>
+        {/* <p>
           <span className="text-red-400 text-xs">{t("Note")}:</span>{" "}
           {t("RefundPolicy")}
-        </p>
+        </p> */}
       </div>
     </div>
   );
@@ -269,22 +268,7 @@ const PackageCard = ({
     locale == "ar"
       ? pkg.description_ar.split("\n").filter(Boolean)
       : pkg.description_en.split("\n");
-  console.log(description, "description");
-  let duration = "";
-  switch (pkg.duration) {
-    case 1:
-      duration = t("Monthly");
-      break;
-    case 3:
-      duration = t("ThreeMonths");
-      break;
-    case 6:
-      duration = t("SixMonths");
-      break;
-    case 12:
-      duration = t("Yearly");
-      break;
-  }
+  // console.log(description, "description");
 
   let packageDuration = "";
   switch (pkg.duration) {
@@ -315,7 +299,12 @@ const PackageCard = ({
       {/* Price */}
       <h1 className="text-blue-800 text-4xl font-bold mb-4">
         ${pkg.price_after_discount}
-        <span className="text-lg font-normal">/{duration}</span>
+        {pkg.original_price == pkg.price_after_discount ? null : (
+          <span className="text-lg font-normal">
+            <span className="mx-1">{t("InsteadOf")}</span>
+            {pkg.original_price}$
+          </span>
+        )}
       </h1>
 
       {/* Subscription Content */}
