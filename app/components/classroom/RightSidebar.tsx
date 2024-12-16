@@ -11,7 +11,7 @@ import { RootState } from "@/app/store/store";
 
 interface IProps {
   chapters: ICourseVideosResponse | null;
-  handleVideoSelect: (video: IVideo) => void;
+  handleVideoSelect: (_video: IVideo) => void;
   currentVideo: IVideo | null;
 }
 
@@ -48,7 +48,6 @@ const RightSidebar = React.memo(
       },
     ];
 
-
     // Get the keys for all non-empty categories
     const activeKeys = videoCategories
       .filter((category) => category.data.length > 0)
@@ -69,11 +68,11 @@ const RightSidebar = React.memo(
           className={`fixed top-0 w-[80%] h-full lg:w-[495px]  bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
             isSidebarOpen
               ? locale == "en"
-                ? "translate-x-[-133%]"
+                ? "translate-x-[-200%]"
                 : " translate-x-[14%]  lg:translate-x-[33%]"
               : locale == "ar"
-              ? "translate-x-[133%]"
-              : "-translate-x-[14%]  lg:-translate-x-[33%]"
+              ? "translate-x-[200%]"
+              : "-translate-x-[14%]  lg:-translate-x-[30%]"
           }
         
         ${locale == "en" ? "left-0" : "right-0"}

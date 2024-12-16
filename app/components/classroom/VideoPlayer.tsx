@@ -3,9 +3,9 @@
 import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { RootState } from "@/app/store/store";
+import { RootState, useAppSelector } from "@/app/store/store";
 import RightSidebar from "@/app/components/classroom/RightSidebar";
 import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import { closeSidebar } from "@/app/store/slices/sidebarSlice";
@@ -26,19 +26,14 @@ MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
 interface IProps {
   src: IVideo;
   courseVideos: ICourseVideosResponse;
-  handleVideoSelect: (video: IVideo) => void;
+  handleVideoSelect: (_video: IVideo) => void;
   currentVideo: IVideo | null;
 }
 
 const VideoPlayer = React.memo(
-  ({
-    src,
-    currentVideo,
-    handleVideoSelect,
-    courseVideos,
-  }: IProps) => {
-    const isSidebarOpen = useSelector(
-      (state: RootState) => state.sidebar.isSidebarOpen
+  ({ src, currentVideo, handleVideoSelect, courseVideos }: IProps) => {
+    const { isSidebarOpen } = useAppSelector(
+      (state: RootState) => state.sidebar
     );
     const { locale } = useTranslationContext();
     const dispatch = useDispatch();
