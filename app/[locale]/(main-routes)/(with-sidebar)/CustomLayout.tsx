@@ -113,13 +113,12 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     // Skip the locale segment if present (e.g., "en" or "ar")
     const basePath =
       pathSegments.length > 1
-        ? `/${pathSegments[1]}`
-        : `/${pathSegments[0] || ""}`;
+        ? `/${locale}/${pathSegments[1]}`
+        : `/${locale}/${pathSegments[0] || ""}`;
 
     // Find the item whose link matches the base path
     const activeItem = items.find((item) => item.link === basePath);
 
-    console.log("Base path for active menu:", basePath);
     // Return the item ID or default to "1" (Home)
     return activeItem ? activeItem.id.toString() : "1";
   };

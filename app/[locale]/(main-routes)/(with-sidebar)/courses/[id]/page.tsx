@@ -12,6 +12,8 @@ import strokOne from "@/assets/images/Pattern.png";
 import strokTwo from "@/assets/images/Pattern-1.png";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import { useAppDispatch } from "@/app/store/store";
+import { setCurrentCourse } from "@/app/store/slices/allCoursesSlice";
 
 const Page = ({
   params,
@@ -28,7 +30,14 @@ const Page = ({
     data: course,
     error,
     isLoading,
-  } = useSWR<getCourse>(`/course/${id}`, getOne);
+  } = useSWR<getCourse>(`/course/${id}`, getOne, {
+    revalidateOnFocus: false,
+    onSuccess: (data) => {
+      dispatch(setCurrentCourse(data.data));
+    },
+  });
+
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     // Access the root element

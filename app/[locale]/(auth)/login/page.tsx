@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import loginBanner from "@/assets/images/login-banner.jpg";
 import loginBannerMob from "@/assets/images/login-banner-mob.png";
 import { Button, Input, message } from "antd";
@@ -25,7 +25,8 @@ const Page = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { locale } = useTranslationContext();
-  // console.log(locale);
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const t = useTranslations("Login");
 
@@ -46,7 +47,10 @@ const Page = () => {
           path: "/",
         });
         setCookie("user", resultAction.payload.user, { path: "/" });
-        router.push("/"); // Redirect to home page
+        // router.push("/"); // Redirect to home page
+        router.replace(`
+          ${redirect ? decodeURIComponent(redirect) : "/"}
+          `);
       } else {
         message.error("Login failed");
       }

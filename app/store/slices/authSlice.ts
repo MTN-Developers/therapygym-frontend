@@ -37,15 +37,14 @@ export const login = createAsyncThunk(
 
       console.log("response is ", response);
 
-      const { access_token, refresh_token, user, expires_at } =
-        response.data.data;
+      const { access_token, refresh_token, user } = response.data.data;
 
-      const tokenExpirey = new Date(expires_at).getTime();
+      // const tokenExpirey = new Date(expires_at).getTime();
 
-      // Store tokens and expiration
-      localStorage.setItem("accessToken", access_token);
-      localStorage.setItem("refreshToken", refresh_token);
-      localStorage.setItem("tokenExpiry", tokenExpirey.toString());
+      // // Store tokens and expiration
+      // localStorage.setItem("accessToken", access_token);
+      // localStorage.setItem("refreshToken", refresh_token);
+      // localStorage.setItem("tokenExpiry", tokenExpirey.toString());
 
       // console.log("localStorage", localStorage);
 

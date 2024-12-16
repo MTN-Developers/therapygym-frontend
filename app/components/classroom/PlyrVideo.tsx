@@ -1,7 +1,6 @@
 "use client";
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
-
 const PlyrVideo = ({ src }: { src: string }) => {
   return (
     <Plyr

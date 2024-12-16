@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/app/store/store";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { Dropdown, MenuProps } from "antd";
 import { usePathname, useRouter } from "next/navigation";
@@ -12,6 +13,9 @@ const ChangeLanguage = () => {
     const path = pathname.split("/").slice(2).join("/");
     router.push(`/${NewLocale}/${path}`);
   };
+  const useSelector = useAppSelector;
+
+  const { currentCourse } = useSelector((state) => state.allCourses);
 
   const items: MenuProps["items"] = [
     {
@@ -40,7 +44,10 @@ const ChangeLanguage = () => {
         trigger={["click"]}
         placement="bottomRight"
       >
-        <IoLanguageOutline color="#167bf3" size={20} />
+        <IoLanguageOutline
+          color={currentCourse?.primary_color || "#167bf3"}
+          size={20}
+        />
       </Dropdown>
     </div>
   );
