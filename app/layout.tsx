@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-page-custom-font */
-import { ConfigProvider } from "antd";
 import Providers from "./Providers";
 import "./globals.css";
 import { Metadata } from "next";
@@ -35,19 +34,10 @@ export default async function RootLayout({
 
         <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
       </head>
-      <ConfigProvider
-        theme={{
-          components: {
-            Breadcrumb: {
-              colorText: "blue",
-            },
-          },
-        }}
-      >
-        <body>
-          <Providers>{children}</Providers>
-        </body>
-      </ConfigProvider>
+
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

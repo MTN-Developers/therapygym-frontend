@@ -2,12 +2,14 @@
 
 import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { RootState } from "@/app/store/store";
 import RightSidebar from "@/app/components/classroom/RightSidebar";
 import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import { closeSidebar } from "@/app/store/slices/sidebarSlice";
+import { useTranslations } from "next-intl";
 
 const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
   ssr: false,
@@ -19,7 +21,9 @@ const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
 
 MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
 
-interface VideoPlayerProps {
+// interface VideoPlayerProps {
+
+interface IProps {
   src: IVideo;
   courseVideos: ICourseVideosResponse;
   handleVideoSelect: (video: IVideo) => void;
@@ -41,11 +45,11 @@ const VideoPlayer = React.memo(
 
     const getPlayerPositionClasses = () => {
       if (isSidebarOpen && locale === "ar") {
-        return "right-[350px] w-[77%]";
+        return "right-[350px] w-[76%]";
       }
 
       if (!isSidebarOpen && locale === "en") {
-        return "left-[350px] w-[77%]";
+        return "left-[350px] w-[76%]";
       }
 
       return "right-0 left-0";
