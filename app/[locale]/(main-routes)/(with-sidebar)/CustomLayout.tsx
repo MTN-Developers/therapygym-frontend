@@ -185,6 +185,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 style={{
                   // background: "#=",
                   borderRight: "none",
+                  height: "100vh",
                 }}
               >
                 {items.map((item) => (

@@ -1,24 +1,39 @@
+/* eslint-disable no-unused-vars */
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../assets/images/search-icon.svg";
-import billIcon from "../../assets/images/bill-icon.svg";
-import messageIcon from "../../assets/images/message-icon.svg";
-import menuIcon from "@/assets/images/menu-icon.svg";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import ChangeLanguage from "./shared/ChangeLanguage";
 import { useTranslations } from "next-intl";
 import { Dropdown } from "antd";
+import useSWR from "swr";
+import { getOne } from "@/services/server";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/slices/authSlice";
+import { useRouter } from "next/navigation";
+import MessageIcon from "@/assets/svgs/message-icon";
+import { useAppSelector } from "../store/store";
+import MenuIcon from "@/assets/svgs/MenuIcon";
+import BillIcon from "@/assets/svgs/BillIcon";
 
 export default function CustomHeader({
   setCollapsed,
 }: {
-  setCollapsed: (collapsed: boolean) => void;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [search, setSearch] = useState("");
   const { locale } = useTranslationContext();
   const t = useTranslations("Header");
+  const { data } = useSWR<getUserProfile>("/user/me", getOne);
+  const logout_T = useTranslations("Logout");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
+  const handleLogOut = () => {
+    dispatch(logout());
+    router.push("/login");
+  };
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
 
@@ -27,20 +42,18 @@ export default function CustomHeader({
     const value = e.target.value;
     setSearch(value);
   }
+
+  const useSelector = useAppSelector;
+  const { currentCourse } = useSelector((state) => state.allCourses);
   // # end handlers
 
   return (
     <div className="flex justify-between  lg:ps-0">
-      <div className="relative flex items-center gap-2 rounded-lg">
-        <Image
-          width={24}
-          height={24}
-          src={menuIcon}
-          className="cursor-pointer"
-          alt="menu icon"
-          //@ts-expect-error onClick is not a valid prop for Button
-          onClick={() => setCollapsed((prev: boolean) => !prev)}
-        />
+      <div
+        onClick={() => setCollapsed((prev: boolean) => !prev)}
+        className="relative flex items-center gap-2 rounded-lg"
+      >
+        <MenuIcon color={currentCourse?.primary_color} />
         <div
           className={`absolute 
             ${locale == "ar" ? "left-5" : "right-5"}
@@ -61,10 +74,11 @@ export default function CustomHeader({
         />
       </div>
       <div className="flex gap-2">
-        <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
-          <Image src={billIcon} alt="bill" width={20} height={20} />
+        <div className="flex cursor-pointer items-center content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
+          {/* <Image src={billIcon} alt="bill" width={20} height={20} /> */}
+          <BillIcon color={currentCourse?.primary_color} />
         </div>
-        <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
+        <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           <Dropdown
             menu={{
               items: [
@@ -74,11 +88,47 @@ export default function CustomHeader({
             trigger={["click"]}
             placement="bottomRight"
           >
-            <Image src={messageIcon} alt="message" width={20} height={20} />
+            <MessageIcon color={currentCourse?.primary_color || "#0573F6"} />
+            {/* <Image src={messageIcon} alt="message" width={20} height={20} /> */}
           </Dropdown>
         </div>
 
         <ChangeLanguage />
+        {/* <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]"> */}
+        <div
+          className={`flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px] `}
+        >
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: "1",
+                  label: `${logout_T("Logout")}`,
+                  onClick: () => handleLogOut(),
+                  style: {
+                    fontFamily: locale == "ar" ? "Cairo" : "Inter",
+                  },
+                },
+              ],
+            }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Image
+              src={
+                data?.data?.profile?.avatar
+                  ? data?.data?.profile?.avatar
+                  : data?.data?.gender == "male"
+                  ? "/images/male.jpg"
+                  : "/images/female.jpg"
+              }
+              className="rounded-xl"
+              alt="user photo"
+              width={35}
+              height={35}
+            />
+          </Dropdown>
+        </div>
       </div>
     </div>
   );

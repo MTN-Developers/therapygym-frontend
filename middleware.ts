@@ -28,9 +28,15 @@ export function middleware(req: NextRequest) {
   );
 
   if (!accessToken && !isAuthRoute && isLocaleValid) {
-    const loginUrl = new URL(`/${locale}/login`, req.url);
-    const response = NextResponse.redirect(loginUrl);
     console.log("Redirecting to login page");
+    const pathnameWithoutLocale = pathname.replace(`/${locale}`, "");
+    // console.log(req.nextUrl.pathname, );
+    const redirectURL =
+      req.nextUrl.pathname === "/"
+        ? `/${locale}/login`
+        : `/login?redirect=${pathnameWithoutLocale}`;
+    const response = NextResponse.redirect(new URL(redirectURL, req.url));
+
     // Optionally delete cookies if needed
     response.cookies.delete("access_token");
     response.cookies.delete("refresh_token");

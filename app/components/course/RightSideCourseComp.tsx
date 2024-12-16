@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { IoCalendarOutline, IoTvOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoClose, IoTvOutline } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import Trophy from "@/assets/svgs/Trophy";
 import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
@@ -30,6 +30,12 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const t = useTranslations("RightSideCourseComp");
   const { locale } = useTranslationContext();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    return () => {
+      if (course?.status?.isSubscribed == false) setIsModalOpen(true);
+    };
+  }, [course?.status?.isSubscribed]);
 
   const handlePurchaseButton = () => {
     switch (course.type) {
@@ -66,6 +72,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         <Modal
           width={1100}
           rootClassName="banner-video-modal"
+          className="relative"
           footer={null}
           closeIcon={null}
           open={isModalOpen}
@@ -73,6 +80,15 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           onCancel={() => setIsModalOpen(false)}
           onClose={() => setIsModalOpen(false)}
         >
+          <div
+            style={{
+              background: course?.primary_color,
+            }}
+            onClick={() => setIsModalOpen(false)}
+            className="absolute -top-[10px] -right-[10px] rounded-full z-50 cursor-pointer flex justify-between items-center px-2 py-2"
+          >
+            <IoClose color="#FFF" />
+          </div>
           <PlyrVideo src={course?.promo_video as string} />
         </Modal>
       ) : null}

@@ -1,40 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
-import moment from "moment";
+// import React, { useState } from "react";
+// import { Calendar, momentLocalizer, Views } from "react-big-calendar";
+// import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { IEvent } from "@/interfaces";
+// import { IEvent } from "@/interfaces";
 
-interface IProps {
-  events: IEvent[] | undefined;
-}
+// interface IProps {
+//   events: IEvent[] | undefined;
+// }
 
-moment.locale("ar"); // Set moment locale to Arabic
-const localizer = momentLocalizer(moment);
+// moment.locale("ar"); // Set moment locale to Arabic
+// const localizer = momentLocalizer(moment);
 
-const CalendarComp = ({ events }: IProps) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+// const CalendarComp = ({ events }: IProps) => {
+const CalendarComp = () => {
+  // const [currentDate, setCurrentDate] = useState(new Date());
 
   // Custom messages for Arabic localization
-  const messages = {
-    allDay: "طوال اليوم",
-    previous: "السابق",
-    next: "التالي",
-    today: "اليوم",
-    month: "شهر",
-    week: "أسبوع",
-    day: "يوم",
-    agenda: "جدول",
-    date: "تاريخ",
-    time: "وقت",
-    event: "حدث",
-    noEventsInRange: "لا توجد أحداث في هذا النطاق.",
-    showMore: (total: number) => `+${total} أحداث أخرى`,
-  };
+  // const messages = {
+  //   allDay: "طوال اليوم",
+  //   previous: "السابق",
+  //   next: "التالي",
+  //   today: "اليوم",
+  //   month: "شهر",
+  //   week: "أسبوع",
+  //   day: "يوم",
+  //   agenda: "جدول",
+  //   date: "تاريخ",
+  //   time: "وقت",
+  //   event: "حدث",
+  //   noEventsInRange: "لا توجد أحداث في هذا النطاق.",
+  //   showMore: (total: number) => `+${total} أحداث أخرى`,
+  // };
 
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div>
+      {/* <div className="flex flex-col w-full gap-4">
       <Calendar
         localizer={localizer}
         date={currentDate}
@@ -46,6 +48,7 @@ const CalendarComp = ({ events }: IProps) => {
         messages={messages}
         culture="ar"
       />
+    </div> */}
     </div>
   );
 };
