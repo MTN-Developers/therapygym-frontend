@@ -300,7 +300,9 @@ const RegisterPage = () => {
               </div>
             </div>
             <Link
-              href={"/login"}
+              href={`/login/${
+                course_id ? `?redirect=/courses/${course_id}` : ""
+              }`}
               className="text-gray-700 w-full text-center hover:cursor-pointer hover:text-blue-600 underline"
             >
               {t("AlreadyHaveAccount")}{" "}
