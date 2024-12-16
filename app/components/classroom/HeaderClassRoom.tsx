@@ -8,15 +8,21 @@ import { IVideo } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import ChangeLanguage from "../shared/ChangeLanguage";
+import { useDispatch } from "react-redux";
+import { toggleSidebar } from "@/app/store/slices/sidebarSlice";
 
 interface IProps {
   video: IVideo | null;
-  handleToggleSidebar: () => void;
+  // handleToggleSidebar: () => void;
+  // toggleSidebar: boolean;
 }
 
-const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
+const HeaderClassRoom = React.memo(({ video }: IProps) => {
+  
   const router = useRouter();
   const { locale } = useTranslationContext();
+  const dispatch = useDispatch();
+
   //handlers
   const handleGoHome = () => {
     router.push("/");
@@ -43,7 +49,7 @@ const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
           width={24}
           height={24}
           className="w-6 h-6 cursor-pointer"
-          onClick={handleToggleSidebar}
+          onClick={() => dispatch(toggleSidebar())}
         />
         <p className="mx-6">
           {locale == "ar" ? video?.title_ar : video?.title_en}{" "}
@@ -58,6 +64,9 @@ const HeaderClassRoom = ({ video, handleToggleSidebar }: IProps) => {
       </div>
     </div>
   );
-};
+})
+
+HeaderClassRoom.displayName = "HeaderClassRoom";
+
 
 export default HeaderClassRoom;
