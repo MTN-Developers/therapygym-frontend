@@ -66,7 +66,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const handlePlayVideo = () => {
     setIsModalOpen(true);
   };
-
+  console.log(course.packages, "course.packages");
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
       {isModalOpen ? (
@@ -123,8 +123,8 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
                 slidesPerView={"auto"}
                 className="w-full h-fit"
               >
-                {course.packages
-                  ?.sort(
+                {[...(course.packages || [])] // Create a new array using spread operator
+                  .sort(
                     (a, b) => a.price_after_discount - b.price_after_discount
                   )
                   .map((pkg, idx) => (
