@@ -4,7 +4,6 @@ import sidebarReducer from "./slices/sidebarSlice";
 import authReducer from "./slices/authSlice";
 import allCoursesReducer from "./slices/allCoursesSlice";
 import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
-// import playSubscribedCourseReducer from "./slices/playSubscribedCoursesSlice";
 import courseVideosReducer from "./slices/courseVideosSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   allCourses: allCoursesReducer,
   sidebar: sidebarReducer,
 
-  // playSubscribedCourse: playSubscribedCourseReducer,
   courseVideos: courseVideosReducer,
   // Add other reducers here
 });

@@ -29,18 +29,18 @@ export interface User {
   reset_token: string | null;
   reset_token_expires: string | null;
   refresh_token: string;
-  role: UserRole;
+  // role: UserRole;
   updated_at: string; // Consider using Date if you parse it
   created_at: string; // Consider using Date if you parse it
   deleted_at: string | null;
 }
 
 // Optional: Define an enum for user roles if there are limited roles
-export enum UserRole {
-  Admin = "admin",
-  User = "user",
-  // Add other roles as needed
-}
+// export enum UserRole {
+//   Admin = "admin",
+//   User = "user",
+//   // Add other roles as needed
+// }
 
 export interface Credentials {
   email: string;

@@ -9,7 +9,7 @@ import { RootState } from "@/app/store/store";
 import RightSidebar from "@/app/components/classroom/RightSidebar";
 import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import { closeSidebar } from "@/app/store/slices/sidebarSlice";
-import { useTranslations } from "next-intl";
+// import { useTranslations } from "next-intl";
 
 const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
   ssr: false,
@@ -36,7 +36,7 @@ const VideoPlayer = React.memo(
     currentVideo,
     handleVideoSelect,
     courseVideos,
-  }: VideoPlayerProps) => {
+  }: IProps) => {
     const isSidebarOpen = useSelector(
       (state: RootState) => state.sidebar.isSidebarOpen
     );
