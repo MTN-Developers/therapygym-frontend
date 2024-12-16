@@ -33,9 +33,10 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
 
   React.useEffect(() => {
     return () => {
-      if (course?.status?.isSubscribed == false) setIsModalOpen(true);
+      if (course?.status?.isSubscribed == false && course?.promo_video)
+        setIsModalOpen(true);
     };
-  }, [course?.status?.isSubscribed]);
+  }, [course?.status?.isSubscribed, course?.promo_video]);
 
   const handlePurchaseButton = () => {
     switch (course.type) {
