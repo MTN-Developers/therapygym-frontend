@@ -29,17 +29,17 @@ const RightSidebar = React.memo(
       {
         key: "introVideos",
         title: t("Intro"),
-        data: chapters?.data.introVideos.data || [],
+        data: chapters?.data.introVideos || [],
       },
       {
         key: "endVideos",
         title: t("End"),
-        data: chapters?.data.endVideos.data || [],
+        data: chapters?.data.endVideos || [],
       },
       {
         key: "giftVideos",
         title: t("Gifts"),
-        data: chapters?.data.giftVideos?.data || [],
+        data: chapters?.data.giftVideos || [],
       },
       {
         key: "packageVideos",
@@ -50,7 +50,9 @@ const RightSidebar = React.memo(
 
     // Get the keys for all non-empty categories
     const activeKeys = videoCategories
-      .filter((category) => category.data.length > 0)
+      .filter(
+        (category) => Array.isArray(category.data) && category.data.length > 0
+      )
       .map((category) => category.key);
 
     return (
@@ -88,6 +90,7 @@ const RightSidebar = React.memo(
             </p>
             {videoCategories.map(
               (category) =>
+                Array.isArray(category.data) &&
                 category.data.length > 0 && (
                   <Panel
                     key={category.key}
