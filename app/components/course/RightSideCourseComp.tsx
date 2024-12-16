@@ -66,7 +66,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const handlePlayVideo = () => {
     setIsModalOpen(true);
   };
-  console.log(course.packages, "course.packages");
+  // console.log(course.packages, "course.packages");
   return (
     <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
       {isModalOpen ? (
