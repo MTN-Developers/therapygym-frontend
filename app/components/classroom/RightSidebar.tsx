@@ -48,6 +48,11 @@ const RightSidebar = React.memo(
       },
     ];
 
+    // Get the keys for all non-empty categories
+    const activeKeys = videoCategories
+      .filter((category) => category.data.length > 0)
+      .map((category) => category.key);
+
     return (
       <>
         {/* Backdrop */}
@@ -60,7 +65,7 @@ const RightSidebar = React.memo(
 
         {/* Sidebar */}
         <div
-          className={`fixed top-0 w-[80%] lg:h-full lg:w-[495px] h-screen bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
+          className={`fixed top-0 w-[80%] h-full lg:w-[495px]  bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
             isSidebarOpen
               ? locale == "en"
                 ? "translate-x-[-133%]"
@@ -68,18 +73,16 @@ const RightSidebar = React.memo(
               : locale == "ar"
               ? "translate-x-[133%]"
               : "-translate-x-[14%]  lg:-translate-x-[33%]"
-            // ? locale == "en"
-            //   ? "translate-x-[150px]"
-            //   : "translate-x-[-150px]"
-            // : locale == "en"
-            // ? "translate-x-[-200%]"
-            // : "translate-x-[200%]"
           }
         
         ${locale == "en" ? "left-0" : "right-0"}
         `}
         >
-          <Collapse accordion bordered={false} expandIconPosition="end">
+          <Collapse
+            bordered={false}
+            expandIconPosition="end"
+            defaultActiveKey={activeKeys} // Set the default expanded panels
+          >
             <p className="text-white font-[pnu] px-6 my-4 text-xl">
               {t("CourseContent")}
             </p>
