@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import { IVideo } from "@/interfaces";
 import HeaderClassRoom from "@/app/components/classroom/HeaderClassRoom";
-import RightSidebar from "@/app/components/classroom/RightSidebar";
 import { Tabs, TabsProps } from "antd";
 import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
 import VideoPlayer from "@/app/components/classroom/VideoPlayer";
@@ -20,7 +19,7 @@ import { useTranslationContext } from "@/contexts/TranslationContext";
 
 const Page = () => {
   const t = useTranslations("ClassroomPage");
-  const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
+  // const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
   const params = useParams();
   const courseId = params.id as string;
   const { data } = useSWR<getCourse>(`course/${courseId}`, getOne);
@@ -82,36 +81,32 @@ const Page = () => {
     dispatch(setCurrentVideo(video));
   };
 
-  const handleToggleSidebar = () => {
-    setToggleSidebar((prev) => !prev);
-  };
+  // const handleToggleSidebar = () => {
+  //   setToggleSidebar((prev) => !prev);
+  // };
 
   useEffect(() => {
     dispatch(fetchCourseVideos(courseId));
   }, [courseId, dispatch]);
 
- 
-
   return (
     <div className="overflow-x-hidden">
       <HeaderClassRoom
         video={currentVideo}
-        handleToggleSidebar={handleToggleSidebar}
+        // handleToggleSidebar={handleToggleSidebar}
+        // toggleSidebar={toggleSidebar}
       />
 
       {courseVideos ? (
-        <VideoPlayer src={currentVideo!} />
+        <VideoPlayer
+          src={currentVideo!}
+          handleVideoSelect={handleVideoSelect}
+          courseVideos={courseVideos}
+          currentVideo={currentVideo}
+        />
       ) : (
         <p>{t("CourseNotFound")}</p>
       )}
-
-      <RightSidebar
-        toggleSidebar={toggleSidebar}
-        chapters={courseVideos}
-        handleVideoSelect={handleVideoSelect}
-        handleToggleSidebar={handleToggleSidebar}
-        currentVideo={currentVideo}
-      />
 
       <div className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30">
         <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />

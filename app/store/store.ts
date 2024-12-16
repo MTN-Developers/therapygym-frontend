@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
+import sidebarReducer from "./slices/sidebarSlice";
 import authReducer from "./slices/authSlice";
 import allCoursesReducer from "./slices/allCoursesSlice";
 import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
@@ -12,6 +13,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   subscribedCourses: subscribedCoursesSliceReducer,
   allCourses: allCoursesReducer,
+  sidebar: sidebarReducer,
+
   // playSubscribedCourse: playSubscribedCourseReducer,
   courseVideos: courseVideosReducer,
   // Add other reducers here
