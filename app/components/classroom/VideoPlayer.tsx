@@ -40,11 +40,11 @@ const VideoPlayer = React.memo(
 
     const getPlayerPositionClasses = () => {
       if (isSidebarOpen && locale === "ar") {
-        return "right-[350px] w-[75%]";
+        return "right-[350px] w-[74%]";
       }
 
       if (!isSidebarOpen && locale === "en") {
-        return "left-[350px] w-[75%]";
+        return "left-[350px] w-[74%]";
       }
 
       return "right-0 left-0";

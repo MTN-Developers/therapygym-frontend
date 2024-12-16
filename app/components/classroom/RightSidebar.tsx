@@ -67,7 +67,7 @@ const RightSidebar = React.memo(
 
         {/* Sidebar */}
         <div
-          className={`fixed top-0 w-[80%] h-full lg:w-[495px]  bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
+          className={`fixed top-0 w-[80%] h-full lg:w-[495px] overflow-scroll bar  bg-[#2d2f31] transition-transform duration-300 text-white font-[pnu] z-50 ${
             isSidebarOpen
               ? locale == "en"
                 ? "translate-x-[-200%]"
