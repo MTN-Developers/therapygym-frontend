@@ -31,8 +31,9 @@ export function middleware(req: NextRequest) {
     console.log("Redirecting to login page");
     const pathnameWithoutLocale = pathname.replace(`/${locale}`, "");
     // console.log(req.nextUrl.pathname, );
+
     const redirectURL =
-      req.nextUrl.pathname === "/"
+      req.nextUrl.pathname == `/${locale}`
         ? `/${locale}/login`
         : `/login?redirect=${pathnameWithoutLocale}`;
     const response = NextResponse.redirect(new URL(redirectURL, req.url));

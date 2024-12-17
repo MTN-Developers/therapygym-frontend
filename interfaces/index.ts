@@ -162,6 +162,7 @@ export interface IVideo {
   title_ar: string;
   title_en: string;
   video_url: string;
+  video_path: string;
   updated_at: string;
   created_at: string;
   deleted_at: string | null;

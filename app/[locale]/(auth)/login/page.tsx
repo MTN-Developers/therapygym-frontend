@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
 import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
+import axiosInstance from "@/app/utils/axiosInstance";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -27,6 +28,7 @@ const Page = () => {
   const { locale } = useTranslationContext();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
+  const package_id = searchParams.get("package_id");
 
   const t = useTranslations("Login");
 
@@ -47,6 +49,20 @@ const Page = () => {
           path: "/",
         });
         setCookie("user", resultAction.payload.user, { path: "/" });
+
+        if (package_id) {
+          try {
+            const { data } = await axiosInstance.post(
+              "/user-compensation-request",
+              {
+                package_id: package_id,
+              }
+            );
+            console.log(data);
+          } catch (e) {
+            console.log(e);
+          }
+        }
         // router.push("/"); // Redirect to home page
         router.replace(`
           ${redirect ? decodeURIComponent(redirect) : "/"}
