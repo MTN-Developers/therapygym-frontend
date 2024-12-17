@@ -6,10 +6,13 @@ export const useValidationSchema = () => {
 
   return Yup.object().shape({
     name: Yup.string().required(t("NameRequired")),
-    email: Yup.string().email(t("InvalidEmail")).required(t("EmailRequired")),
+    email: Yup.string().email(t("InvalidEmail")),
     password: Yup.string()
       .min(8, t("PasswordMin"))
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/, t("PasswordPattern"))
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+        t("PasswordPattern")
+      )
       .required(t("PasswordRequired")),
     gender: Yup.string()
       .required(t("GenderRequired"))
