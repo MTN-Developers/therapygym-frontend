@@ -120,10 +120,20 @@ const RegisterPage = () => {
         message.error(t("RegistrationFailed"));
       }
     } catch (error: unknown) {
-      console.error("Registration error:", error);
       if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.error;
-        message.error(errorMessage || t("UnexpectedError"));
+        console.log("test");
+        if (error.response?.data?.errors) {
+          const errors = error.response?.data?.errors;
+          for (const key in errors) {
+            const errorMessages = errors[key];
+            errorMessages.forEach((msg) => {
+              message.error(`Error for ${key}: ${msg}`);
+            });
+          }
+        } else {
+          const errorMessage = error.response?.data?.error;
+          message.error(errorMessage || t("UnexpectedError"));
+        }
       } else {
         message.error(t("UnexpectedError"));
       }
