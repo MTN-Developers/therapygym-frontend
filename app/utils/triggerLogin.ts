@@ -35,6 +35,10 @@ export const TriggerLogin = async ({
       });
       setCookie("user", resultAction.payload.user, { path: "/" });
 
+      if (course_id) {
+        router.push(`/courses/${course_id}`);
+      }
+
       if (package_id) {
         try {
           const { data } = await axiosInstance.post(
@@ -44,12 +48,11 @@ export const TriggerLogin = async ({
             }
           );
           console.log(data);
+          router.push(`/`);
         } catch (e) {
           console.log(e);
         }
       }
-      // router.push("/"); // Redirect to home page
-      router.push(`/courses/${course_id}`);
     } else {
       message.error("Login failed");
     }

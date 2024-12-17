@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 
 import { useDispatch } from "react-redux";
 import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -11,20 +11,20 @@ import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import { closeSidebar } from "@/app/store/slices/sidebarSlice";
 // import { useTranslations } from "next-intl";
 
-// const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
-//   ssr: false,
-// });
+const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
+  ssr: false,
+});
 
-// const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
-//   <PlyrVideo src={src} />
-// ));
 const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
-  <iframe
-    key={src}
-    className="w-full h-full"
-    src={`https://managethenow.net/video-player-config/?stream#${src}`}
-  />
+  <PlyrVideo src={src} />
 ));
+// const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
+//   <iframe
+//     key={src}
+//     className="w-full h-full"
+//     src={`https://managethenow.net/video-player-config/?stream#${src}`}
+//   />
+// ));
 
 MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
 

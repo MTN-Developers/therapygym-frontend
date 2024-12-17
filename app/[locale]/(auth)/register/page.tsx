@@ -101,12 +101,12 @@ const RegisterPage = () => {
       if (response.status === 201 || response.status === 200) {
         message.success(t("RegistrationSuccess"));
         // if (course_id && packages.some((p) => p.id == course_id)) {
-        if (course_id) {
+        if (course_id || package_id) {
           TriggerLogin({
             dispatch: dispatch,
             message,
             router,
-            course_id,
+            ...(course_id ? { course_id: course_id } : {}), // if course_id exists, add it to the object
             setCookie: setCookie,
             ...(package_id
               ? {
