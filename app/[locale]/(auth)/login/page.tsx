@@ -145,7 +145,7 @@ const Page = () => {
               </div>
             </div> */}
             <Link
-              href={"/register"}
+              href={`/register${package_id ? `?package_id=${package_id}` : ""}`}
               className=" text-gray-500 text-sm text-center  hover:cursor-pointer mb-10 hover:text-blue-600 underline"
             >
               {t("Dont have an account?")} |{" "}
