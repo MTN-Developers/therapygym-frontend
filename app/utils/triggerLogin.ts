@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { login } from "../store/slices/authSlice";
+import axiosInstance from "./axiosInstance";
 // import { setUser } from '@/store/user/userSlice';
 
 export const TriggerLogin = async ({
@@ -9,6 +10,7 @@ export const TriggerLogin = async ({
   setCookie,
   router,
   course_id,
+  package_id,
 }: {
   dispatch: any;
   user: any;
@@ -16,6 +18,7 @@ export const TriggerLogin = async ({
   setCookie: any;
   router: any;
   course_id?: string;
+  package_id?: string;
 }) => {
   try {
     const resultAction = await dispatch(
@@ -31,6 +34,20 @@ export const TriggerLogin = async ({
         path: "/",
       });
       setCookie("user", resultAction.payload.user, { path: "/" });
+
+      if (package_id) {
+        try {
+          const { data } = await axiosInstance.post(
+            "/user-compensation-request",
+            {
+              package_id: package_id,
+            }
+          );
+          console.log(data);
+        } catch (e) {
+          console.log(e);
+        }
+      }
       // router.push("/"); // Redirect to home page
       router.push(`/courses/${course_id}`);
     } else {
