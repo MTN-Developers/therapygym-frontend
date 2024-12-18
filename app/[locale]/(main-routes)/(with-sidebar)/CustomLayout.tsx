@@ -94,11 +94,17 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   const getActiveMenuItem = () => {
     const pathSegments = pathname.split("/").filter(Boolean);
-    const basePath =
-      pathSegments.length > 1
-        ? `/${locale}/${pathSegments[1]}`
-        : `/${locale}/${pathSegments[0] || ""}`;
-    const activeItem = items.find((item) => item.link === basePath);
+
+    // Join all path segments after the locale back together to get the full route
+    const fullPathAfterLocale = pathSegments.slice(1).join("/");
+    const fullPath = `/${locale}/${fullPathAfterLocale}`;
+    // console.log(fullPath);
+
+    const fristPath = fullPath.split("/")[2];
+
+    console.log("frist path", fristPath);
+
+    const activeItem = items.find((item) => item.link === fullPath);
     return activeItem ? activeItem.id.toString() : "1";
   };
 
@@ -230,22 +236,22 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               flexDirection: "column",
             }}
           >
-            {isHeaderVisible && (
-              <Header
-                style={{
-                  background: colorBgContainer,
-                  height: "66px",
-                  display: "flex",
-                  alignItems: "center",
-                  paddingTop: "20px",
-                  paddingBottom: "20px",
-                  justifyContent: "space-between",
-                  paddingInline: "0px",
-                }}
-              >
-                <CustomHeader setCollapsed={setCollapsed} />
-              </Header>
-            )}
+            {/* {isHeaderVisible && ( */}
+            <Header
+              style={{
+                background: colorBgContainer,
+                height: "66px",
+                display: "flex",
+                alignItems: "center",
+                paddingTop: "20px",
+                paddingBottom: "20px",
+                justifyContent: "space-between",
+                paddingInline: "0px",
+              }}
+            >
+              <CustomHeader setCollapsed={setCollapsed} />
+            </Header>
+            {/* )} */}
             <Content
               style={{
                 flex: 1,
