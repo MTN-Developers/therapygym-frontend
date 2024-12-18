@@ -82,6 +82,8 @@ const Page = () => {
 export default Page;
 
 const UserInfo = ({ user }) => {
+
+  
   /* socials */
   const socialIcons = [
     {

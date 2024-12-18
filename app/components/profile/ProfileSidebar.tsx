@@ -83,11 +83,12 @@ const ProfileSidebar: React.FC = () => {
       className={`
         sticky 
         top-0 
-        ${isSidebarOpen ? "w-[240px]" : "w-[58px]"}
+        ${isSidebarOpen ? "!w-[240px]" : "w-[58px]"}
         p-1 
         bg-white 
         shadow-md 
         transition-width 
+        flex-shrink-0
         duration-300 
         overflow-y-auto 
         h-screen

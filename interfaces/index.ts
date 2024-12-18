@@ -5,20 +5,6 @@ export interface MenuItem {
   link: string; // Path
 }
 
-// export interface User {
-//   id: number;
-//   email: string;
-//   name: string;
-//   phone: string;
-//   work: string;
-//   city: string;
-//   nationality: string;
-//   birthdate: string;
-//   accessToken: string;
-//   refreshToken: string;
-//   accessTokenExpires: string | number;
-// }
-
 export interface User {
   id: string;
   name: string;
@@ -29,18 +15,17 @@ export interface User {
   reset_token: string | null;
   reset_token_expires: string | null;
   refresh_token: string;
+  bio: string | null;
+  date_of_birth: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  twitter: string | null;
+  linkedin: string | null;
   // role: UserRole;
   updated_at: string; // Consider using Date if you parse it
   created_at: string; // Consider using Date if you parse it
   deleted_at: string | null;
 }
-
-// Optional: Define an enum for user roles if there are limited roles
-// export enum UserRole {
-//   Admin = "admin",
-//   User = "user",
-//   // Add other roles as needed
-// }
 
 export interface Credentials {
   email: string;
@@ -86,11 +71,11 @@ export interface SubscribedCourseApi {
   calendar_image: string;
 }
 
-// export interface IVideo {
-//   id: number;
-//   title: string;
-//   url: string;
-// }
+  // export interface IVideo {
+  //   id: number;
+  //   title: string;
+  //   url: string;
+  // }
 
 export interface IChapter {
   id: number;
