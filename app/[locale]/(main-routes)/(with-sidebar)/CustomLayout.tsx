@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";.
+// import { CiStreamOn } from "react-icons/ci";
 import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
@@ -35,14 +36,21 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       label: t("Home"),
       icon: homeIcon,
       link: `/${locale}`,
+      iconType: "img",
     },
     {
       id: 2,
       label: t("Courses"),
-
       icon: coursesIcon,
       link: `/${locale}/courses`,
     },
+    // {
+    //   id: 6,
+    //   label: t("LiveStream"),
+    //   icon: <CiStreamOn size={25} className="animate-pulse ml-2" />,
+    //   iconType: "component",
+    //   link: `/${locale}/live-stream/`,
+    // },
     {
       id: 3,
       label: t("Calendar"),
@@ -189,14 +197,18 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               >
                 {items.map((item) => (
                   <Menu.Item key={item.id.toString()} className="flex">
-                    <Link href={item.link}>
-                      <Image
-                        src={item.icon}
-                        alt={`${item.label} icon`}
-                        width={20}
-                        height={20}
-                        className="inline me-4"
-                      />
+                    <Link href={item.link} className="flex items-center">
+                      {item.iconType === "component" ? (
+                        <div>{item.icon}</div>
+                      ) : (
+                        <Image
+                          src={item.icon}
+                          alt={`${item.label} icon`}
+                          width={20}
+                          height={20}
+                          className="inline me-4"
+                        />
+                      )}
                       {item.label}
                     </Link>
                   </Menu.Item>

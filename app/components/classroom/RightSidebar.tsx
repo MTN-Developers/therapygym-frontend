@@ -29,22 +29,22 @@ const RightSidebar = React.memo(
       {
         key: "introVideos",
         title: t("Intro"),
-        data: chapters?.data.introVideos || [],
+        data: chapters?.data?.introVideos || [],
       },
       {
         key: "endVideos",
         title: t("End"),
-        data: chapters?.data.endVideos || [],
+        data: chapters?.data?.endVideos || [],
       },
       {
         key: "giftVideos",
         title: t("Gifts"),
-        data: chapters?.data.giftVideos || [],
+        data: chapters?.data?.giftVideos || [],
       },
       {
         key: "packageVideos",
         title: t("CourseVideos"),
-        data: chapters?.data.packageVideos || [],
+        data: chapters?.data?.packageVideos || [],
       },
     ];
 
