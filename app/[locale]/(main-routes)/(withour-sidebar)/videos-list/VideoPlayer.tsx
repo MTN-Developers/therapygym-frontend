@@ -20,7 +20,6 @@ const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
 ));
 
 MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
-// interface VideoPlayerProps {
 
 interface IProps {
   src: IVideo;

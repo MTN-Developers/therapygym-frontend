@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 
 import { useDispatch } from "react-redux";
 import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -11,22 +11,12 @@ import { ICourseVideosResponse, IVideo } from "@/interfaces";
 import { closeSidebar } from "@/app/store/slices/sidebarSlice";
 // import { useTranslations } from "next-intl";
 
-// const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
-//   ssr: false,
-// });
+const PlyrVideo = dynamic(() => import("./PlyrVideo"), {
+  ssr: false,
+});
 
-// const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
-//   <PlyrVideo src={src} />
-// ));
 const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
-  <iframe
-    allowFullScreen
-    allow="autoplay; fullscreen; picture-in-picture pip"
-    key={src}
-    className="w-full h-full"
-    src={`https://managethenow.net/video-player-config/?stream#${src}`}
-    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-  ></iframe>
+  <PlyrVideo src={src} />
 ));
 
 MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
@@ -78,7 +68,7 @@ const VideoPlayer = React.memo(
           `}
           >
             {src ? (
-              <MemoizedPlyrVideo src={src.video_path} />
+              <MemoizedPlyrVideo src={src.video_url} />
             ) : (
               <div className="text-white font-bold w-full h-full flex items-center justify-center">
                 <p>There are no videos yet.</p>

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { IVideo } from "@/interfaces";
 import HeaderClassRoom from "./HeaderClassRoom";
 // import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
-import VideoPlayer from "@/app/components/classroom/VideoPlayer";
+import VideoPlayer from "./VideoPlayer";
 import {
   fetchCourseVideos,
   setCurrentVideo,
