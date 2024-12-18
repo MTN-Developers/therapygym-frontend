@@ -29,10 +29,14 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error?.response?.status === 401) {
       // Refresh Token is Expired
-      if (error?.response?.data?.requiresLogin === true) {
+      if (
+        error?.response?.data?.requiresLogin === true &&
+        window.location.pathname !== "/ar/videos-list"
+      ) {
         deleteCookie("access_token");
         deleteCookie("refresh_token");
         deleteCookie("user");
+        console.log("Redirecting to login page 2");
         window.location.href = "/login";
         return Promise.reject(new Error("Requires login"));
       } else {

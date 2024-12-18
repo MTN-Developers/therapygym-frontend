@@ -18,6 +18,7 @@ export function middleware(req: NextRequest) {
 
   // Step 2: Handle Auth Middleware with Locale Support
   const authRoutes = [
+    "videos-list",
     "login",
     "register",
     "reset-password",
@@ -26,6 +27,8 @@ export function middleware(req: NextRequest) {
   const isAuthRoute = authRoutes.some((route) =>
     pathname.startsWith(`/${locale}/${route}`)
   );
+
+  // console.log(isAuthRoute, pathname);
 
   if (!accessToken && !isAuthRoute && isLocaleValid) {
     console.log("Redirecting to login page");
