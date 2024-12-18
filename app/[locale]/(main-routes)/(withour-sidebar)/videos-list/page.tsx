@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import { IVideo } from "@/interfaces";
-import HeaderClassRoom from "@/app/components/classroom/HeaderClassRoom";
+import HeaderClassRoom from "./HeaderClassRoom";
 // import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
 import VideoPlayer from "@/app/components/classroom/VideoPlayer";
 import {
@@ -14,6 +14,8 @@ import { RootState, useAppDispatch } from "@/app/store/store";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 // import useSWR from "swr";
 // import { getOne } from "@/services/server";
 // import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -23,7 +25,7 @@ const Page = () => {
   // const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
   const params = useParams();
   const courseId = params.id as string;
-  const { data } = useSWR<any>(`video/subscription/test/`, getOne, {
+  const { data, isLoading } = useSWR<any>(`video/subscription/test/`, getOne, {
     revalidateOnFocus: false,
     onSuccess: (data) => {
       dispatch(setCurrentVideo(data?.data[0]));
@@ -107,6 +109,8 @@ const Page = () => {
           courseVideos={courseVideos as any}
           currentVideo={currentVideo}
         />
+      ) : isLoading ? (
+        <Spin indicator={<LoadingOutlined />} />
       ) : (
         <p>{t("CourseNotFound")}</p>
       )}
