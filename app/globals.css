@@ -273,3 +273,21 @@ input::placeholder {
 .banner-video-modal .ant-modal-content {
   padding: 0px !important;
 }
+
+
+/* // Zoom  */
+
+#zmmtg-root * {
+  direction: ltr !important;
+}
+
+.websdk-body {
+  direction: ltr;
+}
+
+.websdk-body * {
+  direction: ltr;
+}
+.zm-modal {
+  direction: ltr;
+}
