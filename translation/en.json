@@ -241,6 +241,7 @@
         "PleaseChoose": "Please choose a course from the list",
         "NoCourses": "Sorry, you are not subscribed to any course",
         "NoLiveStream": "There is no live stream currently",
-        "Subscribe": "Subscribe now"
+        "Subscribe": "Subscribe now",
+        "NoActiveMeeting": "There is no active meeting at the moment"
     }
 }
