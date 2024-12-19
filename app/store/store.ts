@@ -3,6 +3,7 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import sidebarReducer from "./slices/sidebarSlice";
 import authReducer from "./slices/authSlice";
 import allCoursesReducer from "./slices/allCoursesSlice";
+import userProfileReducer from "./slices/userProfileSlice";
 import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
 import courseVideosReducer from "./slices/courseVideosSlice";
 import { persistStore, persistReducer } from "redux-persist";
@@ -13,7 +14,7 @@ const rootReducer = combineReducers({
   subscribedCourses: subscribedCoursesSliceReducer,
   allCourses: allCoursesReducer,
   sidebar: sidebarReducer,
-
+  userProfile: userProfileReducer,
   courseVideos: courseVideosReducer,
   // Add other reducers here
 });

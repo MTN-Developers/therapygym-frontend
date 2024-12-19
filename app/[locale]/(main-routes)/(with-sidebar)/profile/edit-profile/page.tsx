@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImgCrop from "antd-img-crop";
-import { Upload, UploadFile, UploadProps } from "antd";
+import { Spin, Upload, UploadFile, UploadProps } from "antd";
 import type { RcFile } from "antd/es/upload";
 import NextImage from "next/image";
 import editIcon from "@/assets/images/edit-icon-2.svg";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
+import { RootState, useAppDispatch } from "@/app/store/store";
 import Image from "next/image";
 import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import colseIcon from "@/assets/images/close-circle.svg";
 import yellowTriangle from "@/assets/images/yellow-triangle.svg";
 import * as yup from "yup";
+import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
+import { UserData } from "@/types/profile";
 
 // Define FormData with matching field types (using string for date_of_birth)
 interface FormData {
@@ -39,22 +41,30 @@ const schema = yup.object().shape({
 });
 
 const Page = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const { userData, error, loading } = useSelector(
+    (state: RootState) => state.userProfile
+  );
+
+  // console.log("userData", userData);
+
+  const [showPopup, setShowPopup] = useState(true);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema) as Resolver<FormData>,
     defaultValues: {
-      name: user.name || "",
-      date_of_birth: user.date_of_birth || "", // Add a default value or make it optional in the type
-      bio: user.bio || "",
-      facebook: user.facebook || "",
-      twitter: user.twitter || "",
-      instagram: user.instagram || "",
-      linkedin: user.linkedin || "",
+      name: userData?.name || "",
+      date_of_birth: userData?.profile.date_of_birth || "", // Add a default value or make it optional in the type
+      bio: userData?.profile.bio || "",
+      facebook: userData?.profile.facebook || "",
+      twitter: userData?.profile.twitter || "",
+      instagram: userData?.profile.instagram || "",
+      linkedin: userData?.profile.linkedin || "",
     },
   });
 
@@ -72,83 +82,130 @@ const Page = () => {
     { name: "linkedin", label: "LinkedIn", type: "text" },
   ];
 
-  return (
-    <div className="p-4 w-full">
-      <h2 className="text-[#164194] mb-4 text-3xl font-bold leading-normal">
-        Edit Page
-      </h2>
-      <div className="flex items-end justify-between">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex-1">
-          <ImageUploader user={user} />
-          <div className="flex max-w-[570px] mb-8 items-center justify-between">
-            <h3 className='text-[#164194] [font-family:"Smooch_Sans"] text-lg lg:text-[32px] font-bold leading-[normal]'>
-              Edit profile data
-            </h3>
-            <button
-              type="submit"
-              className="flex w-[127px] h-[42px] justify-center font-bold items-center gap-2.5 text-white bg-[#017AFD] rounded-md"
-            >
-              Update
-            </button>
-          </div>
+  // effects
 
-          {fields.map((field) => (
-            <div key={field.name} className="mb-6">
-              <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
-                <span className="absolute -top-3 bg-white px-2 left-5 text-gray-500">
-                  {field.label}
-                </span>
-                <input
-                  type={field.type}
-                  {...register(field.name)}
-                  className="border-none focus:outline-none focus:ring-0 !min-h-[56px] rounded-lg px-4 flex-1"
-                />
-                <Image
-                  src={editIcon}
-                  alt="edit"
-                  width={16}
-                  height={16}
-                  className="mx-4"
-                />
-              </div>
-              {errors[field.name] && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors[field.name]?.message as string}
-                </p>
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
+  // Once userData is loaded, reset the form with those values
+  useEffect(() => {
+    if (userData) {
+      reset({
+        name: userData?.name || "",
+        date_of_birth: userData?.profile.date_of_birth || "",
+        bio: userData?.profile.bio || "",
+        facebook: userData?.profile.facebook || "",
+        twitter: userData?.profile.twitter || "",
+        instagram: userData?.profile.instagram || "",
+        linkedin: userData?.profile.linkedin || "",
+      });
+    }
+  }, [userData, reset]);
+
+  return (
+    <>
+      {error && <>{error} </>}
+      {loading && (
+        <>
+          <div className=" h-screen grid inset-0">{<Spin />} </div>
+        </>
+      )}
+      {userData && (
+        <>
+          <div className="p-4 w-full">
+            <h2 className="text-[#164194] mb-4 text-3xl font-bold leading-normal">
+              Edit Page
+            </h2>
+
+            <div className="flex items-end justify-between">
+              <form onSubmit={handleSubmit(onSubmit)} className="flex-1">
+                <ImageUploader userData={userData} />
+                <div className="flex max-w-[570px] mb-8 items-center justify-between">
+                  <h3 className='text-[#164194] [font-family:"Smooch_Sans"] text-lg lg:text-[32px] font-bold leading-[normal]'>
+                    Edit profile data
+                  </h3>
+                  <button
+                    type="submit"
+                    className="flex w-[127px] h-[42px] justify-center font-bold items-center gap-2.5 text-white bg-[#017AFD] rounded-md"
+                  >
+                    Update
+                  </button>
+                </div>
+
+                {fields.map((field) => (
+                  <div key={field.name} className="mb-6">
+                    <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
+                      <span className="absolute -top-3 bg-white px-2 left-5 text-gray-500">
+                        {field.label}
+                      </span>
+                      <input
+                        type={field.type}
+                        {...register(field.name)}
+                        // value={userData[field.name]}
+                        defaultValue={userData[field.name]}
+                        className="border-none focus:outline-none focus:ring-0 !min-h-[56px] rounded-lg px-4 flex-1"
+                      />
+                      <Image
+                        src={editIcon}
+                        alt="edit"
+                        width={16}
+                        height={16}
+                        className="mx-4"
+                      />
+                    </div>
+                    {errors[field.name] && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors[field.name]?.message as string}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </form>
+              {showPopup && (
+                <div className="hidden  bg-white lg:flex text-center  flex-col items-center justify-center fixed bottom-4 right-4 p-4 rounded-lg shadow-sm border max-w-[260px] border-yellow-500">
+                  <Image
+                    src={colseIcon}
+                    alt="close"
+                    className="absolute top-4 cursor-pointer right-4"
+                    onClick={() => setShowPopup(false)}
+                  />
+                  <Image src={yellowTriangle} alt="yellow triangle" />
+                  <p className="w-full">
+                    please notice that any changes made in the profile date or
+                    the profile section will be reflected on the main profile
+                    page instant so please make sure to update the right field{" "}
+                  </p>
+                </div>
               )}
             </div>
-          ))}
-        </form>
-        <div className="hidden lg:flex text-center  flex-col items-center justify-center fixed bottom-4 right-4 p-4 rounded-lg shadow-sm border max-w-[260px] border-yellow-500">
-          <Image
-            src={colseIcon}
-            alt="close"
-            className="absolute top-4 right-4"
-          />
-          <Image src={yellowTriangle} alt="yellow triangle" />
-          <p className="w-full">
-            please notice that any changes made in the profile date or the
-            profile section will be reflected on the main profile page instant
-            so please make sure to update the right field{" "}
-          </p>
-        </div>
-      </div>
-    </div>
+          </div>{" "}
+        </>
+      )}
+    </>
   );
 };
 
 export default Page;
 
 interface Props {
-  user: any;
+  userData: any;
 }
 
-const ImageUploader: React.FC<Props> = ({ user }) => {
+const ImageUploader: React.FC<Props> = ({
+  userData,
+}: {
+  userData: UserData;
+}) => {
+  // console.log({ "userData is": userData });
+
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
       name: "defaultProfilePicture.jpg",
-      url: "https://static.vecteezy.com/system/resources/previews/021/548/095/non_2x/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg",
+      url:
+        userData.profile.avatar ||
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfmJO1vZOid-nPBHG4aMhenFmy5zW4qPg_-g&s",
       status: "done",
     },
   ]);
