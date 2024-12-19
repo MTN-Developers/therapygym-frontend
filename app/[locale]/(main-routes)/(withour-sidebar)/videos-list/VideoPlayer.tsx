@@ -66,7 +66,7 @@ const VideoPlayer = React.memo(
           `}
           >
             {src ? (
-              <MemoizedPlyrVideo src={src.video_url} />
+              <MemoizedPlyrVideo src={src.video_path} />
             ) : (
               <div className="text-white font-bold w-full h-full flex items-center justify-center">
                 <p>There are no videos yet.</p>
