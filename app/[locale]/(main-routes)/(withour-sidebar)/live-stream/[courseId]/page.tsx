@@ -40,7 +40,7 @@ const Page = ({
   return (
     <div className="flex flex-col gap-2 w-full h-full items-center justify-center">
       <h2 className="font-semibold text-xl"> {t("LiveStream")}</h2>
-      <p>{params.courseId}</p>
+      {/* <p>{params.courseId}</p> */}
       {isLoading ? (
         <div className="flex justify-center items-center">
           <Spin indicator={<LoadingOutlined />} />
