@@ -22,7 +22,16 @@ const Page = ({
     getAll as any,
     {
       onSuccess: (data) => {
-        setActiveMeeting(data?.data?.filter((item: any) => item.is_active)[0]);
+        // sort to make the newest date first
+        setActiveMeeting(
+          data?.data
+            ?.sort(
+              (a: any, b: any) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+            )
+            .filter((item: any) => item.is_active)[0]
+        );
       },
     }
   );
@@ -31,7 +40,7 @@ const Page = ({
   return (
     <div className="flex flex-col gap-2 w-full h-full items-center justify-center">
       <h2 className="font-semibold text-xl"> {t("LiveStream")}</h2>
-      <p>{params.courseId}</p>
+      {/* <p>{params.courseId}</p> */}
       {isLoading ? (
         <div className="flex justify-center items-center">
           <Spin indicator={<LoadingOutlined />} />
