@@ -22,7 +22,16 @@ const Page = ({
     getAll as any,
     {
       onSuccess: (data) => {
-        setActiveMeeting(data?.data?.filter((item: any) => item.is_active)[0]);
+        // sort to make the newest date first
+        setActiveMeeting(
+          data?.data
+            ?.sort(
+              (a: any, b: any) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+            )
+            .filter((item: any) => item.is_active)[0]
+        );
       },
     }
   );
