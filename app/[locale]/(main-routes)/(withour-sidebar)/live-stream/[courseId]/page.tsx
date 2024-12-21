@@ -15,7 +15,7 @@ const Page = ({
     courseId: string;
   };
 }) => {
-  const [activeMeeting, setActiveMeeting] = React.useState<any>(null);
+  const [_activeMeeting, setActiveMeeting] = React.useState<any>(null);
   const t = useTranslations("LiveStreamPage");
   const { isLoading } = useSWR(
     `/zoom/meetings/course/${params.courseId}`,
@@ -45,15 +45,25 @@ const Page = ({
         <div className="flex justify-center items-center">
           <Spin indicator={<LoadingOutlined />} />
         </div>
-      ) : activeMeeting ? (
+      ) : (
         <ZoomMeeting
           client_name={`${user?.name} - ${user?.country}`}
-          meetingId={activeMeeting.meeting_id}
-          passcode={activeMeeting.passcode}
+          meetingId={"81297066423"}
+          passcode={"169998"}
+        />
+      )}
+
+      {/* ) : activeMeeting ? (
+        <ZoomMeeting
+          client_name={`${user?.name} - ${user?.country}`}
+          meetingId={"81297066423"}
+          passcode={"169998"}
+          // meetingId={activeMeeting.meeting_id}
+          // passcode={activeMeeting.passcode}
         />
       ) : (
         <p>{t("NoActiveMeeting")}</p>
-      )}
+      )} */}
     </div>
   );
 };
