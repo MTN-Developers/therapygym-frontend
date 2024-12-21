@@ -64,7 +64,7 @@ const Page = () => {
 
   return (
     <div className="p-4 w-full">
-      <div className=" w-full flex items-center justify-between">
+      <div className=" w-full lg:w-[1000px] flex items-center justify-between">
         {/* user photo , name and description */}
         <UserInfo user={user} />
         {/* Achievements */}
@@ -82,8 +82,6 @@ const Page = () => {
 export default Page;
 
 const UserInfo = ({ user }) => {
-
-  
   /* socials */
   const socialIcons = [
     {
@@ -106,11 +104,11 @@ const UserInfo = ({ user }) => {
         <Image src={userPhoto} alt={user.name} />
       </div>
       {/* user name */}
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-4 ">
         <h2 className="text-black text-nowrap [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-semibold leading-[23.583px] tracking-[-0.197px]">
           {user.name}
         </h2>
-        <div className="block md:hidden">
+        <div className="block md:hidden ">
           <AchievementsComp />
         </div>
       </div>
