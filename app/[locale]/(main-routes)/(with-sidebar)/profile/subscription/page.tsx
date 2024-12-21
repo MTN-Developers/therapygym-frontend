@@ -1,13 +1,18 @@
 "use client";
 
+import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
 import { SubscriptionApiResponse, Subscription } from "@/types/packages";
 import { Spin } from "antd";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
 
 const Page = () => {
+  const { locale } = useTranslationContext();
+  const t = useTranslations("ProfilePages.SubscriptionPage");
+
   // Fetch data using SWR and your `getOne` service
   const {
     data: subscriptionData,
@@ -21,10 +26,10 @@ const Page = () => {
   return (
     <div className="p-4 w-full">
       <h2 className="text-[#164194] mb-4 text-2xl lg:text-4xl font-bold leading-normal">
-        Subscription
+        {t("Subscription")}
       </h2>
       <h3 className="text-[#15162c] mb-4 text-2xl lg:text-3xl font-bold leading-normal">
-        Active plans
+        {t("Active planes")}
       </h3>
 
       <div className="w-full">
@@ -57,6 +62,8 @@ export default Page;
  * Also calculates remaining days until the subscription ends.
  */
 const CourseCard = ({ subscription }: { subscription: Subscription }) => {
+  const { locale } = useTranslationContext();
+  const t = useTranslations("ProfilePages.SubscriptionPage");
   const { end_date } = subscription;
   const packag = subscription.package; // The "package" object within subscription
   const course = packag.course; // The "course" object within package
@@ -83,13 +90,13 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
       }}
     >
       {/* Image holder */}
-      <div className="lg:w-[180px] lg:h-[123px]  h-[192px] rounded-sm shadow-sm overflow-hidden">
+      <div className="lg:min-w-[200px] object-cover lg:h-[123px] bg-gray-400  h-[192px] rounded-sm shadow-sm overflow-hidden">
         <Image
-          src={course?.banner_en || ""}
+          src={locale === "en" ? course?.banner_en : course?.banner_ar}
           alt={course?.name_en || "Course Banner"}
-          width={180}
+          width={250}
           height={123}
-          className="object-cover w-full h-full rounded-sm shadow-sm"
+          className="object-cover !lg:w-[280px] w-full h-full rounded-sm shadow-sm"
         />
       </div>
 
@@ -102,10 +109,10 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
           Current Bundle
         </div>
         <p className="self-stretch text-[#353535] [font-family:PNU] text-lg lg:text-2xl font-bold leading-[160%]">
-          {packag?.name_en}
+          {locale === "en" ? packag?.name_en : packag?.name_ar}
         </p>
         <p className="text-[#636363] text-right [font-family:PNU] text-[15px] font-bold leading-[160%]">
-          {course?.name_en}
+          {locale === "en" ? course?.name_en : course?.name_ar}
         </p>
 
         {/* Price and discount */}
@@ -133,11 +140,11 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
       <div className="flex flex-col  w-full items-center lg:items-end justify-center gap-2 mx-auto lg:ml-auto">
         <p className="text-gray-500">
           <span className="font-base  ">
-            {remaining} Days To Renew ({endDateString})
+            {remaining} {t("Days To Renew")} ({endDateString})
           </span>
         </p>
         <button className="bg-[#017AFD] text-white text-base lg:text-lg rounded-md font-bold w-full lg:w-[277px] h-[56px] flex items-center justify-center">
-          Renew subscription
+          {t("Renew subscription")}
         </button>
       </div>
     </div>

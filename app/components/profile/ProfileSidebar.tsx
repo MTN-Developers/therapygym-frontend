@@ -11,6 +11,7 @@ import privacyIcon from "@/assets/images/privacy-icon.svg";
 import notificationIcon from "@/assets/images/notification-icon.svg";
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import { useTranslations } from "next-intl";
 
 interface SidebarItem {
   icon: string;
@@ -25,33 +26,42 @@ const ProfileSidebar: React.FC = () => {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const { locale } = useTranslationContext();
+  const t = useTranslations("ProfilePages.Sidebar");
 
   const sidebarItems: SidebarItem[] = [
     {
       icon: userIcon,
-      title: "Public View",
+      title: t("Public View"),
       link: `/${locale}/profile/public-view`,
     },
     {
       icon: editIcon,
-      title: "Edit Profile",
+      title: t("Edit Profile"),
       link: `/${locale}/profile/edit-profile`,
     },
-    { icon: accounIcon, title: "Account", link: `/${locale}/profile/account` },
+    {
+      icon: accounIcon,
+      title: t("Account"),
+      link: `/${locale}/profile/account`,
+    },
     {
       icon: subscribeIcon,
-      title: "Subscription",
+      title: t("Subscription"),
       link: `/${locale}/profile/subscription`,
     },
     {
       icon: paymentIcon,
-      title: "Payment method",
+      title: t("Payment method"),
       link: `/${locale}/profile/payment-method`,
     },
-    { icon: privacyIcon, title: "Privacy", link: `/${locale}/profile/privacy` },
+    {
+      icon: privacyIcon,
+      title: t("Privacy"),
+      link: `/${locale}/profile/privacy`,
+    },
     {
       icon: notificationIcon,
-      title: "Notification",
+      title: t("Notification"),
       link: `/${locale}/profile/notification`,
     },
   ];

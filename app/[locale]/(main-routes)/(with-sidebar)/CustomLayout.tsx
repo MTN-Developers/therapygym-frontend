@@ -67,7 +67,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { userData } = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -191,7 +191,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               <div className="flex gap-2 items-center">
                 <Image
                   src={
-                    data?.data?.profile?.avatar ??
+                    userData?.profile?.avatar ??
                     (data?.data?.gender === "male"
                       ? "/images/male.jpg"
                       : "/images/female.jpg")
@@ -202,7 +202,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                   height={35}
                 />
                 <div className="text-white flex flex-col">
-                  <p>{user?.name}</p>
+                  <p>{userData?.name}</p>
                   <p className="text-[12px]">{data?.data?.role}</p>
                 </div>
                 <button onClick={showLogoutModal}>

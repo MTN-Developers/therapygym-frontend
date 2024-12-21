@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
 import { useRouter } from "next/navigation";
 import MessageIcon from "@/assets/svgs/message-icon";
-import { useAppSelector } from "../store/store";
+import { RootState, useAppSelector } from "../store/store";
 import MenuIcon from "@/assets/svgs/MenuIcon";
 import BillIcon from "@/assets/svgs/BillIcon";
 
@@ -29,6 +29,7 @@ export default function CustomHeader({
   const logout_T = useTranslations("Logout");
   const dispatch = useDispatch();
   const router = useRouter();
+
 
   const handleLogOut = () => {
     dispatch(logout());

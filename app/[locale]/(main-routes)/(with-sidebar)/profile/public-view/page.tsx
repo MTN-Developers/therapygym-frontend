@@ -1,8 +1,8 @@
 "use client";
 
-import { RootState } from "@/app/store/store";
+import { RootState, useAppDispatch } from "@/app/store/store";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import userPhoto from "@/assets/images/user-placeholder.jpg";
 import facebook from "@/assets/images/facebook-black.svg";
@@ -25,10 +25,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
+import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
 
 const Page = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
-  // const t = useTranslations("ClassroomPage");
+  const { userData, error, loading } = useSelector(
+    (state: RootState) => state.userProfile
+  );
+  const dispatch = useAppDispatch();
+  // console.log("user is ", userData);
+
+  const t = useTranslations("ProfilePages.PublicPage");
 
   // const { locale } = useTranslationContext();
 
@@ -37,7 +43,7 @@ const Page = () => {
       key: "1",
       label: (
         <span style={{ marginInline: 16, fontWeight: "bold" }}>
-          All Courses
+          {t("All Courses")}
         </span>
       ),
       children: (
@@ -48,40 +54,56 @@ const Page = () => {
     },
     {
       key: "2",
-      label: "My Certificates ",
+      label: t("My Certificates"),
       children: (
         <div className="px-4">
           <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            My Certificates
+            {t("My Certificates")}
           </h2>
           <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
-            You dont have any certificates yet!
+            {t("Empty Certificates")}
           </p>
         </div>
       ),
     },
   ];
 
+  /* effects  */
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
+
   return (
     <div className="p-4 w-full">
-      <div className=" w-full lg:w-[1000px] flex items-center justify-between">
-        {/* user photo , name and description */}
-        <UserInfo user={user} />
-        {/* Achievements */}
-        <div className="hidden md:block">
-          <AchievementsComp />
-        </div>
-      </div>
-      <div className=" py-4 w-full font-[pnu] lg:mb-2 z-30">
-        <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />
-      </div>
+      {error && <p>{error}</p>}
+      {loading && (
+        <>
+          <Spin />
+        </>
+      )}
+
+      {userData && (
+        <>
+          <div className=" w-full lg:w-[1000px] flex items-center justify-between">
+            {/* user photo , name and description */}
+            <UserInfo userData={userData} />
+            {/* Achievements */}
+            <div className="hidden md:block">
+              <AchievementsComp />
+            </div>
+          </div>
+          <div className=" py-4 w-full font-[pnu] lg:mb-2 z-30">
+            <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 export default Page;
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ userData }) => {
   /* socials */
   const socialIcons = [
     {
@@ -100,13 +122,19 @@ const UserInfo = ({ user }) => {
   return (
     <div className="flex flex-col gap-2 items-start">
       {/* user image */}
-      <div className="w-[100px] h-[100px] bg-gray-400 shadow-sm rounded-full object-cover ">
-        <Image src={userPhoto} alt={user.name} />
+      <div className="w-[100px] h-[100px]  shadow-sm rounded-full object-cover ">
+        <Image
+          src={userData.profile.avatar || userPhoto}
+          alt={userData.name}
+          width={200}
+          height={200}
+          className="!w-full h-full object-cover rounded-full"
+        />
       </div>
       {/* user name */}
       <div className="flex items-center justify-center gap-4 ">
         <h2 className="text-black text-nowrap [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-semibold leading-[23.583px] tracking-[-0.197px]">
-          {user.name}
+          {userData.name}
         </h2>
         <div className="block md:hidden ">
           <AchievementsComp />
@@ -114,9 +142,7 @@ const UserInfo = ({ user }) => {
       </div>
       {/* user bio */}
       <p className="max-w-[400px] text-[#636363] [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-normal  tracking-[-0.197px]">
-        It is a long established fact that a reader will be distracted by the
-        readable content of a page when looking at its layout. The point of
-        using Lorem Ipsum is
+        {userData.profile.bio}
       </p>
       {/* social icons */}
       <div className="flex items-center gap-4 justify-start  ">
@@ -141,6 +167,8 @@ const UserInfo = ({ user }) => {
 };
 
 const AchievementsComp = () => {
+  const t = useTranslations("ProfilePages.PublicPage");
+
   const achievementsIcons = [
     {
       img: abstarct,
@@ -170,7 +198,7 @@ const AchievementsComp = () => {
   return (
     <div className="">
       <h2 className="hidden md:block text-black mb-4 [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-semibold leading-[23.583px] tracking-[-0.197px]">
-        Achievements{" "}
+        {t("Achievements")}{" "}
       </h2>
       <div className="flex items-center gap-3 flex-shrink-0 flex-wrap">
         {achievementsIcons.map((icon, index) => (

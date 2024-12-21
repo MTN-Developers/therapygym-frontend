@@ -11,6 +11,8 @@ import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import CountrySelect from "@/app/components/auth/CountrySelect";
+import { useTranslations } from "next-intl";
+import axiosInstance from "@/app/utils/axiosInstance"; // Adjust path if needed
 
 interface FormData {
   email: string;
@@ -18,7 +20,7 @@ interface FormData {
   phone: string;
 }
 
-// Updated schema with country and phone fields
+// Validation schema for email, country, phone
 const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
   country: yup.string().required("Country is required"),
@@ -31,10 +33,13 @@ const Page = () => {
     (state: RootState) => state.userProfile
   );
 
+  // Localization
+  const t = useTranslations("ProfilePages.AccountPage");
+
   const {
     register,
     handleSubmit,
-    control,
+    control, // For CountrySelect
     formState: { errors },
     reset,
   } = useForm<FormData>({
@@ -46,6 +51,7 @@ const Page = () => {
     },
   });
 
+  // Fetch user info on mount
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
@@ -61,9 +67,26 @@ const Page = () => {
     }
   }, [userData, reset]);
 
-  const onSubmit = (data: FormData) => {
-    console.log("Updated data:", data);
-    // Handle your update logic here (e.g., dispatch another thunk with updated data)
+  // Submit handler: send a PATCH to /user
+  const onSubmit = async (data: FormData) => {
+    try {
+      // The payload structure depends on your backend.
+      // If it expects { email, country, phone }, send exactly that.
+      const payload = {
+        email: data.email,
+        country: data.country,
+        phone: data.phone,
+      };
+
+      // Make a PATCH request to update user
+      await axiosInstance.patch("/user", payload);
+
+      // Refresh user profile in Redux
+      dispatch(fetchUserProfile());
+    } catch (err) {
+      // Handle error, e.g., show a notification or log to console
+      console.error("Failed to update account info:", err);
+    }
   };
 
   if (loading) {
@@ -75,26 +98,27 @@ const Page = () => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-red-500">{error}</div>;
   }
 
   return (
     userData && (
       <div className="p-4 w-full">
         <h2 className="text-[#164194] mb-4 text-2xl lg:text-4xl font-bold leading-normal">
-          Account Page
+          {t("Account")}
         </h2>
 
         <div className="flex max-w-[570px] mb-8 items-center justify-between">
           <h3 className="text-[#164194] font-bold text-lg lg:text-[28px] leading-normal">
-            Edit Account
+            {t("Edit Account")}
           </h3>
+          {/* We bind form="accountForm" so the button triggers onSubmit */}
           <button
             form="accountForm"
             type="submit"
             className="flex w-[127px] h-[42px] justify-center font-bold items-center gap-2.5 text-white bg-[#017AFD] rounded-md"
           >
-            Update
+            {t("Update")}
           </button>
         </div>
 
@@ -103,7 +127,7 @@ const Page = () => {
           <div className="mb-6">
             <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
               <span className="absolute -top-3 bg-white px-2 left-5 text-gray-500">
-                Email
+                {/* {t("Email")} e.g., localize "Email" */} email
               </span>
               <input
                 type="email"
@@ -126,19 +150,29 @@ const Page = () => {
           </div>
 
           {/* Country Field */}
-          <div className="mb-6 max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative ">
-            <CountrySelect
-              control={control}
-              error={errors["country"]?.message as string}
-              name={"country"}
-            />
+          <div className="mb-6">
+            <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
+              {/* If you have a localized label, use t("Country") here */}
+              <CountrySelect
+                control={control}
+                error={errors["country"]?.message as string}
+                name={"country"}
+              />
+              <Image
+                src={editIcon}
+                alt="edit"
+                width={16}
+                height={16}
+                className="mx-4"
+              />
+            </div>
           </div>
 
           {/* Phone Field */}
           <div className="mb-6">
             <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
               <span className="absolute -top-3 bg-white px-2 left-5 text-gray-500">
-                Phone
+                {/* {t("Phone")} */} phone
               </span>
               <input
                 type="text"
