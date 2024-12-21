@@ -47,7 +47,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     {
       id: 6,
       label: t("LiveStream"),
-      icon: <CiStreamOn size={25} className="animate-pulse mx-2" />,
+      icon: <CiStreamOn size={25} className="animate-pulse ml-2" />,
       iconType: "component",
       link: `/${locale}/live-stream/`,
     },
