@@ -6,6 +6,7 @@ import { SubscriptionApiResponse, Subscription } from "@/types/packages";
 import { Spin } from "antd";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 
@@ -143,9 +144,12 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
             {remaining} {t("Days To Renew")} ({endDateString})
           </span>
         </p>
-        <button className="bg-[#017AFD] text-white text-base lg:text-lg rounded-md font-bold w-full lg:w-[277px] h-[56px] flex items-center justify-center">
+        <Link
+          href={`/courses/${subscription.package.course_id}/payment/${subscription.package_id}`}
+          className="bg-[#017AFD] text-white text-base lg:text-lg rounded-md font-bold w-full lg:w-[277px] h-[56px] flex items-center justify-center"
+        >
           {t("Renew subscription")}
-        </button>
+        </Link>
       </div>
     </div>
   );
