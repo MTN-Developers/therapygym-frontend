@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 type getUserProfile = {
   data: {
     id: string;

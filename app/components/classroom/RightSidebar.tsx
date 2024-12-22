@@ -58,12 +58,12 @@ const RightSidebar = React.memo(
     return (
       <>
         {/* Backdrop */}
-        {isSidebarOpen && (
+        {/* {isSidebarOpen && (
           <div
             className="lg:hidden w-screen fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={() => dispatch(toggleSidebar())}
           ></div>
-        )}
+        )} */}
 
         {/* Sidebar */}
         <div

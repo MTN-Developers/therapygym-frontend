@@ -20,6 +20,7 @@
     "@zoom/meetingsdk": "^3.7.0",
     "@zoomus/websdk": "^2.18.3",
     "antd": "^5.20.6",
+    "antd-img-crop": "^4.23.0",
     "axios": "^1.7.7",
     "cookies-next": "^5.0.2",
     "dayjs": "^1.11.13",

@@ -9,6 +9,7 @@ import React from "react";
 import useSWR from "swr";
 import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
 import { useTranslations } from "next-intl";
+import { Course_package, getPackage } from "@/types/packages";
 
 const Page = ({
   params,
@@ -54,7 +55,7 @@ const Page = ({
             background: "transparent",
           }}
         >
-          <PaymentInvoice packageData={data?.data as course_package} />
+          <PaymentInvoice packageData={data?.data as Course_package} />
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
@@ -77,7 +78,7 @@ const Page = ({
             </p>
           </div>
 
-          <PaymentForm Package={data?.data as course_package} />
+          <PaymentForm Package={data?.data as Course_package} />
         </div>
       </div>
     </div>
