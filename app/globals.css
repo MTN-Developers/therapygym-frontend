@@ -14,6 +14,28 @@
   }
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #dddddd;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 :root {
   --plyr-color-main: #0d63d9;
   --main-color: #0d63d9;
@@ -273,7 +295,6 @@ input::placeholder {
 .banner-video-modal .ant-modal-content {
   padding: 0px !important;
 }
-
 
 /* // Zoom  */
 
