@@ -447,7 +447,6 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     // window.addEventListener('resize', handleResize);
     // return () => window.removeEventListener('resize', handleResize);
   }, [screenWidth]);
-  console.log(pathname);
   return (
     <Layout
       style={{
