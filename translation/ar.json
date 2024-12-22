@@ -211,6 +211,243 @@
     "Validation": {
       "InvalidEmail": "عنوان البريد الإلكتروني غير صالح",
       "EmailRequired": "البريد الإلكتروني مطلوب"
+    },
+    "HomePage": {
+      "title": "الصفحة الرئيسية"
+    },
+    "AboutPage": {
+      "title": "حول"
+    },
+    "ProfilePage": {
+      "title": "الملف الشخصي"
+    },
+    "Sidebar": {
+      "Home": "الرئيسية",
+      "Courses": "الدورات",
+      "Calendar": "التقويم",
+      "Discussions": "المناقشات",
+      "Support": "الدعم",
+      "LiveStream": "البث المباشر"
+    },
+    "Login": {
+      "Welcome": "مرحبا بك",
+      "We are glad to see you back with us": "تسجيل الدخول",
+      "Email": "البريد الإلكتروني",
+      "Password": "كلمة المرور",
+      "Forget Your Password?": "نسيت كلمة المرور؟",
+      "Reset Password": "إعادة تعيين كلمة المرور",
+      "Login": "تسجيل الدخول",
+      "Dont have an account?": "ليس لدي حساب",
+      "SignUp": "تسجيل حساب جديد"
+    },
+    "Home": {
+      "MyCourses": "كورساتي",
+      "AllCourses": "الكورسات المتاحة",
+      "ErrorMsg": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+      "NoCourses": "لا توجد دورات متاحة حاليا",
+      "YouDon'tHaveCourses": "ليس لديك دورات حاليا"
+    },
+    "Header": {
+      "SearchCourses": "ابحث عن الدورات"
+    },
+    "Logout": {
+      "Logout": "تسجيل الخروج",
+      "LogoutMsg": "هل أنت متأكد من تسجيل الخروج؟",
+      "Cancel": "إلغاء",
+      "Confirm": "تأكيد"
+    },
+    "CoursePage": {
+      "AboutCourse": "عن الكورس",
+      "AboutInstructor": "عن المحاضر",
+      "CustomerReviews": "أراء العملاء",
+      "ReadMore": "قرأة المزيد",
+      "Error": "خطأ",
+      "Loading": "جاري التحميل",
+      "AboutInstructorText": "طبيب مصري خريج كلية الطب جامعة عين شمس عام 1982  أستاذ مدرب علم الميتاهيلث ونائب رئيس الجمعية العالمية للميتا ماديسون بالولايات المتحدة الأمريكية IMMA® (سابقاً) . علم الميتاهيلث هو منظور جديد للطب ينبع من منظور الشفاء وليس المرض الطبيب الأول والوحيد في العالم العربي الذي يعتمد في تشخيص وعلاج عملائه على منظور علاجي وتدريبي يعتمد على تشخيص النفس بالألوان وتشخيص المرض بالسبب النفسي ( المشاعر الذاتية ) له علم الميتاهيلث منذ عام 2012 حتى الآن. مؤسس الطب التصنيفي .قام بتأسيس الطب التصنيفي عام 2019 بعد أبحاث وتجارب دامت أكثر من 7 سنوات مستمرة في التطور والتدريس حتى الأن، وقد أعتمد فيه على طريقة التشخيص والعلاج بتحديد المشاعر المضطربة بدقة شديدة والتي تتسبب في صدمات تنتهي بأمراض عضوية ونفسية ، ويتم تحديد هذه الاضطرابات بتقنيات متعددة يقوم بممارستها بعيادته بالقاهرة وأيضاً البدء في تدريسها لطالبي هذا العلم .",
+      "dummyText": "لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من "
+    },
+    "RightSideCourseComp": {
+      "LifetimeAccess": "3 لقاءات جماعية مباشرة / شهر",
+      "MoneyBackGuarantee": "يوجد 4 انواع من الإشتراكات",
+      "MeetingTime": "مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف",
+      "Certificate": "شهادة إتمام قابلة للمشاركة",
+      "MultiDeviceAccess": "المشاهدة على الهاتف المحمول والكمبيوتر والتلفزيون",
+      "DaysLeft": "باقي يومين على هذا العرض",
+      "SubscribeNow": "اشترك الآن",
+      "Note": "ملاحظة",
+      "RefundPolicy": "تتمتع جميع الدورات بضمان استعادة الأموال لمدة 30 يومًا",
+      "ChoosePackage": "اختر الباقة المناسبة لك",
+      "AffordableOptions": "خيارات ميسورة التكلفة وقابلة للتطوير للجميع",
+      "MonthlyPackage": "باقة شهرية",
+      "SubscriptionContent": "محتوى الاشتراك",
+      "RecordedEpisodes": "احصل على ٤ حلقات مسجلة",
+      "LiveMeetings": "٣ لقاءات جماعية مباشرة مع الدكتور",
+      "MeetingDuration": "مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف",
+      "CommunitySupport": "استمتع بالتواجد في مجتمع داعم ومؤثر وبيئة ملهمة",
+      "ContinueYourJourney": "استمر في رحلتك"
+    },
+    "PackageCard": {
+      "Monthly": "كل شهر",
+      "ThreeMonths": "كل 3 شهور",
+      "SixMonths": "كل 6 شهور",
+      "Yearly": "سنويا",
+      "MonthlyPackage": "باقة شهرية",
+      "QuarterlyPackage": "باقة كل 3 شهور",
+      "HalfAnnualPackage": "باقة كل 6 شهور",
+      "AnnualPackage": "باقة سنوية",
+      "SubscriptionPackage": "باقة شهرية",
+      "SubscriptionContent": "محتوى الاشتراك",
+      "RecordedEpisodes": "احصل على ٤ حلقات مسجلة",
+      "LiveMeetings": "٣ لقاءات جماعية مباشرة مع الدكتور",
+      "MeetingDuration": "مدة اللقاء مع الدكتور من ساعة إلى ساعة ونصف",
+      "CommunitySupport": "استمتع بالتواجد في مجتمع داعم ومؤثر وبيئة ملهمة",
+      "SubscribeNow": "اشترك الآن",
+      "InsteadOf": "بدلا من"
+    },
+    "LeftSideCourseComp": {
+      "Home": "الصفحة الرئيسية",
+      "AllCourses": "برامج القيادة الفعالة",
+      "ProvidedBy": "يقدم بواسطة:",
+      "Doctor": "دكتور أحمد الدملاوي",
+      "ArabicLanguage": "اللغة العربية",
+      "SubscribersCount": "عدد المشتركين",
+      "WeeksDuration": "أسابيع",
+      "StarRating": "مقيم"
+    },
+    "PaymentPage": {
+      "PayNow": "ادفع الآن",
+      "EnterDetails": "قم بإدخال بياناتك واستمتع بتجربة مستخدم ممتازة",
+      "NotFound": "عذرًا، لم يتم العثور على البيانات المطلوبة."
+    },
+    "PaymentForm": {
+      "PaymentDetails": "تفاصيل الدفع",
+      "PayWithCard": "ادفع ببطاقة ائتمان",
+      "ProcessingPayment": "جاري الدفع ...",
+      "PayNow": "ادفع الآن",
+      "PaymentSuccess": "تم الدفع بنجاح",
+      "PaymentError": "حدث خطأ ما. لم يتم الدفع",
+      "cardIsRequired": "برجاء ادخال بيانات البطاقه"
+    },
+    "PaymentInvoice": {
+      "PaymentDetails": "تفاصيل الدفع",
+      "SubscriptionPrice": "السعر الأساسي",
+      "Discount": "الخصم",
+      "PriceAfterDiscount": "السعر بعد الخصم",
+      "GatewayFees": "رسوم البوابة",
+      "Total": "الاجمالي"
+    },
+    "SignupValidation": {
+      "NameRequired": "الاسم الكامل مطلوب",
+      "EmailRequired": "البريد الإلكتروني مطلوب",
+      "InvalidEmail": "بريد إلكتروني غير صالح",
+      "PasswordRequired": "كلمة المرور مطلوبة",
+      "PasswordMin": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "PasswordPattern": "يجب أن تحتوي كلمة المرور على أحرف صغيرة وكبيرة ورمز خاص",
+      "GenderRequired": "الرجاء اختيار الجنس",
+      "GenderInvalid": "يجب أن يكون الجنس إما ذكر أو أنثى",
+      "PhoneRequired": "رقم الهاتف مطلوب",
+      "PhoneDigitsOnly": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
+      "CountryRequired": "الجنسية مطلوبة",
+      "CountryCodeRequired": "كود الدولة مطلوب"
+    },
+    "RegisterPage": {
+      "SignUpNow": "سجل الآن",
+      "WelcomeMessage": "مرحبًا بك في MTN Live",
+      "FirstName": "الاسم الأول",
+      "EmailAddress": "البريد الإلكتروني",
+      "Gender": "الجنس",
+      "Male": "ذكر",
+      "Female": "أنثى",
+      "PhoneNumber": "رقم الهاتف",
+      "Password": "كلمة المرور",
+      "TermsConditions": "الشروط والأحكام",
+      "PrivacyPolicy": "سياسة الخصوصية",
+      "AgreeMessage": "بتسجيلك، أنت توافق على",
+      "CreateAccount": "إنشاء حساب",
+      "CountryCodeRequired": "كود الدولة مطلوب",
+      "AlreadyHaveAccount": "لديك حساب بالفعل؟",
+      "Login": "تسجيل الدخول",
+      "Or": "أو",
+      "And": "و",
+      "RegistrationSuccess": "تم التسجيل بنجاح",
+      "RegistrationFailed": "حدث خطأ ما. فشل التسجيل",
+      "UnexpectedError": "حدث خطأ غير متوقع"
+    },
+    "CountrySelect": {
+      "SelectCountry": "اختر الدولة"
+    },
+    "CountryCodeSelect": {
+      "SelectCountry": "اختر كود الدولة"
+    },
+    "ResetPasswordPage": {
+      "Heading": "إعادة تعيين كلمة المرور",
+      "NewPassword": "كلمة مرور جديدة",
+      "ConfirmNewPassword": "تأكيد كلمة المرور الجديدة",
+      "EnterNewPassword": "أدخل كلمة المرور الجديدة",
+      "ConfirmPassword": "أكد كلمة المرور الجديدة",
+      "ResetPassword": "إعادة تعيين كلمة المرور",
+      "Resetting": "جارٍ إعادة التعيين...",
+      "InvalidToken": "رمز التحقق غير صالح أو مفقود",
+      "PasswordResetSuccess": "تمت إعادة تعيين كلمة المرور بنجاح",
+      "UnexpectedError": "حدث خطأ غير متوقع",
+      "BackToLogin": "العودة إلى تسجيل الدخول"
+    },
+    "ResetPasswordValidation": {
+      "PasswordRequired": "كلمة المرور مطلوبة",
+      "PasswordMin": "يجب أن تكون كلمة المرور مكونة من 8 أحرف على الأقل",
+      "PasswordUppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+      "PasswordLowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+      "PasswordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+      "PasswordSpecial": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
+      "ConfirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
+      "PasswordsMustMatch": "يجب أن تكون كلمات المرور متطابقة"
+    },
+    "PasswordResetRequestPage": {
+      "Heading": "إعادة تعيين كلمة المرور",
+      "EmailLabel": "عنوان البريد الإلكتروني",
+      "EnterEmail": "أدخل بريدك الإلكتروني",
+      "SendResetLink": "إرسال رابط إعادة التعيين",
+      "Sending": "جارٍ الإرسال...",
+      "CheckEmailHeading": "تحقق من بريدك الإلكتروني",
+      "EmailSentMessage": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {email}. سيتم إعادة توجيهك إلى صفحة تسجيل الدخول في غضون 5 ثوانٍ.",
+      "UnexpectedError": "حدث خطأ غير متوقع",
+      "PasswordResetLinkSent": "تم إرسال رابط إعادة تعيين كلمة المرور",
+      "BackToLogin": "العودة إلى تسجيل الدخول",
+      "Validation": {
+        "InvalidEmail": "عنوان البريد الإلكتروني غير صالح",
+        "EmailRequired": "البريد الإلكتروني مطلوب"
+      }
+    },
+    "VideoPage": {
+      "Sidebar": {
+        "CourseContent": "محتوى الكورس",
+        "Intro": "مقدمة",
+        "End": "نهاية",
+        "Gifts": "المسجلة",
+        "CourseVideos": "الكورس"
+      }
+    },
+    "VideoPlayer": {
+      "NoVideos": "لا توجد فيديوهات حتى الآن."
+    },
+    "ClassroomPage": {
+      "CourseNotFound": "لم يتم العثور على دورة بهذا المعرف.",
+      "AboutCourse": "عن الكورس",
+      "AboutLecturer": "عن المحاضر",
+      "CustomerReviews": "آراء العملاء",
+      "PlaceholderText": "لقد تم توليد هذا النص من مولد النص العربى."
+    },
+    "WhatYouGainComp": {
+      "Heading": "ما سوف تحصل عليه في نهاية الكورس",
+      "dummyText": "لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. لقد تم توليد هذا النص من "
+    },
+    "LiveStreamPage": {
+      "LiveStream": "اهلا بك في البث المباشر",
+      "PleaseChoose": "برجاء اختيار كورس من القائمة",
+      "NoCourses": "نأسف انت غير مشترك في اي كورس",
+      "NoLiveStream": "لا يوجد بث مباشر حاليا",
+      "Subscribe": "اشترك الآن",
+      "NoActiveMeeting": "لا يوجد بث مباشر حاليا"
     }
   },
   "VideoPage": {

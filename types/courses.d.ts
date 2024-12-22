@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 type getCourses = {
   data: {
     data: SubscribedCourse[];

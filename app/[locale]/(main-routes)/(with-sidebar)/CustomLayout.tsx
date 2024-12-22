@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";.
+import { CiStreamOn } from "react-icons/ci";
 import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
@@ -31,12 +33,25 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const screenWidth = useScreen();
 
   const items = [
-    { id: 1, label: t("Home"), icon: homeIcon, link: `/${locale}` },
+    {
+      id: 1,
+      label: t("Home"),
+      icon: homeIcon,
+      link: `/${locale}`,
+      iconType: "img",
+    },
     {
       id: 2,
       label: t("Courses"),
       icon: coursesIcon,
       link: `/${locale}/courses`,
+    },
+    {
+      id: 6,
+      label: t("LiveStream"),
+      icon: <CiStreamOn size={25} className="animate-pulse ml-2" />,
+      iconType: "component",
+      link: `/${locale}/live-stream/`,
     },
     {
       id: 3,

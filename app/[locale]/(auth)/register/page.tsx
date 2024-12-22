@@ -48,6 +48,7 @@ const RegisterPage = () => {
   const searchParams = useSearchParams();
   type RegisterFormData = yup.InferType<typeof validationSchema>;
   const course_id = searchParams.get("course_id");
+  const package_id = searchParams.get("package_id");
   const dispatch = useAppDispatch();
   const onSubmit = async (data: RegisterFormData) => {
     const new_user = {
@@ -84,7 +85,6 @@ const RegisterPage = () => {
       return;
     }
 
-    // setLoading(true);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/user`,
@@ -101,13 +101,18 @@ const RegisterPage = () => {
       if (response.status === 201 || response.status === 200) {
         message.success(t("RegistrationSuccess"));
         // if (course_id && packages.some((p) => p.id == course_id)) {
-        if (course_id) {
+        if (course_id || package_id) {
           TriggerLogin({
             dispatch: dispatch,
             message,
             router,
-            course_id,
+            ...(course_id ? { course_id: course_id } : {}), // if course_id exists, add it to the object
             setCookie: setCookie,
+            ...(package_id
+              ? {
+                  package_id: package_id,
+                }
+              : {}),
             user: {
               email: new_user.email,
               password: new_user.password,
@@ -312,7 +317,7 @@ const RegisterPage = () => {
             <Link
               href={`/login/${
                 course_id ? `?redirect=/courses/${course_id}` : ""
-              }`}
+              }${package_id ? `?package_id=${package_id}` : ``}`}
               className="text-gray-700 w-full text-center hover:cursor-pointer hover:text-blue-600 underline"
             >
               {t("AlreadyHaveAccount")}{" "}
