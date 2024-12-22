@@ -526,8 +526,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 <div className="flex gap-2 items-center">
                   <Image
                     src={
-                      (data?.data?.profile?.avatar as string) ??
-                      data?.data?.gender == "male"
+                      data?.data?.profile?.avatar
+                        ? data?.data?.profile?.avatar
+                        : data?.data?.gender == "male"
                         ? "/images/male.jpg"
                         : "/images/female.jpg"
                     }
@@ -569,6 +570,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             style={{
               flex: 1,
               background: "red !important",
+              height: "calc(100vh - 22px)",
               // english
               ...(lang == "en"
                 ? {
@@ -589,10 +591,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               className={`${
                 pathname.startsWith(`/${locale}/profile`)
                   ? `pr-6 ${
-                      lang == "ar" ? "lg:pr-0" : "lg:pl-0"
+                      lang == "ar" ? "pr-0" : "lg:pl-0"
                     } pb-0  pt-6 lg:pt-10 pl-6`
                   : "pr-6 lg:pr-10 pt-6 lg:pt-10 pb-6 lg:pb-10 pl-6"
-              }`}
+              } flex flex-col`}
               style={{
                 height: `fit-content`,
                 overflowX: "hidden",
@@ -625,7 +627,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               >
                 <CustomHeader setCollapsed={setCollapsed} />
               </Header>
-              <div className="mt-6">{children}</div>
+              <div className="flex-1">{children}</div>
             </Content>
           </Layout>
         </>

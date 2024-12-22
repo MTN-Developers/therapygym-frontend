@@ -101,7 +101,6 @@ const ProfileSidebar: React.FC = () => {
         flex-shrink-0
         duration-300 
         overflow-y-auto 
-        h-screen
       `}
       onClick={() => setIsSidebarOpen(true)}
     >

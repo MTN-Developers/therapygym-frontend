@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { getOne } from "@/services/server";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MessageIcon from "@/assets/svgs/message-icon";
 import { RootState, useAppSelector } from "../store/store";
 import MenuIcon from "@/assets/svgs/MenuIcon";
@@ -29,8 +29,7 @@ export default function CustomHeader({
   const logout_T = useTranslations("Logout");
   const dispatch = useDispatch();
   const router = useRouter();
-
-
+  const pathname = usePathname();
   const handleLogOut = () => {
     dispatch(logout());
     router.push("/login");
@@ -49,7 +48,16 @@ export default function CustomHeader({
   // # end handlers
 
   return (
-    <div className="flex justify-between gap-4 px-1  ">
+    <div
+      className={`flex justify-between gap-4 px-1 ${
+        pathname.startsWith(`/${locale}/profile`)
+          ? locale == "ar"
+            ? "pr-6"
+            : "pl-6"
+          : ""
+      } 
+    `}
+    >
       <div
         onClick={() => setCollapsed((prev: boolean) => !prev)}
         className="relative flex items-center gap-2 rounded-lg"
@@ -58,7 +66,7 @@ export default function CustomHeader({
         <div
           className={`absolute 
             ${locale == "ar" ? "left-5" : "right-5"}
-             top-1/2 transform -translate-y-1/2 text-blue-500 flex items-center`}
+             top-1/2 transform -translate-y-1/2 text-blue-500  hidden lg:flex items-center`}
         >
           {showSearchIcon && (
             <Image src={SearchIcon} alt="search" width={15} height={15} />
@@ -71,7 +79,7 @@ export default function CustomHeader({
           type="search"
           placeholder={t("SearchCourses")}
           aria-label="Search Courses"
-          className="w-[150px] lg:w-[357px] relative bottom-1 h-[38px] shadow-md  px-4 bg-gradient-to-r from-[#f9f9f9] to-[#f9f9f9] rounded-lg text-blue-700 focus:outline-none focus:border-blue-500 transition-colors duration-300 pr-10"
+          className="w-[150px] lg:w-[357px] hidden lg:flex relative bottom-1 h-[38px] shadow-md  px-4 bg-gradient-to-r from-[#f9f9f9] to-[#f9f9f9] rounded-lg text-blue-700 focus:outline-none focus:border-blue-500 transition-colors duration-300 pr-10"
         />
       </div>
       <div className="flex gap-2">
