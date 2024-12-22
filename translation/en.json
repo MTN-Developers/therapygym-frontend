@@ -41,7 +41,8 @@
     "AllCourses": "Available Courses",
     "ErrorMsg": "An error occurred, please try again",
     "NoCourses": "No courses available at the moment",
-    "YouDon'tHaveCourses": "You don't have any courses at the moment"
+    "YouDon'tHaveCourses": "You don't have any courses at the moment",
+    "DrAhmed": "Dr. Ahmed Eldemellawy"
   },
   "Header": {
     "SearchCourses": "Search for Courses"
@@ -107,7 +108,7 @@
     "Doctor": "Dr. Ahmed ElDemelawi",
     "ArabicLanguage": "Arabic Language",
     "SubscribersCount": "Subscribers",
-    "WeeksDuration": "Weeks",
+    "WeeksDuration": "Sessions Monthly",
     "StarRating": "Rated"
   },
   "PaymentPage": {

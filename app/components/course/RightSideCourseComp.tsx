@@ -112,9 +112,9 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
             <h2 className="text-white text-[22px] lg:text-[62px] font-medium leading-[33px] lg:leading-[66px] mb-2">
               {t("ChoosePackage")}
             </h2>
-            <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
+            {/* <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
               {t("AffordableOptions")}
-            </p>
+            </p> */}
             <div className="w-full">
               <Swiper
                 lang="ar"
@@ -317,7 +317,7 @@ const PackageCard = ({
             <li key={idx} className="flex items-center gap-2">
               <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
               <Tooltip title={desc}>
-                <span className="w-full max-w-full truncate">{desc}</span>
+                <span className="w-full max-w-full ">{desc}</span>
               </Tooltip>
             </li>
           ))}
