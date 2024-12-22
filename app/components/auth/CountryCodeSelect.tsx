@@ -17,6 +17,12 @@ const CountryCodeSelect = ({
 }) => {
   const { countries } = useCountries();
   const t = useTranslations("CountryCodeSelect");
+  const EditedCountries = React.useMemo(() => {
+    const filteredCountries = countries.filter(
+      (country: any) => country.name != "Western Sahara"
+    );
+    return filteredCountries;
+  }, [countries]);
 
   return (
     <div className="w-full">
@@ -35,7 +41,7 @@ const CountryCodeSelect = ({
             filterOption={(input, option) =>
               option?.labelText?.toLowerCase().includes(input.toLowerCase())
             }
-            options={countries.map((country: any) => ({
+            options={EditedCountries.map((country: any) => ({
               value: country.countryCallingCode,
               labelText: `${country.name} (${country.countryCallingCode})`,
               label: (
