@@ -49,7 +49,7 @@ export default function CustomHeader({
   // # end handlers
 
   return (
-    <div className="flex justify-between gap-4 py-10  px-1  ">
+    <div className="flex justify-between gap-4 px-1  ">
       <div
         onClick={() => setCollapsed((prev: boolean) => !prev)}
         className="relative flex items-center gap-2 rounded-lg"

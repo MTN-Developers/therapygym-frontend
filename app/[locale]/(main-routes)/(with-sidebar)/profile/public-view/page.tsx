@@ -224,7 +224,7 @@ const AllCourses = () => {
     isLoading,
   } = useSWR<getCourses>("/course", getOne);
 
-  console.log(courses?.data?.data);
+  // console.log(courses?.data?.data);
 
   const t = useTranslations("Home");
   const { locale } = useTranslationContext();

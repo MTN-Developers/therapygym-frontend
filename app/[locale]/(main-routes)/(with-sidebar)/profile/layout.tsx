@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className="flex gap-1">
+      <div className="flex gap-1 mt-8">
         <ProfileSidebar />
         {children}
       </div>
