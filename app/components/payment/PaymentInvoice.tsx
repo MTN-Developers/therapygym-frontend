@@ -1,12 +1,13 @@
 "use client";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
+import { Course_package } from "@/types/packages";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
 
-const PaymentInvoice = ({ packageData }: { packageData: course_package }) => {
+const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
   const { locale } = useTranslationContext();
   const StripeNumber =

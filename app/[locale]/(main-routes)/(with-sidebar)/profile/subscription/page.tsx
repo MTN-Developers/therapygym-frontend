@@ -10,7 +10,7 @@ import React from "react";
 import useSWR from "swr";
 
 const Page = () => {
-  const { locale } = useTranslationContext();
+  // const { locale } = useTranslationContext();
   const t = useTranslations("ProfilePages.SubscriptionPage");
 
   // Fetch data using SWR and your `getOne` service

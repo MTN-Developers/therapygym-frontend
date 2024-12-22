@@ -1,4 +1,4 @@
-export interface Profile {
+interface Profile {
   id: string;
   user_id: string;
   bio: string | null;
@@ -13,8 +13,7 @@ export interface Profile {
   x_url: string | null;
   linkedin_url: string | null;
 }
-
-export interface UserData {
+interface UserData {
   id: string;
   name: string;
   email: string;

@@ -12,8 +12,9 @@ import ErrorMsg from "../shared/ErrorMsg";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { useTranslations } from "next-intl";
+import { Course_package } from "@/types/packages";
 
-const PaymentForm = ({ Package }: { Package: course_package }) => {
+const PaymentForm = ({ Package }: { Package: Course_package }) => {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();

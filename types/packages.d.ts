@@ -1,4 +1,5 @@
-type package = {
+/* eslint-disable no-unused-vars */
+interface package {
   id: string;
   name_ar: string;
   name_en: string;
@@ -15,8 +16,8 @@ type package = {
   deleted_at: string | null;
   image_ar: string;
   image_en: string;
-};
-type course_package = {
+}
+interface Course_package {
   id: string;
   name_ar: string;
   name_en: string;
@@ -33,7 +34,7 @@ type course_package = {
   deleted_at: string | null;
   image_ar: string;
   image_en: string;
-};
+}
 
 type getPackage = {
   data: package;

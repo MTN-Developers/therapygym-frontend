@@ -213,7 +213,7 @@ export default Page;
 
 interface ImageUploaderProps {
   userData: UserData;
-  onFileChange: (file: RcFile | null) => void;
+  onFileChange: (_file: RcFile | null) => void;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({

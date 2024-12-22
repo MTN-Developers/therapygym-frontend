@@ -16,6 +16,7 @@ import Trophy from "@/assets/svgs/Trophy";
 import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
 import Clock from "@/assets/svgs/Clock@2x";
 import Play from "@/assets/svgs/Play";
+import { Course_package } from "@/types/packages";
 const PlyrVideo = dynamic(
   () => import("@/app/components/classroom/PlyrVideo"),
   {
@@ -260,7 +261,7 @@ const PackageCard = ({
   pkg,
   course_id,
 }: {
-  pkg: course_package;
+  pkg: Course_package;
   course_id: string;
 }) => {
   const t = useTranslations("PackageCard");
