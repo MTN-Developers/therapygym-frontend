@@ -180,14 +180,18 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             >
               {items.map((item) => (
                 <Menu.Item key={item.id.toString()} className="flex">
-                  <Link href={item.link}>
-                    <Image
-                      src={item.icon}
-                      alt={`${item.label} icon`}
-                      width={20}
-                      height={20}
-                      className="inline me-4"
-                    />
+                  <Link href={item.link} className="flex items-center">
+                    {item.iconType === "component" ? (
+                      <div>{item.icon}</div>
+                    ) : (
+                      <Image
+                        src={item.icon}
+                        alt={`${item.label} icon`}
+                        width={20}
+                        height={20}
+                        className="inline me-4"
+                      />
+                    )}
                     {item.label}
                   </Link>
                 </Menu.Item>
