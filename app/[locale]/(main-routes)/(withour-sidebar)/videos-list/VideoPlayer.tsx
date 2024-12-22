@@ -15,7 +15,7 @@ const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
     allow="autoplay; fullscreen; picture-in-picture pip"
     key={src}
     className="w-full h-full"
-    src={`https://managethenow.net/video-player-config/?stream#${src}`}
+    src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
   />
 ));
 
