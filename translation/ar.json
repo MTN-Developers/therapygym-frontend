@@ -41,7 +41,8 @@
     "AllCourses": "الكورسات المتاحة",
     "ErrorMsg": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
     "NoCourses": "لا توجد دورات متاحة حاليا",
-    "YouDon'tHaveCourses": "ليس لديك دورات حاليا"
+    "YouDon'tHaveCourses": "ليس لديك دورات حاليا",
+    "DrAhmed": "د. أحمد الدملاوي"
   },
   "Header": {
     "SearchCourses": "ابحث عن الدورات"
@@ -107,7 +108,7 @@
     "Doctor": "دكتور أحمد الدملاوي",
     "ArabicLanguage": "اللغة العربية",
     "SubscribersCount": "عدد المشتركين",
-    "WeeksDuration": "أسابيع",
+    "WeeksDuration": "لقاءات شهريا",
     "StarRating": "مقيم"
   },
   "PaymentPage": {
@@ -129,7 +130,7 @@
     "SubscriptionPrice": "السعر الأساسي",
     "Discount": "الخصم",
     "PriceAfterDiscount": "السعر بعد الخصم",
-    "GatewayFees": "رسوم البوابة",
+    "GatewayFees": "رسوم بوابة الدفع",
     "Total": "الاجمالي"
   },
   "SignupValidation": {

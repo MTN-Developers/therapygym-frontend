@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Spin, Tooltip } from "antd";
 import Image from "next/image";
-import starIcon from "@/assets/images/Star 5.svg";
+// import starIcon from "@/assets/images/Star 5.svg";
 // import useSubscribedCourses from "../hooks/useSubscribedCourses";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
@@ -84,22 +84,22 @@ const MyCourses = () => {
                       {locale == "ar" ? course.name_ar : course.name_en}
                     </h2>
                   </Tooltip>
-
-                  <div className="flex gap-2 mb-4 items-center justify-start">
+                  {t("DrAhmed")}
+                  {/* <div className="flex gap-2 mb-4 items-center justify-start">
                     <Image src={starIcon} alt="star" width={20} height={20} />
                     <p className="text-[#969696]  text-[14.182px] font-normal leading-[normal]">
                       <span className="font-bold text-[#2d5482] ">4.2</span>{" "}
                       (Over 12500)
                     </p>
-                  </div>
-                  <p className="flex gap-3 text-xl">
+                  </div> */}
+                  {/* <p className="flex gap-3 text-xl">
                     <span className="font-bold">
                       ${course.price_after_discount}
                     </span>
                     <span className="line-through">
                       ${course.original_price}
                     </span>
-                  </p>
+                  </p> */}
                 </div>
               </Link>
             </SwiperSlide>
