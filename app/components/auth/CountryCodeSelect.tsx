@@ -10,10 +10,12 @@ const CountryCodeSelect = ({
   control,
   name,
   error,
+  setValue,
 }: {
   control: any;
   name: string;
   error: string;
+  setValue: any;
 }) => {
   const { countries } = useCountries();
   const t = useTranslations("CountryCodeSelect");
@@ -35,7 +37,14 @@ const CountryCodeSelect = ({
             showSearch
             allowClear
             value={field.value}
-            onChange={(value) => field.onChange(value)}
+            onChange={(value) => {
+              field.onChange(value);
+              setValue(
+                "country",
+                EditedCountries.find((c) => c.countryCallingCode === value)
+                  ?.name
+              );
+            }}
             placeholder={t("SelectCountry")}
             optionFilterProp="labelText"
             filterOption={(input, option) =>
@@ -43,7 +52,7 @@ const CountryCodeSelect = ({
             }
             options={EditedCountries?.sort((a, b) =>
               a.name.localeCompare(b.name)
-            ).map((country: any, i) => ({
+            ).map((country: any, i: number) => ({
               key: i,
               value: country.countryCallingCode,
               labelText: `${country.name} (${country.countryCallingCode})`,
