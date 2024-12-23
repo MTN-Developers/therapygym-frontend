@@ -1,30 +1,30 @@
 import axios, { AxiosError } from "axios";
 
 export const useCheckPhone = () => {
-  // let check_phone_is_valid = "";
-  // let check_phone_status = "";
+  let check_phone_is_valid = "";
+  let check_phone_status = "";
 
   const handleCheckPhoneNumber = async ({
     phoneNumber,
   }: {
     phoneNumber: string;
   }) => {
-    // const apiKey = process.env.NEXT_PUBLIC_CHECK_PHONE_API_KEY;
-    // try {
-    //   const { data, status } = await axios.get(
-    //     `https://api.api-ninjas.com/v1/validatephone?number=${phoneNumber}`,
-    //     {
-    //       headers: {
-    //         "X-Api-Key": apiKey,
-    //       },
-    //     }
-    //   );
+    const apiKey = process.env.NEXT_PUBLIC_CHECK_PHONE_API_KEY;
+    try {
+      const { data, status } = await axios.get(
+        `https://api.api-ninjas.com/v1/validatephone?number=${phoneNumber}`,
+        {
+          headers: {
+            "X-Api-Key": apiKey,
+          },
+        }
+      );
 
-    //   check_phone_is_valid = data.is_valid;
-    //   check_phone_status = String(status);
-    // } catch (e) {
-    //   console.log(e, "Error");
-    // }
+      check_phone_is_valid = data.is_valid;
+      check_phone_status = String(status);
+    } catch (e) {
+      console.log(e, "Error");
+    }
 
     const data = {
       phone: phoneNumber,
@@ -54,8 +54,8 @@ export const useCheckPhone = () => {
     }
 
     return {
-      isPhoneValid: true,
-      status: true,
+      isPhoneValid: check_phone_is_valid,
+      status: check_phone_status,
       isMsgSent: isMessageSent,
     };
   };
