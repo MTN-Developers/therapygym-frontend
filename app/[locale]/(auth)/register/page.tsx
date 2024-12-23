@@ -14,7 +14,6 @@ import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import CountrySelect from "@/app/components/auth/CountrySelect";
 import { useValidationSchema } from "@/app/utils/RegisterationValidation";
 // import { useSelector } from "react-redux";
 // import { RootState } from "@/app/store/store";
@@ -40,6 +39,7 @@ const RegisterPage = () => {
     handleSubmit,
     control,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -260,15 +260,16 @@ const RegisterPage = () => {
               </div>
               <CountryCodeSelect
                 control={control}
+                setValue={setValue}
                 error={errors["country_code"]?.message as string}
                 name={"country_code"}
               />
             </div>
-            <CountrySelect
+            {/* <CountrySelect
               control={control}
               error={errors["country"]?.message as string}
               name={"country"}
-            />
+            /> */}
             <Controller
               control={control}
               name="password"
