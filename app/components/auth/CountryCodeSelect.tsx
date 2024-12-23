@@ -41,11 +41,14 @@ const CountryCodeSelect = ({
             filterOption={(input, option) =>
               option?.labelText?.toLowerCase().includes(input.toLowerCase())
             }
-            options={EditedCountries.map((country: any) => ({
+            options={EditedCountries?.sort((a, b) =>
+              a.name.localeCompare(b.name)
+            ).map((country: any, i) => ({
+              key: i,
               value: country.countryCallingCode,
               labelText: `${country.name} (${country.countryCallingCode})`,
               label: (
-                <div className="flex items-center">
+                <div key={i} className="flex items-center">
                   <Image
                     src={country.flags.png}
                     alt={country.name}

@@ -19,9 +19,7 @@ export default async function RootLayout({
     >
       <NextIntlClientProvider messages={messages}>
         <TranslationContextProvider locale={locale as "ar" | "en"}>
-          {/* <ClientProvider> */}
           {children}
-          {/* </ClientProvider> */}
         </TranslationContextProvider>
       </NextIntlClientProvider>
     </main>
