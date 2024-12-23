@@ -2,6 +2,8 @@
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { TranslationContextProvider } from "@/contexts/TranslationContext";
+// import ClientProvider from "./ClientProvidert";
+
 export default async function RootLayout({
   children,
   params: { locale },
@@ -17,7 +19,9 @@ export default async function RootLayout({
     >
       <NextIntlClientProvider messages={messages}>
         <TranslationContextProvider locale={locale as "ar" | "en"}>
+          {/* <ClientProvider> */}
           {children}
+          {/* </ClientProvider> */}
         </TranslationContextProvider>
       </NextIntlClientProvider>
     </main>
