@@ -291,7 +291,7 @@ const AllCourses = () => {
                       (Over 12500)
                     </p>
                   </div>
-                  <p className="flex gap-3 text-xl">
+                  {/* <p className="flex gap-3 text-xl">
                     <span className="font-bold">
                       ${course.price_after_discount}
                     </span>
@@ -301,7 +301,7 @@ const AllCourses = () => {
                         ${course.original_price}
                       </span>
                     )}
-                  </p>
+                  </p> */}
                 </div>
               </Link>
             </SwiperSlide>
