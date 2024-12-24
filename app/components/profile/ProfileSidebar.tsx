@@ -91,7 +91,9 @@ const ProfileSidebar: React.FC = () => {
     <div
       ref={sidebarRef}
       className={`
-        sticky 
+        relative
+        right-7
+        lg:sticky 
         top-0 
         ${isSidebarOpen ? "!w-[240px]" : "w-[58px]"}
         p-1 
