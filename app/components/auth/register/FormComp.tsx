@@ -301,11 +301,12 @@ const Vectors = () => {
       <Image
         src={topRightVector}
         alt="vector"
-        className={`absolute lg:-top-3 ${
-          locale === "en" ? "lg:right-0 -right-12" : "lg:left-0 -left-12"
-        } lg:right-0 -top-8`}
+        className={`absolute lg:-top-3 
+          ${locale === "en" ? "lg:right-0 -right-12" : "lg:left-0 -left-12"} 
+        
+       -top-8`}
         style={{
-          transform: locale === "en" ? "scaleX(1)" : "scaleX(-1)",
+          transform: locale === "en" ? "scaleX(1)" : " scaleX(-1)",
         }}
       />
       <Image
