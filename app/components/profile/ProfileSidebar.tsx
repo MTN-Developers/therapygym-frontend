@@ -92,7 +92,7 @@ const ProfileSidebar: React.FC = () => {
       ref={sidebarRef}
       className={`
         relative
-        right-7
+        ${locale === "en" ? "right-7" : "left-7"}
         lg:sticky 
         top-0 
         ${isSidebarOpen ? "!w-[240px]" : "w-[58px]"}
