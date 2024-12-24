@@ -9,10 +9,10 @@ export const useValidationSchema = () => {
     email: Yup.string().email(t("InvalidEmail")),
     password: Yup.string()
       .min(8, t("PasswordMin"))
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
-        t("PasswordPattern")
-      )
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/,
+      //   t("PasswordPattern")
+      // )
       .required(t("PasswordRequired")),
     gender: Yup.string()
       .required(t("GenderRequired"))
