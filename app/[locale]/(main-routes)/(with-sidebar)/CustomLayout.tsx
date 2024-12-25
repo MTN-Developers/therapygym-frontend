@@ -303,7 +303,7 @@ import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
 import discussionIcon from "@/assets/images/discussion-icon.svg";
 import supportIcon from "@/assets/images/support-icon.svg";
-import mtnliveLogo from "@/assets/images/mtn-live-logo2.svg";
+import mtnliveLogo2 from "@/assets/images/mtn-live-logo2.svg";
 import Image from "next/image";
 import Link from "next/link";
 // import userPhoto from "../../../assets/images/user-photo.png";
@@ -489,7 +489,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             <>
               <div className="flex justify-start py-4 px-8">
                 <Image
-                  src={mtnliveLogo}
+                  src={mtnliveLogo2}
                   alt="logo"
                   width={60}
                   height={73}
