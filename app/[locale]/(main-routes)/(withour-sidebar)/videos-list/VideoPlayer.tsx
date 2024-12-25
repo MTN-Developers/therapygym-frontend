@@ -18,8 +18,18 @@ const MemoizedPlyrVideo = React.memo(({ src }: { src: string }) => (
     src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
   />
 ));
+const MemoizedIOSPlyrVideo = React.memo(({ src }: { src: string }) => (
+  <iframe
+    allowFullScreen
+    allow="autoplay; fullscreen; picture-in-picture pip"
+    key={src}
+    className="w-full h-full"
+    src={`https://stream.mtninstitute.net/streaming/ios/indexios.html?stream#${src}`}
+  />
+));
 
 MemoizedPlyrVideo.displayName = "MemoizedPlyrVideo";
+MemoizedIOSPlyrVideo.displayName = "MemoizedPlyrVideo";
 
 interface IProps {
   src: IVideo;
@@ -33,7 +43,15 @@ const VideoPlayer = React.memo(
     const { isSidebarOpen } = useAppSelector(
       (state: RootState) => state.sidebar
     );
-
+    const [deviceType, setDeviceType] = React.useState("");
+    React.useEffect(() => {
+      if (window?.ManagedMediaSource) {
+        setDeviceType("ios");
+      }
+      if (window.MediaSource) {
+        setDeviceType("android");
+      }
+    }, []);
     const { locale } = useTranslationContext();
     const dispatch = useDispatch();
 
@@ -66,7 +84,11 @@ const VideoPlayer = React.memo(
           `}
           >
             {src ? (
-              <MemoizedPlyrVideo src={src.video_path} />
+              deviceType === "ios" ? (
+                <></>
+              ) : (
+                <MemoizedPlyrVideo src={src.video_path} />
+              )
             ) : (
               <div className="text-white font-bold w-full h-full flex items-center justify-center">
                 <p>There are no videos yet.</p>

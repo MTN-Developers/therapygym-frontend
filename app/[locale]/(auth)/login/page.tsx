@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import loginBanner from "@/assets/images/login-banner.jpg";
+import loginBanner from "@/assets/images/login-banner.png";
 import loginBannerMob from "@/assets/images/login-banner-mob.png";
 import { Button, Input, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -20,6 +20,7 @@ import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
 import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
 import axiosInstance from "@/app/utils/axiosInstance";
+import SocialMediaSection from "@/app/components/auth/register/SocialMediaSection";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,7 @@ const Page = () => {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
   const package_id = searchParams.get("package_id");
+  const tt = useTranslations("RegisterPage");
 
   const t = useTranslations("Login");
 
@@ -80,7 +82,7 @@ const Page = () => {
     <div className="w-full lg:h-screen ">
       {/* <div className="hidden md:block"> */}
       <div className="z-10 w-full h-full gap-x-14 flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-start ">
-        <div className="lg:flex relative bottom-[30px] lg:bottom-0 px-4  items-center justify-start flex-1 lg:pl-10 ">
+        <div className="lg:flex z-20 relative bottom-[80px] lg:bottom-0 px-4  items-center justify-start flex-1 lg:pl-10 ">
           <form
             onSubmit={handleSubmit}
             className="  flex flex-col mx-auto lg:mx-0 lg:items-start justify-center gap-y-4"
@@ -152,6 +154,7 @@ const Page = () => {
               <span className="text-blue-500 underline ">{t("SignUp")}</span>
             </Link>
           </form>
+          <SocialMediaSection t={tt} />
         </div>
         <Image
           src={loginBanner}
@@ -161,7 +164,7 @@ const Page = () => {
         <Image
           src={loginBannerMob}
           alt="banner mob"
-          className="w-full lg:hidden object-cover"
+          className="w-full block lg:hidden object-cover"
         />
       </div>
     </div>
