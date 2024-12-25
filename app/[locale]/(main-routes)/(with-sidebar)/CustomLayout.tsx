@@ -309,7 +309,7 @@ import Link from "next/link";
 // import userPhoto from "../../../assets/images/user-photo.png";
 import logoutIcon from "@/assets/images/login-icon.svg";
 import { usePathname, useRouter } from "next/navigation";
-import { RootState } from "@/app/store/store";
+import { AppDispatch, RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CustomHeader from "@/app/components/CustomHeader";
@@ -319,6 +319,7 @@ import { useScreen } from "usehooks-ts";
 import profileIcon from "@/assets/images/profile-icon.svg";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
+import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
 const { Content, Sider, Header } = Layout;
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { locale } = useTranslationContext();
@@ -385,7 +386,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false); // Retained isMounted
   const { userData } = useSelector((state: RootState) => state.userProfile);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   // console.log("user obj is ", user);
   const { locale: lang } = useTranslationContext();
@@ -398,7 +399,8 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logout());
