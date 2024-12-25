@@ -45,13 +45,17 @@ const VideoPlayer = React.memo(
     );
     const [deviceType, setDeviceType] = React.useState("");
     React.useEffect(() => {
-      if (window?.ManagedMediaSource) {
+      const userAgent = navigator.userAgent || navigator.vendor;
+
+      if (/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream) {
         setDeviceType("ios");
-      }
-      if (window.MediaSource) {
+      } else if (/android/i.test(userAgent)) {
         setDeviceType("android");
+      } else {
+        setDeviceType("unknown");
       }
     }, []);
+
     const { locale } = useTranslationContext();
     const dispatch = useDispatch();
 
