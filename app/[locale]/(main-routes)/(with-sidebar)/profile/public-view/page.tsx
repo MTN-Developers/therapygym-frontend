@@ -141,7 +141,7 @@ const UserInfo = ({ userData }) => {
         </div>
       </div>
       {/* user bio */}
-      <p className="max-w-[400px] text-[#636363] [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-normal  tracking-[-0.197px]">
+      <p className="lg:max-w-[540px] max-w-[200px]  !text-wrap !overflow-wrap !break-words !leading-6 text-[#636363] [font-family:Poppins] text-base font-normal  ">
         {userData.profile.bio}
       </p>
       {/* social icons */}

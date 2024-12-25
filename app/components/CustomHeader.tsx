@@ -16,6 +16,7 @@ import MessageIcon from "@/assets/svgs/message-icon";
 import { RootState, useAppSelector } from "../store/store";
 import MenuIcon from "@/assets/svgs/MenuIcon";
 import BillIcon from "@/assets/svgs/BillIcon";
+// import { useSelector } from "react-redux";
 
 export default function CustomHeader({
   setCollapsed,
@@ -34,6 +35,7 @@ export default function CustomHeader({
     dispatch(logout());
     router.push("/login");
   };
+
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
 
@@ -45,6 +47,7 @@ export default function CustomHeader({
 
   const useSelector = useAppSelector;
   const { currentCourse } = useSelector((state) => state.allCourses);
+  const { userData } = useSelector((state: RootState) => state.userProfile);
   // # end handlers
 
   return (
@@ -125,9 +128,9 @@ export default function CustomHeader({
           >
             <Image
               src={
-                data?.data?.profile?.avatar
-                  ? data?.data?.profile?.avatar
-                  : data?.data?.gender == "male"
+                userData?.profile?.avatar
+                  ? userData?.profile?.avatar
+                  : userData?.gender == "male"
                   ? "/images/male.jpg"
                   : "/images/female.jpg"
               }
