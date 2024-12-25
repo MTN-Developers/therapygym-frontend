@@ -302,7 +302,7 @@ import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
 import discussionIcon from "@/assets/images/discussion-icon.svg";
 import supportIcon from "@/assets/images/support-icon.svg";
-import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
+import mtnliveLogo from "@/assets/images/mtn-live-logo2.svg";
 import Image from "next/image";
 import Link from "next/link";
 // import userPhoto from "../../../assets/images/user-photo.png";
