@@ -25,7 +25,7 @@ const Page = () => {
   const mySubscriptions = subscriptionData?.data;
 
   return (
-    <div className="p-4 w-full">
+    <div className={'p-4 w-full  '}>
       <h2 className="text-[#164194] mb-4 text-2xl lg:text-4xl font-bold leading-normal">
         {t("Subscription")}
       </h2>

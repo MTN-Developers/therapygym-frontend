@@ -294,7 +294,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";.
+// import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+//
 import { CiStreamOn } from "react-icons/ci";
 import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
@@ -302,7 +303,7 @@ import coursesIcon from "@/assets/images/all-courses-icon.svg";
 import calenderIcon from "@/assets/images/calender-icon.svg";
 import discussionIcon from "@/assets/images/discussion-icon.svg";
 import supportIcon from "@/assets/images/support-icon.svg";
-import mtnliveLogo from "@/assets/images/mtn-live-logo.svg";
+import mtnliveLogo2 from "@/assets/images/mtn-live-logo2.svg";
 import Image from "next/image";
 import Link from "next/link";
 // import userPhoto from "../../../assets/images/user-photo.png";
@@ -493,8 +494,14 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             }}
           >
             <>
-              <div className="flex justify-center py-4">
-                <Image src={mtnliveLogo} alt="logo" width={150} height={73} />
+              <div className="flex justify-start py-4 px-8">
+                <Image
+                  src={mtnliveLogo2}
+                  alt="logo"
+                  width={60}
+                  height={73}
+                  className="!w-[60px]"
+                />
               </div>
 
               <Menu
@@ -539,9 +546,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                 <div className="flex gap-2 items-center">
                   <Image
                     src={
-                      data?.data?.profile?.avatar
-                        ? data?.data?.profile?.avatar
-                        : data?.data?.gender == "male"
+                      userData?.profile?.avatar
+                        ? userData?.profile?.avatar
+                        : userData?.gender == "male"
                         ? "/images/male.jpg"
                         : "/images/female.jpg"
                     }
