@@ -85,7 +85,7 @@ const VideoPlayer = React.memo(
           >
             {src ? (
               deviceType === "ios" ? (
-                <></>
+                <MemoizedIOSPlyrVideo src={src.video_path} />
               ) : (
                 <MemoizedPlyrVideo src={src.video_path} />
               )
