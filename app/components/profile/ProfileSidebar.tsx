@@ -68,6 +68,7 @@ const ProfileSidebar: React.FC = () => {
 
   const handleItemClick = (link: string) => {
     router.push(link);
+    setIsSidebarOpen(false); // Close the sidebar after navigation
   };
 
   // Handle clicks outside the sidebar to close it
@@ -87,12 +88,17 @@ const ProfileSidebar: React.FC = () => {
     };
   }, []);
 
+  // Close the sidebar if the pathname changes (after navigation)
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
+
   return (
     <div
       ref={sidebarRef}
       className={`
-        relative
-        ${locale === "en" ? "right-7" : "left-7"}
+        !relative
+        ${locale === "en" ? "lg:right-2 right-7" : "left-7 "}
         lg:sticky 
         top-0 
         ${isSidebarOpen ? "!w-[240px]" : "w-[58px]"}
