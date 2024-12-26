@@ -6,6 +6,7 @@ import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
 import { RenderHTML } from "../shared/RenderHTML";
+import { Course_package } from "@/types/packages";
 
 const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
