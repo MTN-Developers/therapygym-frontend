@@ -2,6 +2,8 @@
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { TranslationContextProvider } from "@/contexts/TranslationContext";
+// import ClientProvider from "./ClientProvidert";
+
 export default async function RootLayout({
   children,
   params: { locale },

@@ -52,16 +52,18 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
             <p className="flex items-center gap-1">
               <Star color={course.primary_color} />
               {/* <Image src={starIcon} alt="star icon" width={20} height={20} /> */}
-              <span className="font-bold">4.8</span> (451,444 {t("StarRating")})
+              <span className="font-bold">4.8</span>
+              {/* (451,444 {t("StarRating")}) */}
             </p>
             <p className="flex items-center gap-1">
               {<Clock color={course.primary_color} />}
               {/* <Image src={clockIcon} alt="clock icon" width={20} height={20} /> */}
-              4 {t("WeeksDuration")}
+              3 {t("WeeksDuration")}
             </p>
             <p className="flex items-center gap-1">
               <LuUsersRound color={course?.primary_color} size={19} />
-              {t("SubscribersCount")} 350
+              {t("SubscribersCount")}
+              {/* 350 */}
             </p>
             <p className="flex items-center gap-1">
               <SlNotebook color={course?.primary_color} size={19} />

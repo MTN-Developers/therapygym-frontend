@@ -2,6 +2,7 @@
 import Providers from "./Providers";
 import "./globals.css";
 import { Metadata } from "next";
+import localFont from "next/font/local";
 
 export const metadata: Metadata = {
   title: "MTN Live System",
@@ -11,6 +12,15 @@ export const metadata: Metadata = {
   applicationName: "MTN Live",
   creator: "MTN Software Team 2024",
 };
+
+//fonts
+
+const smooch = localFont({
+  src: "./fonts/SmoochSans[wght].ttf",
+  variable: "--font-smooch",
+  style: "normal",
+});
+
 export default async function RootLayout({
   children,
   params: { locale },
@@ -19,7 +29,11 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   return (
-    <html dir={`${locale === "ar" ? "rtl" : "ltr"}`} lang={locale}>
+    <html
+      dir={`${locale === "ar" ? "rtl" : "ltr"}`}
+      lang={locale}
+      className={`${smooch.variable}`}
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

@@ -1,23 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ImgCrop from "antd-img-crop";
-import { Spin, Upload, UploadFile, UploadProps } from "antd";
+import { Spin } from "antd";
 import type { RcFile } from "antd/es/upload";
-import NextImage from "next/image";
 import editIcon from "@/assets/images/edit-icon-2.svg";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/app/store/store";
 import Image from "next/image";
 import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import colseIcon from "@/assets/images/close-circle.svg";
-import yellowTriangle from "@/assets/images/yellow-triangle.svg";
+
 import * as yup from "yup";
 import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
-import { UserData } from "@/types/profile";
 import { useTranslations } from "next-intl";
 import axiosInstance from "@/app/utils/axiosInstance";
+import ImageUploader from "@/app/components/profile/ImageUploader";
+import WarningBox from "@/app/components/profile/WarningBox";
 
 interface FormData {
   name: string;
@@ -45,35 +43,51 @@ const Page = () => {
     (state: RootState) => state.userProfile
   );
 
+  const [initialValues, setInitialValues] = useState<FormData>({
+    name: "",
+    date_of_birth: "",
+    bio: "",
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    linkedin: "",
+  });
+
   const t = useTranslations("ProfilePages.Edit Page");
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false); // Initially hidden
+  const [popupVisible, setPopupVisible] = useState(false); // For animation
   const [avatarFile, setAvatarFile] = useState<RcFile | null>(null);
+  const [isModified, setIsModified] = useState(false); // State to track changes
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    watch,
+    formState: { errors, dirtyFields },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema) as Resolver<FormData>,
-    defaultValues: {
-      name: "",
-      date_of_birth: "",
-      bio: "",
-      facebook: "",
-      twitter: "",
-      instagram: "",
-      linkedin: "",
-    },
+    defaultValues: initialValues,
   });
+
+  const watchedFields = watch(); // Watch all form fields for changes
 
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
 
   useEffect(() => {
+    // Compare watched fields with userData to detect modifications
+    const hasChanged = Object.keys(watchedFields).some((key) => {
+      const fieldKey = key as keyof FormData;
+      return watchedFields[fieldKey] !== (userData?.[fieldKey] || "");
+    });
+    setIsModified(hasChanged || Boolean(avatarFile)); // Also consider avatar changes
+  }, [watchedFields, userData, avatarFile]);
+
+  useEffect(() => {
     if (userData) {
-      reset({
+      const newInitialValues = {
         name: userData?.name || "",
         date_of_birth: userData?.profile?.date_of_birth || "",
         bio: userData?.profile?.bio || "",
@@ -81,9 +95,35 @@ const Page = () => {
         twitter: userData?.profile?.x_url || "",
         instagram: userData?.profile?.instagram_url || "",
         linkedin: userData?.profile?.linkedin_url || "",
-      });
+      };
+
+      setInitialValues(newInitialValues);
+      reset(newInitialValues);
     }
   }, [userData, reset]);
+
+  useEffect(() => {
+    const hasChanges = Object.keys(watchedFields).some((key) => {
+      const fieldKey = key as keyof FormData;
+      const currentValue = watchedFields[fieldKey];
+      const initialValue = initialValues[fieldKey];
+
+      // Check if the field has been modified and its value is different
+      return dirtyFields[fieldKey] && currentValue !== initialValue;
+    });
+
+    setIsModified(hasChanges || Boolean(avatarFile));
+  }, [watchedFields, initialValues, dirtyFields, avatarFile]);
+
+  useEffect(() => {
+    // Show the popup with animation after 2 seconds
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+      setPopupVisible(true); // Trigger animation
+    }, 2000);
+
+    return () => clearTimeout(timer); // Cleanup timer
+  }, []);
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -114,9 +154,11 @@ const Page = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
       console.log("API response:", response);
 
       dispatch(fetchUserProfile());
+      setIsModified(false); // Reset modification state
     } catch (err) {
       console.error("Failed to update user data:", err);
     }
@@ -155,8 +197,13 @@ const Page = () => {
                   {t("Edit Profile Data")}
                 </h3>
                 <button
+                  disabled={!isModified} // Disable if no changes are made
                   type="submit"
-                  className="flex w-[127px] h-[42px] justify-center font-bold items-center gap-2.5 text-white bg-[#017AFD] rounded-md"
+                  className={`flex w-[127px] h-[42px] justify-center font-bold ${
+                    isModified
+                      ? "text-white bg-[#017AFD] cursor-pointer"
+                      : "bg-gray-300 text-white cursor-not-allowed"
+                  } items-center gap-2.5  rounded-md`}
                 >
                   {t("Update")}
                 </button>
@@ -164,7 +211,7 @@ const Page = () => {
 
               {fields.map((field) => (
                 <div key={field.name} className="mb-6">
-                  <div className="max-w-[570px] border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
+                  <div className="lg:max-w-[570px] max-w-full  border-2 rounded-lg min-h-[58px] p-0 flex items-center justify-between relative shadow-sm">
                     <span className="absolute -top-3 bg-white px-2 left-5 text-gray-500">
                       {field.label}
                     </span>
@@ -189,18 +236,12 @@ const Page = () => {
                 </div>
               ))}
             </form>
-
+            {/* Warning box */}
             {showPopup && (
-              <div className="hidden bg-white lg:flex text-center flex-col items-center justify-center fixed bottom-4 right-4 p-4 rounded-lg shadow-sm border max-w-[260px] border-yellow-500">
-                <Image
-                  src={colseIcon}
-                  alt="close"
-                  className="absolute top-4 cursor-pointer right-4"
-                  onClick={() => setShowPopup(false)}
-                />
-                <Image src={yellowTriangle} alt="yellow triangle" />
-                <p className="w-full">{t("Warning")}</p>
-              </div>
+              <WarningBox
+                popupVisible={popupVisible}
+                setShowPopup={setShowPopup}
+              />
             )}
           </div>
         </div>
@@ -210,116 +251,3 @@ const Page = () => {
 };
 
 export default Page;
-
-interface ImageUploaderProps {
-  userData: UserData;
-  onFileChange: (_file: RcFile | null) => void;
-}
-
-const ImageUploader: React.FC<ImageUploaderProps> = ({
-  userData,
-  onFileChange,
-}) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "defaultProfilePicture.jpg",
-      url: userData.profile?.avatar || "https://via.placeholder.com/110",
-      status: "done",
-    },
-  ]);
-
-  // Converts a file to a base64 dataURL for immediate preview
-  const getSrcFromFile = (file: UploadFile): Promise<string> => {
-    return new Promise((resolve) => {
-      const originFile = file.originFileObj as RcFile;
-      if (!originFile) return resolve("");
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.readAsDataURL(originFile);
-    });
-  };
-
-  const handleChange: UploadProps["onChange"] = async (info) => {
-    // We only want 1 file in the list, so take the last item
-    let updatedFileList = info.fileList.slice(-1);
-
-    // Convert any new file to a dataURL so we can display it immediately
-    if (updatedFileList.length > 0) {
-      const lastFile = updatedFileList[0];
-      if (!lastFile.url && lastFile.originFileObj) {
-        const src = await getSrcFromFile(lastFile);
-        lastFile.url = src; // Assign the dataURL to file.url
-      }
-    }
-
-    // Update local state
-    setFileList(updatedFileList);
-
-    // If user has at least one file, pass the raw file up
-    if (updatedFileList.length > 0 && updatedFileList[0].originFileObj) {
-      onFileChange(updatedFileList[0].originFileObj as RcFile);
-    } else {
-      onFileChange(null);
-    }
-  };
-
-  const handlePreview: UploadProps["onPreview"] = async (file) => {
-    // open a new tab with the full-size preview
-    const url = file.url || (await getSrcFromFile(file));
-    if (!url) return;
-    window.open(url, "_blank");
-  };
-
-  const currentImageUrl = fileList[0]?.url;
-
-  return (
-    <div className="relative w-fit mb-6">
-      <div className="relative w-[110px] h-[110px] rounded-full overflow-hidden flex items-center justify-center bg-gray-200 shadow-sm">
-        <ImgCrop
-          cropShape="round"
-          showGrid
-          rotationSlider
-          aspectSlider
-          showReset
-        >
-          <Upload
-            listType="picture-card"
-            multiple={false}
-            maxCount={1}
-            fileList={fileList}
-            onChange={handleChange}
-            onPreview={handlePreview}
-            showUploadList={false}
-            beforeUpload={() => false} // Don't auto-upload
-          >
-            {currentImageUrl ? (
-              <NextImage
-                src={currentImageUrl}
-                alt="User Image"
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex items-center justify-center w-full h-full text-gray-500">
-                No Image
-              </div>
-            )}
-          </Upload>
-        </ImgCrop>
-      </div>
-      <button
-        type="button"
-        className="absolute bottom-0 right-0 w-6 h-6 rounded-md shadow-sm flex items-center justify-center"
-      >
-        <NextImage
-          src={editIcon}
-          alt="Edit"
-          width={16}
-          height={16}
-          className="text-blue-400"
-        />
-      </button>
-    </div>
-  );
-};

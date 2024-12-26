@@ -1,4 +1,11 @@
+/* eslint-disable no-unused-vars */
 "use client";
+
+declare global {
+  interface Window {
+    ManagedMediaSource?: any;
+  }
+}
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
@@ -25,6 +32,7 @@ const Page = () => {
   // const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
   const params = useParams();
   const courseId = params.id as string;
+
   const { data, isLoading } = useSWR<any>(`video/subscription/test/`, getOne, {
     revalidateOnFocus: false,
     onSuccess: (data) => {

@@ -263,6 +263,15 @@ body {
 
 .ant-select-selector {
   background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.ant-select-selection-item {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
 }
 
 .ant-input-affix-wrapper::before {
