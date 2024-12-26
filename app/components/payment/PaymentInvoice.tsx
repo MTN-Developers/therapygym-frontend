@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
+import { RenderHTML } from "../shared/RenderHTML";
 
 const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
@@ -48,12 +49,17 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
         <div className="flex flex-col gap-3">
           <div className="w-fit text-[#2B2B2B] [font-family:Inter] text-base font-medium">
             {locale == "ar" ? course?.data?.name_ar : course?.data?.name_en}
-            {/* {packageData?.name_ar ? ` - ${packageData?.name_ar}` : ""} */}
-            {packageData?.name_ar
-              ? ` - ${
-                  locale == "ar" ? packageData?.name_ar : packageData?.name_en
-                }`
-              : ""}
+            {locale == "ar" ? (
+              <RenderHTML
+                htmlContent={packageData?.name_ar}
+                renderInTable={false}
+              />
+            ) : (
+              <RenderHTML
+                htmlContent={packageData?.name_en}
+                renderInTable={false}
+              />
+            )}
           </div>
         </div>
       </div>
