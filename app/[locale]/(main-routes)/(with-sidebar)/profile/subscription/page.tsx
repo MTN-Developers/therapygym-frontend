@@ -1,5 +1,6 @@
 "use client";
 
+import { RenderHTML } from "@/app/components/shared/RenderHTML";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
 import { SubscriptionApiResponse, Subscription } from "@/types/packages";
@@ -25,7 +26,7 @@ const Page = () => {
   const mySubscriptions = subscriptionData?.data;
 
   return (
-    <div className={'p-4 w-full  '}>
+    <div className={"p-4 w-full  "}>
       <h2 className="text-[#164194] mb-4 text-2xl lg:text-4xl font-bold leading-normal">
         {t("Subscription")}
       </h2>
@@ -110,7 +111,11 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
           Current Bundle
         </div>
         <p className="self-stretch text-[#353535] [font-family:PNU] text-lg lg:text-2xl font-bold leading-[160%]">
-          {locale === "en" ? packag?.name_en : packag?.name_ar}
+          {locale === "en" ? (
+            <RenderHTML htmlContent={packag?.name_en} renderInTable={false} />
+          ) : (
+            <RenderHTML htmlContent={packag?.name_ar} renderInTable={false} />
+          )}
         </p>
         <p className="text-[#636363] text-right [font-family:PNU] text-[15px] font-bold leading-[160%]">
           {locale === "en" ? course?.name_en : course?.name_ar}
