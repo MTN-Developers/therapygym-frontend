@@ -107,7 +107,7 @@ const Page = () => {
   }, [courseId, dispatch]);
 
   return (
-    <div className="overflow-x-hidden h-screen">
+    <div className="overflow-x-hidden h-dvh">
       <HeaderClassRoom video={currentVideo} />
 
       {data?.data ? (
