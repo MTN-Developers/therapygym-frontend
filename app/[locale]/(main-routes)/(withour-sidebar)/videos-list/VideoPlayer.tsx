@@ -57,8 +57,13 @@ const VideoPlayer = React.memo(
       }
     }, [dispatch, locale]);
     return (
-      <div className="relative h-[540px] bg-[#2d2f31] overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[535px] bg-[#424242]">
+      <div
+        style={{
+          height: "calc(100vh - 64px)",
+        }}
+        className="relative  bg-[#2d2f31] overflow-hidden"
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-full bg-[#424242]">
           <div
             className={`
             absolute top-0 w-full h-full 

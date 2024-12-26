@@ -107,7 +107,7 @@ const Page = () => {
   }, [courseId, dispatch]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden h-screen">
       <HeaderClassRoom video={currentVideo} />
 
       {data?.data ? (
@@ -122,10 +122,6 @@ const Page = () => {
       ) : (
         <p>{t("CourseNotFound")}</p>
       )}
-
-      <div className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30">
-        {/* <Tabs defaultActiveKey="1" items={items} onChange={() => {}} /> */}
-      </div>
     </div>
   );
 };

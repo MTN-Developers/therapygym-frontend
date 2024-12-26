@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Breadcrumb, Tabs } from "antd";
-import { LuUsersRound } from "react-icons/lu";
+// import { LuUsersRound } from "react-icons/lu";
 import { SlNotebook } from "react-icons/sl";
 import type { TabsProps } from "antd";
 import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -56,15 +56,16 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
               {/* (451,444 {t("StarRating")}) */}
             </p>
             <p className="flex items-center gap-1">
-              {<Clock color={course.primary_color} />}
-              {/* <Image src={clockIcon} alt="clock icon" width={20} height={20} /> */}
-              3 {t("WeeksDuration")}
+              {<Clock color={course.primary_color} />}3 {t("WeeksDuration")}
             </p>
             <p className="flex items-center gap-1">
+              {<Clock color={course.primary_color} />}
+              {t("TimeDuration")}
+            </p>
+            {/* <p className="flex items-center gap-1">
               <LuUsersRound color={course?.primary_color} size={19} />
               {t("SubscribersCount")}
-              {/* 350 */}
-            </p>
+            </p> */}
             <p className="flex items-center gap-1">
               <SlNotebook color={course?.primary_color} size={19} />
 

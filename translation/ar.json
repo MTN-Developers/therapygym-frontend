@@ -108,7 +108,8 @@
     "Doctor": "دكتور أحمد الدملاوي",
     "ArabicLanguage": "اللغة العربية",
     "SubscribersCount": "عدد المشتركين",
-    "WeeksDuration": "لقاءات شهريا",
+    "WeeksDuration": "لقاءات مباشرة (أونلاين) / شهر مع الدكتور أحمد الدملاوي",
+    "TimeDuration": "مدة اللقاء: ساعتين ",
     "StarRating": "مقيم"
   },
   "PaymentPage": {
