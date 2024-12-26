@@ -1,12 +1,11 @@
 "use client";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
+import { Course_package } from "@/types/packages";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
-import { RenderHTML } from "../shared/RenderHTML";
-import { Course_package } from "@/types/packages";
 
 const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
@@ -52,17 +51,7 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
             {/* {packageData?.name_ar ? ` - ${packageData?.name_ar}` : ""} */}
             {packageData?.name_ar
               ? ` - ${
-                  locale == "ar" ? (
-                    <RenderHTML
-                      htmlContent={packageData?.name_ar}
-                      renderInTable={false}
-                    />
-                  ) : (
-                    <RenderHTML
-                      htmlContent={packageData?.name_en}
-                      renderInTable={false}
-                    />
-                  )
+                  locale == "ar" ? packageData?.name_ar : packageData?.name_en
                 }`
               : ""}
           </div>
