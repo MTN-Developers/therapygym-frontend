@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 // import alertIcon fWrom "@/assets/images/Alarm.svg";
-import { Button, Modal, Tooltip } from "antd";
+import { Button, Modal } from "antd";
 import Close from "@/assets/components/Close";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -18,6 +18,7 @@ import Clock from "@/assets/svgs/Clock@2x";
 import Play from "@/assets/svgs/Play";
 import { Course_package } from "@/types/packages";
 import Logo from "@/assets/svgs/Logo";
+import { RenderHTML } from "../shared/RenderHTML";
 const PlyrVideo = dynamic(
   () => import("@/app/components/classroom/PlyrVideo"),
   {
@@ -269,10 +270,7 @@ const PackageCard = ({
 }) => {
   const t = useTranslations("PackageCard");
   const { locale } = useTranslationContext();
-  const description =
-    locale == "ar"
-      ? pkg.description_ar.split("\n").filter(Boolean)
-      : pkg.description_en.split("\n");
+  const description = locale == "ar" ? pkg.description_ar : pkg.description_en;
   // console.log(description, "description");
 
   let packageDuration = "";
@@ -315,15 +313,11 @@ const PackageCard = ({
       {/* Subscription Content */}
       <div className="text-gray-700  mb-6">
         <h2 className="text-xl font-bold mb-2">{t("SubscriptionContent")}</h2>
-        <ul className="space-y-2">
-          {description.map((desc, idx) => (
-            <li key={idx} className="flex items-center gap-2">
-              <span className="text-blue-500 text-xl font-bold mr-2">✔</span>
-              <Tooltip title={desc}>
-                <span className="w-full max-w-full ">{desc}</span>
-              </Tooltip>
-            </li>
-          ))}
+        <ul className="space-y-2" dir="rtl">
+          <RenderHTML
+            htmlContent={description as string}
+            renderInTable={false}
+          />
         </ul>
       </div>
 
