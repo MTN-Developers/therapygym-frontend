@@ -1,128 +1,243 @@
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import axiosInstance from "@/app/utils/axiosInstance"; // Replace with the correct path for your axios instance
+import closeIcon from "@/assets/images/feedback-close-circle.svg";
+import emojyOne from "@/assets/images/emojy01.svg";
+import emojyTwo from "@/assets/images/emojy02.svg";
+import emojyThree from "@/assets/images/emojy03.svg";
+import emojyFour from "@/assets/images/emojy04.svg";
+import emojyFive from "@/assets/images/emojy05.svg";
+
+const FEEDBACK_CONFIG = {
+  coursePayment: {
+    questions: [
+      {
+        id: 1,
+        text: "How easy was it to complete the payment process?",
+        type: "rating",
+      },
+      {
+        id: 2,
+        text: "How easy was it to navigate and use the platform?",
+        type: "rating",
+      },
+    ],
+    showDuration: 3000,
+  },
+  profile: {
+    questions: [
+      {
+        id: 1,
+        text: "How would you rate your overall experience with our platform?",
+        type: "rating",
+      },
+      {
+        id: 2,
+        text: "How easy was it to sign up for our platform?",
+        type: "rating",
+      },
+      {
+        id: 3,
+        text: "How satisfied are you with the speed and performance of the platform?",
+        type: "rating",
+      },
+      {
+        id: 4,
+        text: "How easy was it to navigate and use the platform?",
+        type: "rating",
+      },
+    ],
+    frequency: "weekly",
+  },
+  home: {
+    questions: [
+      {
+        id: 1,
+        text: "How would you rate your overall experience with our platform?",
+        type: "rating",
+      },
+      {
+        id: 2,
+        text: "How easy was it to sign up for our platform?",
+        type: "rating",
+      },
+      {
+        id: 3,
+        text: "How satisfied are you with the speed and performance of the platform?",
+        type: "rating",
+      },
+      {
+        id: 4,
+        text: "How easy was it to navigate and use the platform?",
+        type: "rating",
+      },
+    ],
+    frequency: "weekly",
+  },
+};
 
 const Feedback = () => {
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [fadeIn, setFadeIn] = useState(false);
-  const [feedback, setFeedback] = useState("");
-  const [rating, setRating] = useState<number | null>(null);
-  const [errors, setErrors] = useState<{
-    feedback?: string;
-    rating?: string[];
-  }>({});
+  const [isVisible, setIsVisible] = useState(true);
+  const [currentQuestions, setCurrentQuestions] = useState([]);
+  const [responses, setResponses] = useState({});
+  const pathname = usePathname();
+
+  const emojies = [emojyOne, emojyTwo, emojyThree, emojyFour, emojyFive];
 
   useEffect(() => {
-    const feedbackGiven = localStorage.getItem("feedbackGiven");
+    const checkAndShowFeedback = () => {
+      const lastShownDates = JSON.parse(
+        localStorage.getItem("feedbackLastShown") || "{}"
+      );
+      const currentDate = new Date().toISOString();
 
-    if (!feedbackGiven) {
-      const timer = setTimeout(() => {
-        setShowFeedback(true);
-        setTimeout(() => setFadeIn(true), 100); // Trigger fade-in animation
-      }, 10000); // Wait 1 minute
+      if (
+        pathname.includes("/course") &&
+        sessionStorage.getItem("showCourseFeedback")
+      ) {
+        setTimeout(() => {
+          setCurrentQuestions(FEEDBACK_CONFIG.coursePayment.questions);
+          setIsVisible(true);
+          sessionStorage.removeItem("showCourseFeedback");
+        }, FEEDBACK_CONFIG.coursePayment.showDuration);
+      } else if (pathname.includes("/profile")) {
+        const lastShownProfile = lastShownDates.profile;
+        if (shouldShowWeeklyFeedback(lastShownProfile)) {
+          setCurrentQuestions(FEEDBACK_CONFIG.profile.questions);
+          setIsVisible(true);
+          updateLastShownDate("profile", currentDate);
+        }
+      } else if (pathname === "/en" || pathname === "/ar") {
+        const lastShownHome = lastShownDates.home;
+        if (shouldShowWeeklyFeedback(lastShownHome)) {
+          setCurrentQuestions(FEEDBACK_CONFIG.home.questions);
+          setIsVisible(true);
+          updateLastShownDate("home", currentDate);
+        }
+      }
+    };
 
-      return () => clearTimeout(timer); // Cleanup timeout on unmount
-    }
-  }, []);
+    checkAndShowFeedback();
+  }, [pathname]);
 
-  const handleFeedbackSubmit = async () => {
+  const shouldShowWeeklyFeedback = (lastShownDate) => {
+    if (!lastShownDate) return true;
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    return new Date().getTime() - new Date(lastShownDate).getTime() >= oneWeek;
+  };
+
+  const updateLastShownDate = (page, date) => {
+    const lastShownDates = JSON.parse(
+      localStorage.getItem("feedbackLastShown") || "{}"
+    );
+    lastShownDates[page] = date;
+    localStorage.setItem("feedbackLastShown", JSON.stringify(lastShownDates));
+  };
+
+  const handleResponse = (questionId, value) => {
+    setResponses((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
+  };
+
+  const handleSubmit = async () => {
     try {
-      setErrors({}); // Clear previous errors
+      // Transform responses into {text: rate} format
+      const transformedResponses = currentQuestions.reduce((acc, question) => {
+        if (responses[question.id]) {
+          acc[question.text] = responses[question.id];
+        }
+        return acc;
+      }, {});
 
-      const payload = {
-        feedback,
-        rating,
-      };
+      // Send to backend
+      // const response = await fetch("/api/feedback", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     feedback: transformedResponses,
+      //     page: pathname,
+      //     timestamp: new Date().toISOString(),
+      //   }),
+      // });
 
-      // Validate required fields
-      if (!feedback || !rating) {
-        setErrors({
-          feedback: !feedback ? "Feedback is required." : undefined,
-          rating: !rating ? ["Rating is required."] : undefined,
-        });
-        return;
-      }
+      // if (!response.ok) {
+      //   throw new Error("Failed to submit feedback");
+      // }
 
-      // Make the API call
-      const response = await axiosInstance.post("/feedback", payload);
+      console.log("Feedback submitted:", transformedResponses);
 
-      console.log("API response:", response);
-
-      // On successful submission, close the feedback and set localStorage
-      localStorage.setItem("feedbackGiven", "true");
-      handleClose();
-    } catch (err: any) {
-      console.error("API Error:", err.response);
-      if (err.response?.status === 422) {
-        // Set validation errors returned by the API
-        setErrors(err.response.data.errors || {});
-      } else {
-        console.error("Unexpected error:", err);
-      }
+      setIsVisible(false);
+      setResponses({});
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
     }
   };
 
-  const handleClose = () => {
-    setFadeIn(false); // Trigger fade-out animation
-    setTimeout(() => setShowFeedback(false), 300); // Remove component after fade-out
-  };
-
-  if (!showFeedback) return null;
+  if (!isVisible) return null;
 
   return (
-    <div
-      className={`fixed bottom-0 right-4 z-[999] w-[350px] h-[400px] rounded-xl bg-gray-100 shadow-xl p-4 transition-all duration-300 ${
-        fadeIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-      }`}
-    >
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">We love your feedback!</h1>
-        <button
-          onClick={handleClose}
-          className="text-gray-500 hover:text-gray-800 text-lg font-bold"
-        >
-          &times;
-        </button>
-      </div>
-
-      <textarea
-        placeholder="Your feedback here..."
-        className="w-full h-[150px] p-2 border rounded-lg"
-        value={feedback}
-        onChange={(e) => setFeedback(e.target.value)}
-      />
-      {errors.feedback && (
-        <p className="text-red-500 text-sm mt-1">{errors.feedback}</p>
-      )}
-
-      <div className="mt-4">
-        <p className="font-bold">Rate us:</p>
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map((star) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="relative w-full h-full ">
+        <div className="absolute bottom-4 right-4 bg-white rounded-2xl px-4 py-8  !w-[375px]">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold"></h2>
             <button
-              key={star}
-              className={`w-8 h-8 rounded-full ${
-                rating === star ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
-              onClick={() => setRating(star)}
+              onClick={() => setIsVisible(false)}
+              className="p-1 hover:bg-gray-100 rounded-full"
             >
-              {star}
+              {/* <div className="w-5 bg-red-500 h-5" /> */}
+              <Image src={closeIcon} alt="close" width={20} height={20} />
             </button>
-          ))}
-        </div>
-        {errors.rating && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.rating.join(", ")}
-          </p>
-        )}
-      </div>
+          </div>
 
-      <div className="flex justify-end mt-6">
-        <button
-          onClick={handleFeedbackSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-        >
-          Submit
-        </button>
+          <div className="space-y-4">
+            {currentQuestions.map((question) => (
+              <div
+                key={question.id}
+                className="space-y-2 mb-4 text-center flex flex-col justify-center items-center"
+              >
+                <label className=" text-black text-center  text-lg font-bold leading-[normal] ">
+                  {question.text}
+                </label>
+                {question.type === "rating" && (
+                  <div className="flex space-x-2">
+                    {[1, 2, 3, 4, 5].map((rating) => (
+                      <button
+                        key={rating}
+                        onClick={() => handleResponse(question.id, rating)}
+                        className={`w-[50px] h-[50px] flex items-center justify-center rounded-full ${
+                          responses[question.id] === rating
+                            ? "bg-gradient-to-bl from-[#546cfd] to-[#ea06fc] text-white"
+                            : "bg-gray-100"
+                        }`}
+                      >
+                        {/* {rating} */}
+                        <Image
+                          src={emojies[rating - 1]}
+                          alt="emojy"
+                          width={30}
+                          height={30}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 flex justify-end space-x-3">
+            <button
+              onClick={handleSubmit}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

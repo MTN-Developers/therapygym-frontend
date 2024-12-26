@@ -124,8 +124,8 @@ const UserInfo = ({ userData }) => {
       {/* user image */}
       <div className="w-[100px] h-[100px]  shadow-sm rounded-full object-cover ">
         <Image
-          src={userData.profile.avatar || userPhoto}
-          alt={userData.name}
+          src={userData?.profile?.avatar || userPhoto}
+          alt={userData?.name}
           width={200}
           height={200}
           className="!w-full h-full object-cover rounded-full"
@@ -134,7 +134,7 @@ const UserInfo = ({ userData }) => {
       {/* user name */}
       <div className="flex items-center justify-center gap-4 ">
         <h2 className="text-black text-nowrap [leading-trim:both] [text-edge:cap] [font-family:Poppins] text-base font-semibold leading-[23.583px] tracking-[-0.197px]">
-          {userData.name}
+          {userData?.name}
         </h2>
         <div className="block md:hidden ">
           <AchievementsComp />
@@ -142,7 +142,7 @@ const UserInfo = ({ userData }) => {
       </div>
       {/* user bio */}
       <p className="lg:max-w-[540px] max-w-[200px]  !text-wrap !overflow-wrap !break-words !leading-6 text-[#636363] [font-family:Poppins] text-base font-normal  ">
-        {userData.profile.bio}
+        {userData?.profile?.bio}
       </p>
       {/* social icons */}
       <div className="flex items-center gap-4 justify-start  ">

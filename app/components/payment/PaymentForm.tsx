@@ -54,6 +54,7 @@ const PaymentForm = ({ Package }: { Package: Course_package }) => {
       } else {
         setLoading(false);
         message.success(t("PaymentSuccess"));
+        sessionStorage.setItem("showCourseFeedback", "true");
         router.push(`/courses/${Package.course_id}`);
       }
     } catch (error) {
