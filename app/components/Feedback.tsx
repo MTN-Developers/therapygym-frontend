@@ -7,82 +7,95 @@ import emojyTwo from "@/assets/images/emojy02.svg";
 import emojyThree from "@/assets/images/emojy03.svg";
 import emojyFour from "@/assets/images/emojy04.svg";
 import emojyFive from "@/assets/images/emojy05.svg";
-
-const FEEDBACK_CONFIG = {
-  coursePayment: {
-    questions: [
-      {
-        id: 1,
-        text: "How easy was it to complete the payment process?",
-        type: "rating",
-      },
-      {
-        id: 2,
-        text: "How easy was it to navigate and use the platform?",
-        type: "rating",
-      },
-    ],
-    showDuration: 3000,
-  },
-  profile: {
-    questions: [
-      {
-        id: 1,
-        text: "How would you rate your overall experience with our platform?",
-        type: "rating",
-      },
-      {
-        id: 2,
-        text: "How easy was it to sign up for our platform?",
-        type: "rating",
-      },
-      {
-        id: 3,
-        text: "How satisfied are you with the speed and performance of the platform?",
-        type: "rating",
-      },
-      {
-        id: 4,
-        text: "How easy was it to navigate and use the platform?",
-        type: "rating",
-      },
-    ],
-    frequency: "weekly",
-  },
-  home: {
-    questions: [
-      {
-        id: 1,
-        text: "How would you rate your overall experience with our platform?",
-        type: "rating",
-      },
-      {
-        id: 2,
-        text: "How easy was it to sign up for our platform?",
-        type: "rating",
-      },
-      {
-        id: 3,
-        text: "How satisfied are you with the speed and performance of the platform?",
-        type: "rating",
-      },
-      {
-        id: 4,
-        text: "How easy was it to navigate and use the platform?",
-        type: "rating",
-      },
-    ],
-    frequency: "weekly",
-  },
-};
+import { useTranslations } from "next-intl";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+import axiosInstance from "../utils/axiosInstance";
 
 const Feedback = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentQuestions, setCurrentQuestions] = useState([]);
   const [responses, setResponses] = useState({});
   const pathname = usePathname();
+  const t = useTranslations("Feedback");
+  const { locale } = useTranslationContext();
 
   const emojies = [emojyOne, emojyTwo, emojyThree, emojyFour, emojyFive];
+
+  const FEEDBACK_CONFIG = {
+    coursePayment: {
+      questions: [
+        {
+          id: 1,
+          text: t("How easy was it to complete the payment process?"),
+          type: "rating",
+        },
+        {
+          id: 2,
+          text: t("How easy was it to navigate and use the platform?"),
+          type: "rating",
+        },
+      ],
+      showDuration: 3000,
+    },
+    profile: {
+      questions: [
+        {
+          id: 1,
+          text: t(
+            "How would you rate your overall experience with our platform?"
+          ),
+          type: "rating",
+        },
+        {
+          id: 2,
+          text: t("How easy was it to sign up for our platform?"),
+          type: "rating",
+        },
+        {
+          id: 3,
+          text: t(
+            "How satisfied are you with the speed and performance of the platform?"
+          ),
+          type: "rating",
+        },
+        {
+          id: 4,
+          text: t("How easy was it to navigate and use the platform?"),
+          type: "rating",
+        },
+      ],
+      frequency: "weekly",
+    },
+    home: {
+      questions: [
+        {
+          id: 1,
+          text: t(
+            "How would you rate your overall experience with our platform?"
+          ),
+          type: "rating",
+        },
+        {
+          id: 2,
+          text: t("How easy was it to sign up for our platform?"),
+          type: "rating",
+        },
+        {
+          id: 3,
+          text: t(
+            "How satisfied are you with the speed and performance of the platform?"
+          ),
+          type: "rating",
+        },
+        {
+          id: 4,
+          text: t("How easy was it to navigate and use the platform?"),
+          type: "rating",
+        },
+      ],
+      frequency: "weekly",
+    },
+  };
 
   useEffect(() => {
     const checkAndShowFeedback = () => {
@@ -143,32 +156,27 @@ const Feedback = () => {
 
   const handleSubmit = async () => {
     try {
-      // Transform responses into {text: rate} format
-      const transformedResponses = currentQuestions.reduce((acc, question) => {
+      // Transform responses into array of {question, answer} objects
+      const transformedQuestions = currentQuestions.reduce((acc, question) => {
         if (responses[question.id]) {
-          acc[question.text] = responses[question.id];
+          acc.push({
+            question: question.text,
+            answer: responses[question.id],
+          });
         }
         return acc;
-      }, {});
+      }, []);
 
-      // Send to backend
-      // const response = await fetch("/api/feedback", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     feedback: transformedResponses,
-      //     page: pathname,
-      //     timestamp: new Date().toISOString(),
-      //   }),
-      // });
+      const feedData = {
+        feedback: "optional",
+        questions: transformedQuestions,
+      };
 
-      // if (!response.ok) {
-      //   throw new Error("Failed to submit feedback");
-      // }
+      console.log("feedData", feedData);
 
-      console.log("Feedback submitted:", transformedResponses);
+      const data = await axiosInstance.post("/feedback", feedData);
+
+      console.log(data);
 
       setIsVisible(false);
       setResponses({});
@@ -182,7 +190,11 @@ const Feedback = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="relative w-full h-full ">
-        <div className="absolute bottom-4 right-4 bg-white rounded-2xl px-4 py-8  !w-[375px]">
+        <div
+          className={`absolute ${
+            locale === "en" ? "bottom-4 right-4" : "bottom-4 left-4"
+          }  bg-white rounded-2xl px-4 py-8  !w-[375px]`}
+        >
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold"></h2>
             <button

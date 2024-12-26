@@ -281,5 +281,12 @@
       "Renew subscription": "Renew subscription",
       "Days To Renew": "Days To Renew"
     }
+  },
+  "Feedback": {
+    "How easy was it to complete the payment process?": "How easy was it to complete the payment process?",
+    "How would you rate your overall experience with our platform?": "How would you rate your overall experience with our platform?",
+    "How easy was it to sign up for our platform?": "How easy was it to sign up for our platform?",
+    "How satisfied are you with the speed and performance of the platform?": "How satisfied are you with the speed and performance of the platform?",
+    "How easy was it to navigate and use the platform?": "How easy was it to navigate and use the platform?"
   }
 }
