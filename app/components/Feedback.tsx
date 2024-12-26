@@ -77,7 +77,7 @@ const FEEDBACK_CONFIG = {
 };
 
 const Feedback = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [currentQuestions, setCurrentQuestions] = useState([]);
   const [responses, setResponses] = useState({});
   const pathname = usePathname();
