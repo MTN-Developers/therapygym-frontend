@@ -3,13 +3,14 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import loginBanner from "@/assets/images/login-banner.png";
-import loginBannerMob from "@/assets/images/login-banner-mob.png";
+// import loginBannerMob from "@/assets/images/login-banner-mob.png";
 import { Button, Input, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import lockIcon from "@/assets/images/lock-icon.svg";
 import { login } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
+import logoMobile from "@/assets/images/therapy-gym-colored.svg";
 // import facebook from "@/assets/images/facebook.svg";
 // import twitter from "@/assets/images/Twitter.svg";
 // import google from "@/assets/images/google.svg";
@@ -21,6 +22,9 @@ import { useTranslations } from "next-intl";
 import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
 import axiosInstance from "@/app/utils/axiosInstance";
 import SocialMediaSection from "@/app/components/auth/register/SocialMediaSection";
+import Vectors from "@/app/components/profile/Vectors";
+import topRightVector from "@/assets/images/vector-top-right-signup.svg";
+import bottomLeftVector from "@/assets/images/vector-bottom-left-signup.svg";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -41,6 +45,8 @@ const Page = () => {
     e.preventDefault();
     try {
       const resultAction = await dispatch(login({ email, password }));
+      console.log("resultAction", resultAction);
+
       if (login.fulfilled.match(resultAction)) {
         message.success("Login successful");
         // Set cookies with appropriate options
@@ -70,7 +76,7 @@ const Page = () => {
           ${redirect ? decodeURIComponent(redirect) : "/"}
           `);
       } else {
-        message.error("Login failed");
+        message.error(resultAction.payload as string);
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -79,23 +85,29 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full lg:h-screen ">
+    <div className="w-full relative overflow-hidden  h-full lg:h-screen ">
       {/* <div className="hidden md:block"> */}
-      <div className="z-10 w-full h-full gap-x-14 flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-start ">
-        <div className="lg:flex z-20 relative bottom-[80px] lg:bottom-0 px-4  items-center justify-start flex-1 lg:pl-10 ">
+      <div className="z-10 px-4 lg:px-0 w-full h-full  lg:pt-0 pt-28 flex flex-col-reverse lg:flex lg:flex-row-reverse lg:justify-start ">
+        <div className="lg:flex z-20  relative items-center justify-start flex-1 lg:px-20 ">
           <form
             onSubmit={handleSubmit}
             className="  flex flex-col mx-auto lg:mx-0 lg:items-start justify-center gap-y-4"
           >
+            <h1 className="text-[#2983EE]  text-3xl font-bold ">
+              {t("Login")}
+            </h1>
+            <h2 className="text-[#353535]  text-sm font-normal ">
+              {t("We are glad to see you back with us")}
+            </h2>
             <div className="flex items-center w-full justify-between">
-              <h1
+              <h3
                 className={`hidden lg:block text-[#0573F6]   
                   
                   ${locale == "ar" ? "font-['Cairo']" : "font-['Inter']"}
                   text-5xl font-bold leading-[normal]`}
               >
                 {t("Welcome")}
-              </h1>
+              </h3>
               <ChangeLanguage />
             </div>
             <p className="hidden lg:block relative  text-start text-gray-600">
@@ -155,6 +167,9 @@ const Page = () => {
             </Link>
           </form>
           <SocialMediaSection t={tt} />
+          <div className="hidden lg:block">
+            <Vectors />
+          </div>
         </div>
         <Image
           src={loginBanner}
@@ -162,10 +177,33 @@ const Page = () => {
           className="h-screen w-auto object-contain hidden lg:block "
         />
         <Image
-          src={loginBannerMob}
+          src={logoMobile}
           alt="banner mob"
-          className="w-full block lg:hidden object-cover"
+          className="w-[90px] block lg:hidden object-cover"
         />
+      </div>
+      <div className="lg:hidden block">
+        <>
+          {/* Top Right Vector */}
+          <Image
+            src={topRightVector}
+            alt="vector"
+            className={`absolute lg:-top-3 
+            ${
+              locale === "en" ? "lg:right-0 -right-12" : "lg:right-0 -right-12"
+            } 
+          
+         -top-8`}
+            style={{
+              transform: locale === "en" ? "scaleX(1)" : " scaleX(1)",
+            }}
+          />
+          <Image
+            src={bottomLeftVector}
+            alt="vector"
+            className="absolute bottom-0 left-0"
+          />
+        </>
       </div>
     </div>
   );

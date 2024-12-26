@@ -4,8 +4,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Input, Select } from "antd";
-import topRightVector from "@/assets/images/vector-top-right-signup.svg";
-import bottomLeftVector from "@/assets/images/vector-bottom-left-signup.svg";
 
 //impotrs from parent
 
@@ -37,6 +35,7 @@ import logo from "@/assets/images/logo-mtn-blank.svg";
 import SocialMediaSection from "./SocialMediaSection";
 import TermsAndPrivacy from "./TermsAndPrivacy";
 import FormField from "./FormField";
+import Vectors from "../../profile/Vectors";
 
 const GENDER_OPTIONS = (t) => [
   { value: "male", label: t("Male") },
@@ -178,7 +177,7 @@ const FromComp = () => {
         <Image src={logo} alt="logo" className="lg:hidden block z-10" />
 
         <div className="flex items-center w-full justify-between !z-10">
-          <h1 className="text-4xl lg:mb-4 lg:text-[50px] ![font-family:--font-smooch] text-[#0b7cf8] font-[700]">
+          <h1 className="text-4xl lg:mb-4 lg:text-[50px]  text-[#0b7cf8] font-[700]">
             {t("SignUpNow")}
           </h1>
           <ChangeLanguage />
@@ -292,28 +291,3 @@ const FromComp = () => {
 };
 
 export default FromComp;
-
-const Vectors = () => {
-  const { locale } = useTranslationContext();
-  return (
-    <>
-      {/* Top Right Vector */}
-      <Image
-        src={topRightVector}
-        alt="vector"
-        className={`absolute lg:-top-3 
-          ${locale === "en" ? "lg:right-0 -right-12" : "lg:left-0 -left-12"} 
-        
-       -top-8`}
-        style={{
-          transform: locale === "en" ? "scaleX(1)" : " scaleX(-1)",
-        }}
-      />
-      <Image
-        src={bottomLeftVector}
-        alt="vector"
-        className="absolute bottom-0 left-0"
-      />
-    </>
-  );
-};

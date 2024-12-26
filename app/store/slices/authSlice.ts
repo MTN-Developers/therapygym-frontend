@@ -54,7 +54,10 @@ export const login = createAsyncThunk(
 
       if (error instanceof AxiosError) {
         errorMessage = error.response?.data?.message || error.message;
+        console.log("error", errorMessage);
       } else if (error instanceof Error) {
+        console.log("error2 ", error);
+        
         errorMessage = error.message;
       }
 
