@@ -62,13 +62,8 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
               {<Clock color={course.primary_color} />}
               {t("TimeDuration")}
             </p>
-            {/* <p className="flex items-center gap-1">
-              <LuUsersRound color={course?.primary_color} size={19} />
-              {t("SubscribersCount")}
-            </p> */}
             <p className="flex items-center gap-1">
               <SlNotebook color={course?.primary_color} size={19} />
-
               {t("ArabicLanguage")}
             </p>
           </div>

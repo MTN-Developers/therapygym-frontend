@@ -59,7 +59,7 @@ const VideoPlayer = React.memo(
     return (
       <div
         style={{
-          height: "calc(100vh - 64px)",
+          height: "calc(100vh - 40px)",
         }}
         className="relative  bg-[#2d2f31] overflow-hidden"
       >

@@ -10,13 +10,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { IoCalendarOutline, IoClose, IoTvOutline } from "react-icons/io5";
+import { IoClose, IoTvOutline } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import Trophy from "@/assets/svgs/Trophy";
 import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
 import Clock from "@/assets/svgs/Clock@2x";
 import Play from "@/assets/svgs/Play";
 import { Course_package } from "@/types/packages";
+import Logo from "@/assets/svgs/Logo";
 const PlyrVideo = dynamic(
   () => import("@/app/components/classroom/PlyrVideo"),
   {
@@ -161,17 +162,13 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         {/* <IoPlayCircleOutline  width={70} height={70} /> */}
       </div>
       <div className="w-full px-3 font-[pnu]">
-        {/* <p className="font-bold mb-[12px]">{t("LifetimeAccess")}</p> */}
-        <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
-          <span>
-            {<Clock color={course.primary_color} />}
-            {/* <Image src={clockIcon} alt="icon" width={20} height={20} /> */}
-          </span>
+        {/* <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
+          <span>{<Clock color={course.primary_color} />}</span>
           {t("MeetingTime")}
-        </p>
+        </p> */}
         <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
           <span>
-            <IoCalendarOutline color={course?.primary_color} size={17} />
+            <Clock color={course?.primary_color} />
           </span>
           {t("LifetimeAccess")}
         </p>
@@ -193,6 +190,12 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
             <IoTvOutline color={course?.primary_color} size={19} />
           </span>
           {t("MultiDeviceAccess")}
+        </p>
+        <p className="flex items-center gap-2 font-bold text-[#595959] mb-[12px] text-sm">
+          <span>
+            <Logo color={course.primary_color} />
+          </span>
+          {t("SessionsOnLiveSystem")}
         </p>
         {/* <div className="flex justify-between items-center mb-3">
           {course?.original_price == course?.price_after_discount ? (
@@ -235,7 +238,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
         )} */}
         <Button
           loading={loading}
-          className="w-full primary-bg text-white text-xl rounded-lg h-[56px] mb-3"
+          className="w-full primary-bg text-white text-xl rounded-lg h-[56px] "
           onClick={
             course?.status?.isPurchased || course?.status?.isSubscribed
               ? handleRedirectToCourse
