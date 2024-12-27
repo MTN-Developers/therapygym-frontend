@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import Image from "next/image";
 import { Button, message } from "antd";
@@ -13,14 +13,34 @@ import { StripeCardElement } from "@stripe/stripe-js";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { useTranslations } from "next-intl";
 import { Course_package } from "@/types/packages";
+import { useAppSelector } from "@/app/store/store";
 
-const PaymentForm = ({ Package }: { Package: Course_package }) => {
+interface PromoCode {
+  code: string;
+  discount_percentage: number;
+}
+const PaymentForm = ({
+  Package,
+  promoCodeList,
+}: {
+  Package: Course_package;
+  promoCodeList: PromoCode[];
+}) => {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const t = useTranslations("PaymentForm");
   const [loading, setLoading] = useState(false);
 
+  const { userData } = useAppSelector((state) => state.userProfile);
+  const [clientPhone, setClientPhone] = useState("");
+  useEffect(() => {
+    setClientPhone(
+      userData?.phone?.startsWith("+")
+        ? userData?.phone?.replace("+", "")
+        : userData?.phone
+    );
+  }, [userData]);
   const onSubmit = async () => {
     setLoading(true);
 
@@ -52,6 +72,15 @@ const PaymentForm = ({ Package }: { Package: Course_package }) => {
           message: error.message,
         });
       } else {
+        if (promoCodeList && promoCodeList?.length > 0) {
+          try {
+            await axiosInstance.post(
+              `/promo-code/use?phoneNumber=${clientPhone}&code=${promoCodeList[0].code}`
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        }
         setLoading(false);
         message.success(t("PaymentSuccess"));
         router.push(`/courses/${Package.course_id}`);

@@ -77,7 +77,9 @@ const PromoCodeForm = ({
       const { data: response, status } = await axiosInstance.get(
         endpoints.checkPromoCode({
           code: promoCode,
-          phone: clientPhone,
+          phone: clientPhone?.startsWith("+")
+            ? clientPhone.substring(1)
+            : clientPhone,
         })
       );
 

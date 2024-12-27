@@ -18,7 +18,15 @@ interface PromoCode {
   discount_percentage: number;
 }
 
-const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
+const PaymentInvoice = ({
+  packageData,
+  promoCodeList,
+  setPromoCodeList,
+}: {
+  packageData: Course_package;
+  promoCodeList: PromoCode[];
+  setPromoCodeList: any;
+}) => {
   const t = useTranslations("PaymentInvoice");
   const { locale } = useTranslationContext();
   const StripeNumber =
@@ -32,7 +40,6 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const [total, setTotal] = React.useState(
     StripeNumber + calculatedGatewayFees
   );
-  const [promoCodeList, setPromoCodeList] = React.useState<PromoCode[]>([]);
 
   const { userData } = useAppSelector((state) => state.userProfile);
   const { data: course } = useSWR<getCourse>(
