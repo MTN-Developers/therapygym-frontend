@@ -88,9 +88,17 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
         <div className="flex flex-col gap-3">
           <div className="w-fit text-[#2B2B2B] [font-family:Inter] text-base font-medium">
             {locale == "ar" ? course?.data?.name_ar : course?.data?.name_en}
-            {
-              // course?.data?.name_ar
-            }
+            {locale == "ar" ? (
+              <RenderHTML
+                htmlContent={packageData?.name_ar}
+                renderInTable={false}
+              />
+            ) : (
+              <RenderHTML
+                htmlContent={packageData?.name_en}
+                renderInTable={false}
+              />
+            )}
           </div>
         </div>
       </div>
