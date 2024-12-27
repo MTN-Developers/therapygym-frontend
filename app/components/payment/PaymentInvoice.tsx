@@ -7,6 +7,8 @@ import Image from "next/image";
 import React from "react";
 import useSWR from "swr";
 import { RenderHTML } from "../shared/RenderHTML";
+import PromoCodeForm from "./PromoCodeForm";
+import { useAppSelector } from "@/app/store/store";
 
 const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
@@ -16,8 +18,18 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
       ? Number(packageData?.original_price)
       : Number(packageData?.price_after_discount);
 
-  const calculatedGatewayFees = StripeNumber * 0.05;
+  const [calculatedGatewayFees, setGatewayFees] = React.useState(
+    StripeNumber * 0.05
+  );
+  const [total, setTotal] = React.useState(
+    StripeNumber + calculatedGatewayFees
+  );
+  const [promoCodeList, setPromoCodeList] = React.useState<string[]>([]);
+  // const getValues = (value: string) => {
+  //   setPromoCodeList([...promoCodeList, value]);
+  // };
 
+  const { userData } = useAppSelector((state) => state.userProfile);
   const { data: course } = useSWR<getCourse>(
     `/course/${packageData?.course_id}`,
     getOne
@@ -67,6 +79,16 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
           </div>
         </div>
       </div>
+
+      <PromoCodeForm
+        clientPhone={userData?.phone}
+        promoCodeList={promoCodeList}
+        setPromoCodeList={setPromoCodeList}
+        setTotal={setTotal}
+        total={total}
+        setGatewayFees={setGatewayFees}
+        gatewayFees={calculatedGatewayFees}
+      />
 
       <div
         id="calculations"
