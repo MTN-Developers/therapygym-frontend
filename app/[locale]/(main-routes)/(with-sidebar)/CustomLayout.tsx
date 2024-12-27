@@ -427,7 +427,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const getActiveMenuItem = () => {
     // Split the pathname into segments
     const pathSegments = pathname.split("/").filter(Boolean);
-    console.log("pathSegments", pathSegments);
+    // console.log("pathSegments", pathSegments);
 
     // Skip the locale segment if present (e.g., "en" or "ar")
     const basePath =

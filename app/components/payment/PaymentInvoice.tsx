@@ -9,6 +9,14 @@ import useSWR from "swr";
 import { RenderHTML } from "../shared/RenderHTML";
 import PromoCodeForm from "./PromoCodeForm";
 import { useAppSelector } from "@/app/store/store";
+import { Tooltip } from "antd";
+import { IoMdClose } from "react-icons/io";
+import { formatCurrency } from "@/app/utils/formatCurrency";
+
+interface PromoCode {
+  code: string;
+  discount_percentage: number;
+}
 
 const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const t = useTranslations("PaymentInvoice");
@@ -24,16 +32,35 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
   const [total, setTotal] = React.useState(
     StripeNumber + calculatedGatewayFees
   );
-  const [promoCodeList, setPromoCodeList] = React.useState<string[]>([]);
-  // const getValues = (value: string) => {
-  //   setPromoCodeList([...promoCodeList, value]);
-  // };
+  const [promoCodeList, setPromoCodeList] = React.useState<PromoCode[]>([]);
 
   const { userData } = useAppSelector((state) => state.userProfile);
   const { data: course } = useSWR<getCourse>(
     `/course/${packageData?.course_id}`,
     getOne
   );
+
+  const handleRemovePromoCode = (promo: PromoCode, index: number) => {
+    // Remove promo code from list
+    setPromoCodeList((prev) => prev.filter((_, i) => i !== index));
+
+    // Reset to original values
+    const basePrice =
+      Number(packageData?.price_after_discount) === 0
+        ? Number(packageData?.original_price)
+        : Number(packageData?.price_after_discount);
+
+    const newGatewayFees = basePrice * 0.05;
+    setGatewayFees(newGatewayFees);
+    setTotal(basePrice + newGatewayFees);
+  };
+
+  // Calculate discount amount if promo code exists
+  const activePromoCode = promoCodeList[0];
+  const subtotal = total - calculatedGatewayFees;
+  const discountAmount = activePromoCode
+    ? (subtotal * activePromoCode.discount_percentage) / 100
+    : 0;
 
   return (
     <div
@@ -61,21 +88,9 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
         <div className="flex flex-col gap-3">
           <div className="w-fit text-[#2B2B2B] [font-family:Inter] text-base font-medium">
             {locale == "ar" ? course?.data?.name_ar : course?.data?.name_en}
-            {packageData?.name_ar
-              ? ` - ${
-                  locale == "ar" ? (
-                    <RenderHTML
-                      htmlContent={packageData?.name_ar}
-                      renderInTable={false}
-                    />
-                  ) : (
-                    <RenderHTML
-                      htmlContent={packageData?.name_en}
-                      renderInTable={false}
-                    />
-                  )
-                }`
-              : ""}
+            {
+              // course?.data?.name_ar
+            }
           </div>
         </div>
       </div>
@@ -135,22 +150,72 @@ const PaymentInvoice = ({ packageData }: { packageData: Course_package }) => {
               {t("GatewayFees")}
             </p>
             <div className="text-[#696969] [font-family:Inter] text-base font-normal leading-[normal]">
-              ${calculatedGatewayFees}
+              ${StripeNumber * 0.05}
             </div>
           </div>
+
+          {promoCodeList?.map((promo: any, index: number) => (
+            <div
+              key={index}
+              className="flex-row flex-wrap w-full flex justify-between items-start lg:items-center "
+            >
+              <p className="text-[#696969] [font-family:Inter] text-base font-normal leading-[normal]">
+                promo code
+              </p>
+              <div className="text-[#696969] [font-family:Inter] flex items-center gap-1 text-base font-normal leading-[normal]">
+                {promo?.code} ({promo?.discount_percentage}%){" "}
+                <Tooltip placement="topRight" title={"Remove promo code"}>
+                  <IoMdClose
+                    onClick={() => {
+                      handleRemovePromoCode(promo, index);
+                    }}
+                    className="cursor-pointer"
+                  />
+                </Tooltip>
+              </div>
+            </div>
+          ))}
         </div>
         <div className="w-full h-px [background:#E7E9EB] mt-[26px] mb-2"></div>
-        <div className="flex-row flex-wrap w-full flex justify-between items-start lg:items-center">
-          <p className="text-[#696969] [font-family:Inter] text-base font-semibold leading-[normal]">
-            {t("Total")}
-          </p>
-          <div className="text-[#000] font-bold [font-family:Inter] text-base leading-[normal]">
-            ${StripeNumber + calculatedGatewayFees}
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-normal leading-[normal] text-[#696969]">
+            Subtotal
+          </span>
+          <span className="text-sm font-normal leading-[normal] text-black">
+            {formatCurrency(subtotal)}
+          </span>
+        </div>
+
+        {activePromoCode && (
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-sm font-normal leading-[normal] text-[#696969]">
+              Discount ({activePromoCode.discount_percentage}%)
+            </span>
+            <span className="text-sm font-normal leading-[normal] text-green-600">
+              -{formatCurrency(discountAmount)}
+            </span>
           </div>
+        )}
+
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-normal leading-[normal] text-[#696969]">
+            Gateway Fees (5%)
+          </span>
+          <span className="text-sm font-normal leading-[normal] text-black">
+            {formatCurrency(calculatedGatewayFees)}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center border-t border-solid border-[#E7E9EB] pt-3">
+          <span className="text-base font-medium leading-[normal] text-black">
+            Total
+          </span>
+          <span className="text-base font-medium leading-[normal] text-black">
+            {formatCurrency(total)}
+          </span>
         </div>
       </div>
     </div>
   );
 };
-
 export default PaymentInvoice;

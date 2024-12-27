@@ -4,12 +4,17 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import ErrorMsg from "../shared/ErrorMsg";
-import axios from "axios";
 import { endpoints } from "@/services/endpoints";
+import axiosInstance from "@/app/utils/axiosInstance";
 type PromoCodeFormData = yup.InferType<typeof promoCodesSchema>;
 const promoCodesSchema = yup.object({
   promoCode: yup.string().required("Promo Code is required"),
 });
+
+interface PromoCode {
+  code: string;
+  discount_percentage: number;
+}
 
 const PromoCodeForm = ({
   setTotal,
@@ -32,6 +37,7 @@ const PromoCodeForm = ({
   const {
     handleSubmit: handleSubmit,
     control: controlPromo,
+    setError,
     formState: { errors: promoErrors },
   } = useForm<PromoCodeFormData>({
     resolver: yupResolver(promoCodesSchema),
@@ -41,53 +47,72 @@ const PromoCodeForm = ({
 
   const onSubmit = async (data: PromoCodeFormData) => {
     const { promoCode } = data;
-    // ntPhoneConcat = ""
 
-    if (promoCodeList.find((promo: any) => promo.code === promoCode))
-      return message.error("Promo code already added");
+    // Check for existing promo code
+    if (
+      promoCodeList.some(
+        (promo: PromoCode) =>
+          promo.code.toLowerCase() === promoCode.toLowerCase()
+      )
+    ) {
+      setError("promoCode", {
+        type: "manual",
+        message: "This promo code has already been applied",
+      });
+      return;
+    }
 
-    if (promoCodeList.length > 0)
-      return message.error("Only one promo code can be applied at a time");
-
-    // const clientPhone = clientPhoneConcat.replace("+", "");
+    // Check for multiple promo codes
+    if (promoCodeList.length > 0) {
+      setError("promoCode", {
+        type: "manual",
+        message: "Only one promo code can be applied at a time",
+      });
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const { data, status } = await axios.post(endpoints.checkPromoCode, {
-        code: promoCode,
-        phone_number: clientPhone,
-      });
-      //
-      // console.log(data?.data);
-      if (status === 200) {
-        setPromoCodeList((prev: any) => [...prev, data?.data]);
+      const { data: response, status } = await axiosInstance.get(
+        endpoints.checkPromoCode({
+          code: promoCode,
+          phone: clientPhone,
+        })
+      );
 
+      if (status === 200) {
+        const promoData = {
+          code: promoCode,
+          discount_percentage: response?.data?.discount_percentage,
+        };
+
+        setPromoCodeList([promoData]);
+
+        // Calculate discount and new total
         const originalTotal = total - gatewayFees;
         const discountAmount =
-          (originalTotal * data?.data?.discount_percentage) / 100;
-        const newTotal = originalTotal - discountAmount;
-        const newGatewayFees = newTotal * 0.05;
+          (originalTotal * promoData.discount_percentage) / 100;
+        const discountedTotal = originalTotal - discountAmount;
+        const newGatewayFees = Math.round(discountedTotal * 0.05 * 100) / 100;
+        const finalTotal =
+          Math.round((discountedTotal + newGatewayFees) * 100) / 100;
 
-        setTotal(newTotal + newGatewayFees); // Add gateway fees to the total
         setGatewayFees(newGatewayFees);
-        message.success("Promo code added successfully");
+        setTotal(finalTotal);
+
+        message.success("Promo code applied successfully");
       }
-    } catch (e: any) {
-      if (e?.response?.data?.error && e?.response?.data?.error?.length) {
-        e?.response?.data?.error?.map((el: any) => {
-          message.error(`${el?.msg} ${el?.value}`);
-        });
-      } else {
-        message.error(e?.response?.data?.message);
-      }
-      // ;
-      // console.log();
+    } catch (error: any) {
+      setError("promoCode", {
+        type: "manual",
+        message: error?.response?.data?.message || "Invalid promo code",
+      });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  // console.log(promoCodeList);
   return (
     <>
       <div
@@ -105,7 +130,7 @@ const PromoCodeForm = ({
             control={controlPromo}
             render={({ field: { onChange, value } }) => (
               <Input
-                placeholder="Offers"
+                placeholder="Promo Code"
                 className={`${InputClassNames} placeholder:!text-base  w-full`}
                 value={value}
                 onChange={onChange}

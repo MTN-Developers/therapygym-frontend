@@ -45,7 +45,7 @@ const Page = ({
 
   return (
     <div className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-fit bg-white rounded-lg shadow-md">
-      <div className="w-full lg:w-1/2 h-[600px] lg:flex relative">
+      <div className="w-full lg:w-1/2 min-h-[700px] h-fit lg:flex relative">
         <div
           className="absolute w-full"
           style={{
