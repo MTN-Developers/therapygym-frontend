@@ -201,7 +201,7 @@ const PaymentInvoice = ({
         <div className="w-full h-px [background:#E7E9EB] mt-[26px] mb-2"></div>
         <div className="flex justify-between items-center mb-3">
           <span className="text-sm font-normal leading-[normal] text-[#696969]">
-            Subtotal
+            {t("SubTotal")}
           </span>
           <span className="text-sm font-normal leading-[normal] text-black">
             {formatCurrency(
@@ -216,7 +216,9 @@ const PaymentInvoice = ({
           <>
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm font-normal leading-[normal] text-[#696969]">
-                Discount ({activePromoCode.discount_percentage}%)
+                {t("AdditionallDiscount")} (
+                {activePromoCode.discount_percentage}
+                %)
               </span>
               <div className="flex items-center gap-1">
                 <span className="text-sm font-normal leading-[normal] text-green-600">
@@ -234,7 +236,7 @@ const PaymentInvoice = ({
             </div>
             <div className="flex justify-between items-center mb-3">
               <span className="text-sm font-normal leading-[normal] text-[#696969]">
-                Price after discount
+                {t("PriceAfterDiscount")}
               </span>
               <div className="flex items-center gap-1">
                 <span className="text-sm font-normal leading-[normal] text-black">
@@ -252,7 +254,7 @@ const PaymentInvoice = ({
 
         <div className="flex justify-between items-center mb-3">
           <span className="text-sm font-normal leading-[normal] text-[#696969]">
-            Gateway Fees (5%)
+            {t("GatewayFees")} (5%)
           </span>
           <span className="text-sm font-normal leading-[normal] text-black">
             {formatCurrency(calculatedGatewayFees)}
@@ -261,7 +263,7 @@ const PaymentInvoice = ({
 
         <div className="flex justify-between items-center border-t border-solid border-[#E7E9EB] pt-3">
           <span className="text-base font-medium leading-[normal] text-black">
-            Total
+            {t("Total")}
           </span>
           <span className="text-base font-medium leading-[normal] text-black">
             {formatCurrency(total)}

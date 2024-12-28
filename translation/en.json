@@ -132,7 +132,10 @@
     "Discount": "Discount",
     "PriceAfterDiscount": "Price After Discount",
     "GatewayFees": "Gateway Fees",
-    "Total": "Total"
+    "Total": "Total",
+    "SubTotal": "Sub Total",
+    "AdditionallDiscount": "Additional Discount",
+    "PromoCodeIsRequired": "Promo code is required"
   },
   "SignupValidation": {
     "NameRequired": "Full Name is required",

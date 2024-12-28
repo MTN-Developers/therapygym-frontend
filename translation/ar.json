@@ -133,7 +133,10 @@
     "Discount": "الخصم",
     "PriceAfterDiscount": "السعر بعد الخصم",
     "GatewayFees": "رسوم بوابة الدفع",
-    "Total": "الاجمالي"
+    "Total": "الاجمالي",
+    "SubTotal": "المبلغ الإجمالي",
+    "AdditionallDiscount": "خصم إضافي",
+    "PromoCodeIsRequired": "كود الخصم مطلوب"
   },
   "SignupValidation": {
     "NameRequired": "الاسم الكامل مطلوب",
