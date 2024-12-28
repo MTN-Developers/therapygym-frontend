@@ -9,7 +9,10 @@ import React from "react";
 import useSWR from "swr";
 import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
 import { Course_package, getPackage } from "@/types/packages";
-
+interface PromoCode {
+  code: string;
+  discount_percentage: number;
+}
 const Page = ({
   params,
 }: {
@@ -19,7 +22,7 @@ const Page = ({
   };
 }) => {
   const { id, packageId } = params;
-  console.log(id, "Course ID");
+  const [promoCodeList, setPromoCodeList] = React.useState<PromoCode[]>([]);
   const { data, isLoading } = useSWR<getPackage>(
     `/package/${packageId}`,
     getOne
@@ -55,7 +58,11 @@ const Page = ({
             background: "transparent",
           }}
         >
-          <PaymentInvoice packageData={data?.data as Course_package} />
+          <PaymentInvoice
+            packageData={data?.data as Course_package}
+            promoCodeList={promoCodeList}
+            setPromoCodeList={setPromoCodeList}
+          />
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
@@ -78,7 +85,10 @@ const Page = ({
             </p>
           </div>
 
-          <PaymentForm Package={data?.data as Course_package} />
+          <PaymentForm
+            promoCodeList={promoCodeList}
+            Package={data?.data as Course_package}
+          />
         </div>
       </div>
     </div>
