@@ -52,6 +52,7 @@ export const TriggerLogin = async ({
         } catch (e) {
           console.log(e);
         }
+        router.push(`/`);
       }
     } else {
       message.error("Login failed");

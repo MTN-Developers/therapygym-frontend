@@ -427,7 +427,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const getActiveMenuItem = () => {
     // Split the pathname into segments
     const pathSegments = pathname.split("/").filter(Boolean);
-    console.log("pathSegments", pathSegments);
+    // console.log("pathSegments", pathSegments);
 
     // Skip the locale segment if present (e.g., "en" or "ar")
     const basePath =
@@ -435,13 +435,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
         ? `/${locale}/${pathSegments[1]}`
         : `/${locale}/${pathSegments[0] || ""}`;
 
-    console.log("basePath", basePath.split("/")[2]);
-
     // Find the item whose link matches the base path
     const activeItem = items.find(
       (item) => item.link.split("/")[2] === basePath.split("/")[2]
     );
-    console.log("activeItem", activeItem);
 
     // Return the item ID or default to "1" (Home)
     return activeItem ? activeItem.id.toString() : "1";

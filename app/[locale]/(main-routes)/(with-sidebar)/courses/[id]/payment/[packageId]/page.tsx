@@ -11,6 +11,11 @@ import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
 import { useTranslations } from "next-intl";
 import { Course_package, getPackage } from "@/types/packages";
 
+interface PromoCode {
+  code: string;
+  discount_percentage: number;
+}
+
 const Page = ({
   params,
 }: {
@@ -21,6 +26,7 @@ const Page = ({
 }) => {
   const { id, packageId } = params;
   const t = useTranslations("PaymentPage");
+  const [promoCodeList, setPromoCodeList] = React.useState<PromoCode[]>([]);
 
   const { data, isLoading } = useSWR<getPackage>(
     `/package/${packageId}`,
@@ -45,7 +51,7 @@ const Page = ({
 
   return (
     <div className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-fit bg-white rounded-lg shadow-md">
-      <div className="w-full lg:w-1/2 h-[600px] lg:flex relative">
+      <div className="w-full lg:w-1/2 min-h-[700px] h-fit lg:flex relative">
         <div
           className="absolute w-full"
           style={{
@@ -55,7 +61,11 @@ const Page = ({
             background: "transparent",
           }}
         >
-          <PaymentInvoice packageData={data?.data as Course_package} />
+          <PaymentInvoice
+            promoCodeList={promoCodeList}
+            setPromoCodeList={setPromoCodeList}
+            packageData={data?.data as Course_package}
+          />
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
@@ -78,7 +88,10 @@ const Page = ({
             </p>
           </div>
 
-          <PaymentForm Package={data?.data as Course_package} />
+          <PaymentForm
+            promoCodeList={promoCodeList}
+            Package={data?.data as Course_package}
+          />
         </div>
       </div>
     </div>

@@ -44,7 +44,8 @@ const GENDER_OPTIONS = (t) => [
 
 const FromComp = () => {
   const validationSchema = useValidationSchema();
-
+  // const searchParams = useSearchParams();
+  // const project_name
   const router = useRouter();
   const { handleCheckPhoneNumber } = useCheckPhone();
 
@@ -65,7 +66,7 @@ const FromComp = () => {
 
   const { locale } = useTranslationContext();
   const searchParams = useSearchParams();
-
+  const project_name = searchParams.get("project_name");
   const course_id = searchParams.get("course_id");
   const package_id = searchParams.get("package_id");
 
@@ -73,19 +74,12 @@ const FromComp = () => {
     "lg:w-[590px] border border-[#8d8a8a] bg-transparent focus:bg-transparent h-[55px] font-bold";
 
   const onSubmit = async (data: RegisterFormData) => {
-    const new_user = {
-      ...data,
-      phone: `${data.country_code}${
-        data.phone.startsWith("0") ? data.phone.slice(1) : data.phone
-      }`,
-    };
-
-    if (new_user.country_code) {
-      delete new_user.country_code;
-    }
+    const fullPhone = `${data.country_code}${
+      data.phone.startsWith("0") ? data.phone.slice(1) : data.phone
+    }`;
 
     const { isPhoneValid, isMsgSent, status } = await handleCheckPhoneNumber({
-      phoneNumber: new_user.phone,
+      phoneNumber: fullPhone,
     });
 
     if (!isPhoneValid || !status) {
@@ -111,44 +105,40 @@ const FromComp = () => {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/user`,
         {
-          name: new_user.name,
-          email: new_user.email,
-          password: new_user.password,
-          phone: new_user.phone,
-          country: new_user.country,
-          gender: new_user.gender,
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          phone: data.phone,
+          country_code: data.country_code,
+          country: data.country,
+          gender: data.gender,
+          ...(project_name ? { project_name: project_name } : {}),
         }
       );
 
       if (response.status === 201 || response.status === 200) {
         message.success(t("RegistrationSuccess"));
-        // if (course_id && packages.some((p) => p.id == course_id)) {
-        if (course_id || package_id) {
-          TriggerLogin({
-            dispatch: dispatch,
-            message,
-            router,
-            ...(course_id ? { course_id: course_id } : {}), // if course_id exists, add it to the object
-            setCookie: setCookie,
-            ...(package_id
-              ? {
-                  package_id: package_id,
-                }
-              : {}),
-            user: {
-              email: new_user.email,
-              password: new_user.password,
-            },
-          });
-        } else {
-          router.push("/auth/login");
-        }
+        TriggerLogin({
+          dispatch: dispatch,
+          message,
+          router,
+          ...(course_id ? { course_id: course_id } : {}), // if course_id exists, add it to the object
+          setCookie: setCookie,
+          ...(package_id
+            ? {
+                package_id: package_id,
+              }
+            : {}),
+          user: {
+            email: data.email,
+            password: data.password,
+          },
+        });
       } else {
         message.error(t("RegistrationFailed"));
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.log("test");
         if (error.response?.data?.errors) {
           const errors = error.response?.data?.errors;
           for (const key in errors) {
