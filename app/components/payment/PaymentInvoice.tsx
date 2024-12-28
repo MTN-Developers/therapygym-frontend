@@ -40,6 +40,9 @@ const PaymentInvoice = ({
   const [total, setTotal] = React.useState(
     StripeNumber + calculatedGatewayFees
   );
+  const [_subtotal, setSubTotal] = React.useState(
+    total - calculatedGatewayFees
+  );
 
   const { userData } = useAppSelector((state) => state.userProfile);
   const { data: course } = useSWR<getCourse>(
@@ -64,9 +67,12 @@ const PaymentInvoice = ({
 
   // Calculate discount amount if promo code exists
   const activePromoCode = promoCodeList[0];
-  const subtotal = total - calculatedGatewayFees;
+  // const subtotal =
   const discountAmount = activePromoCode
-    ? (subtotal * activePromoCode.discount_percentage) / 100
+    ? (Number(packageData?.price_after_discount) === 0
+        ? Number(packageData?.original_price)
+        : Number(packageData?.price_after_discount) *
+          activePromoCode.discount_percentage) / 100
     : 0;
 
   return (
@@ -111,6 +117,7 @@ const PaymentInvoice = ({
       </div>
 
       <PromoCodeForm
+        setSubTotal={setSubTotal}
         clientPhone={userData?.phone}
         promoCodeList={promoCodeList}
         setPromoCodeList={setPromoCodeList}
@@ -160,16 +167,16 @@ const PaymentInvoice = ({
                 : Number(packageData?.price_after_discount)}
             </div>
           </div>
-          <div className="flex-row flex-wrap w-full flex justify-between items-start lg:items-center">
+          {/* <div className="flex-row flex-wrap w-full flex justify-between items-start lg:items-center">
             <p className="text-[#696969] [font-family:Inter] text-base font-normal leading-[normal]">
               {t("GatewayFees")}
             </p>
             <div className="text-[#696969] [font-family:Inter] text-base font-normal leading-[normal]">
               ${StripeNumber * 0.05}
             </div>
-          </div>
+          </div> */}
 
-          {promoCodeList?.map((promo: any, index: number) => (
+          {/* {promoCodeList?.map((promo: any, index: number) => (
             <div
               key={index}
               className="flex-row flex-wrap w-full flex justify-between items-start lg:items-center "
@@ -189,7 +196,7 @@ const PaymentInvoice = ({
                 </Tooltip>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
         <div className="w-full h-px [background:#E7E9EB] mt-[26px] mb-2"></div>
         <div className="flex justify-between items-center mb-3">
@@ -197,19 +204,50 @@ const PaymentInvoice = ({
             Subtotal
           </span>
           <span className="text-sm font-normal leading-[normal] text-black">
-            {formatCurrency(subtotal)}
+            {formatCurrency(
+              Number(packageData?.price_after_discount) === 0
+                ? Number(packageData?.original_price)
+                : Number(packageData?.price_after_discount)
+            )}
           </span>
         </div>
 
         {activePromoCode && (
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm font-normal leading-[normal] text-[#696969]">
-              Discount ({activePromoCode.discount_percentage}%)
-            </span>
-            <span className="text-sm font-normal leading-[normal] text-green-600">
-              -{formatCurrency(discountAmount)}
-            </span>
-          </div>
+          <>
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-sm font-normal leading-[normal] text-[#696969]">
+                Discount ({activePromoCode.discount_percentage}%)
+              </span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-normal leading-[normal] text-green-600">
+                  -{formatCurrency(discountAmount)}
+                </span>
+                <Tooltip placement="topRight" title={"Remove promo code"}>
+                  <IoMdClose
+                    onClick={() => {
+                      handleRemovePromoCode(activePromoCode, 0);
+                    }}
+                    className="cursor-pointer"
+                  />
+                </Tooltip>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-sm font-normal leading-[normal] text-[#696969]">
+                Price after discount
+              </span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-normal leading-[normal] text-black">
+                  {formatCurrency(
+                    Number(packageData?.price_after_discount) === 0
+                      ? Number(packageData?.original_price)
+                      : Number(packageData?.price_after_discount) -
+                          discountAmount
+                  )}
+                </span>
+              </div>
+            </div>
+          </>
         )}
 
         <div className="flex justify-between items-center mb-3">

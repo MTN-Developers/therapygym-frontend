@@ -18,6 +18,7 @@ interface PromoCode {
 
 const PromoCodeForm = ({
   setTotal,
+  setSubTotal,
   promoCodeList,
   setPromoCodeList,
   setGatewayFees,
@@ -26,6 +27,7 @@ const PromoCodeForm = ({
   gatewayFees,
 }: {
   setTotal: React.Dispatch<React.SetStateAction<number>>;
+  setSubTotal: React.Dispatch<React.SetStateAction<number>>;
   promoCodeList: any;
   setPromoCodeList: any;
   setGatewayFees: any;
@@ -101,6 +103,7 @@ const PromoCodeForm = ({
           Math.round((discountedTotal + newGatewayFees) * 100) / 100;
 
         setGatewayFees(newGatewayFees);
+        setSubTotal(discountedTotal);
         setTotal(finalTotal);
 
         message.success("Promo code applied successfully");

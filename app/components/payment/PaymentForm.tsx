@@ -33,7 +33,7 @@ const PaymentForm = ({
   const [loading, setLoading] = useState(false);
 
   const { userData } = useAppSelector((state) => state.userProfile);
-  const [clientPhone, setClientPhone] = useState("");
+  const [_clientPhone, setClientPhone] = useState("");
   useEffect(() => {
     setClientPhone(
       userData?.phone?.startsWith("+")
@@ -54,6 +54,9 @@ const PaymentForm = ({
       const { data: CreateIntent } = await axiosInstance.post("/transaction", {
         item_id: Package.id,
         type: "package",
+        ...(promoCodeList.length > 0
+          ? { promo_code: promoCodeList[0].code }
+          : {}),
       });
 
       const { error } = await stripe.confirmCardPayment(
@@ -72,15 +75,6 @@ const PaymentForm = ({
           message: error.message,
         });
       } else {
-        if (promoCodeList && promoCodeList?.length > 0) {
-          try {
-            await axiosInstance.post(
-              `/promo-code/use?phoneNumber=${clientPhone}&code=${promoCodeList[0].code}`
-            );
-          } catch (error) {
-            console.log(error);
-          }
-        }
         setLoading(false);
         message.success(t("PaymentSuccess"));
         router.push(`/courses/${Package.course_id}`);
