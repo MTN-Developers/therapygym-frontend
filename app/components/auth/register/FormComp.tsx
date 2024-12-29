@@ -112,7 +112,11 @@ const FromComp = () => {
           country_code: data.country_code,
           country: data.country,
           gender: data.gender,
-          ...(project_name ? { project_name: project_name } : {}),
+          ...(project_name
+            ? { project_name: project_name }
+            : {
+                project_name: "normal_lead_TGS",
+              }),
         }
       );
 
