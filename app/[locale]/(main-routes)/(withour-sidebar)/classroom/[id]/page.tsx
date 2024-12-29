@@ -44,13 +44,13 @@ const Page = () => {
         </span>
       ),
       children: (
-        <>
+        <div className="!h-[48vh] overflow-scroll">
           <TabSidebar
             chapters={courseVideos}
             handleVideoSelect={handleVideoSelect}
             currentVideo={currentVideo}
           />
-        </>
+        </div>
       ),
     },
     {
@@ -108,7 +108,7 @@ const Page = () => {
   }, [courseId, dispatch]);
 
   return (
-    <div className="">
+    <div className="overflow-hidden">
       <HeaderClassRoom
         video={currentVideo}
         // handleToggleSidebar={handleToggleSidebar}

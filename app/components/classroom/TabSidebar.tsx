@@ -53,7 +53,7 @@ const TabSidebar = React.memo(
 
     return (
       <>
-        <div className="block w-full lg:hidden">
+        <div className="block w-full lg:hidden ">
           <Collapse
             bordered={false}
             expandIconPosition="end"
