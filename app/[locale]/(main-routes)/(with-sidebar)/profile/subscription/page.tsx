@@ -68,8 +68,8 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
   const t = useTranslations("ProfilePages.SubscriptionPage");
   const { end_date } = subscription;
   const packag = subscription.package; // The "package" object within subscription
-  const course = packag.course; // The "course" object within package
-
+  const course = subscription.course; // The "course" object within package
+  console.log(subscription.package);
   // Calculate remaining days
   const now = new Date();
   const endDate = new Date(end_date);
@@ -83,7 +83,7 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
     day: "numeric",
     year: "numeric",
   });
-
+  console.log(course);
   return (
     <div
       className={`border text-nowrap lg:w-[895px] w-[270px] rounded-xl shadow-sm p-2 lg:p-6 flex flex-col gap-4 lg:flex-row items-start lg:items-center`}
@@ -101,7 +101,6 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
           className="object-cover !lg:w-[280px] w-full h-full rounded-sm shadow-sm"
         />
       </div>
-
       {/* Info holder */}
       <div className="flex flex-col items-start gap-1">
         <div
@@ -141,7 +140,6 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
           )}
         </div>
       </div>
-
       {/* Renewal date box */}
       <div className="flex flex-col  w-full items-center lg:items-end justify-center gap-2 mx-auto lg:ml-auto">
         <p className="text-gray-500">
