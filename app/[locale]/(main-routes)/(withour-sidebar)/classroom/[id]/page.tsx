@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { IVideo } from "@/interfaces";
 import HeaderClassRoom from "@/app/components/classroom/HeaderClassRoom";
 import { Tabs, TabsProps } from "antd";
-import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
+// import WhatYouGainComp from "@/app/components/classroom/WhatYouGainComp";
 import VideoPlayer from "@/app/components/classroom/VideoPlayer";
 import {
   fetchCourseVideos,
@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import TabSidebar from "@/app/components/classroom/TabSidebar";
 
 const Page = () => {
   const t = useTranslations("ClassroomPage");
@@ -30,13 +31,34 @@ const Page = () => {
     (state: RootState) => state.courseVideos
   );
 
+  const handleVideoSelect = (video: IVideo) => {
+    dispatch(setCurrentVideo(video));
+  };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
+      label: (
+        <span className="block lg:hidden" style={{ marginInline: 16 }}>
+          {t("CourseContent")}
+        </span>
+      ),
+      children: (
+        <>
+          <TabSidebar
+            chapters={courseVideos}
+            handleVideoSelect={handleVideoSelect}
+            currentVideo={currentVideo}
+          />
+        </>
+      ),
+    },
+    {
+      key: "2",
       label: <span style={{ marginInline: 16 }}>{t("AboutCourse")}</span>,
       children: (
         <div className="px-4">
-          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+          <h2 className="text-[#007AFE] text-center font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             {t("AboutCourse")}
           </h2>
           <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
@@ -48,11 +70,11 @@ const Page = () => {
       ),
     },
     {
-      key: "2",
+      key: "3",
       label: t("AboutLecturer"),
       children: (
         <div className="px-4">
-          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+          <h2 className="text-[#007AFE] text-center font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
             {t("AboutLecturer")}
           </h2>
           <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
@@ -61,25 +83,21 @@ const Page = () => {
         </div>
       ),
     },
-    {
-      key: "3",
-      label: t("CustomerReviews"),
-      children: (
-        <div className="px-4">
-          <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-            {t("CustomerReviews")}
-          </h2>
-          <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
-            {t("PlaceholderText")}
-          </p>
-        </div>
-      ),
-    },
+    // {
+    //   key: "4",
+    //   label: t("CustomerReviews"),
+    //   children: (
+    //     <div className="px-4">
+    //       <h2 className="text-[#007AFE] text-center font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
+    //         {t("CustomerReviews")}
+    //       </h2>
+    //       <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
+    //         {t("PlaceholderText")}
+    //       </p>
+    //     </div>
+    //   ),
+    // },
   ];
-
-  const handleVideoSelect = (video: IVideo) => {
-    dispatch(setCurrentVideo(video));
-  };
 
   // const handleToggleSidebar = () => {
   //   setToggleSidebar((prev) => !prev);
@@ -90,7 +108,7 @@ const Page = () => {
   }, [courseId, dispatch]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="">
       <HeaderClassRoom
         video={currentVideo}
         // handleToggleSidebar={handleToggleSidebar}
@@ -111,7 +129,7 @@ const Page = () => {
       <div className="lg:px-[92px] py-4 w-full font-[pnu] lg:mb-8 z-30">
         <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />
       </div>
-      <WhatYouGainComp />
+      {/* <WhatYouGainComp /> */}
     </div>
   );
 };

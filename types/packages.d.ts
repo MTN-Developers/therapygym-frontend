@@ -95,6 +95,7 @@ export interface Subscription {
   created_at: string; // or Date
   deleted_at: string | null; // or Date
   package: Package;
+  course: Course;
 }
 
 export interface SubscriptionApiResponse {
