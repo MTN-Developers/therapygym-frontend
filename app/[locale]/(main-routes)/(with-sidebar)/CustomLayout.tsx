@@ -472,6 +472,12 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
     >
       {isMounted && (
         <>
+          {!collapsed && (
+            <div
+              className="absolute flex lg:hidden w-full h-full top-0 left-0 bg-[#2727278f] z-[50]"
+              onClick={() => setCollapsed(!collapsed)}
+            ></div>
+          )}
           <Sider
             width={266}
             collapsedWidth={0}
@@ -479,7 +485,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
             trigger={null}
             collapsed={collapsed}
             onCollapse={(collapsed) => setCollapsed(!collapsed)}
-            className="primary-bg"
+            className="primary-bg fixed lg:relative"
             style={{
               zIndex: 50,
               borderTopLeftRadius: lang == "ar" ? "0px" : "16px",
@@ -487,9 +493,9 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               borderTopRightRadius: lang == "ar" ? "16px" : "0px",
               borderBottomRightRadius: lang == "ar" ? "16px" : "0px",
               top: 0,
-              left: 0,
               bottom: 0,
               overflow: "hidden",
+              ...(locale == "ar" ? { right: 0 } : { left: 0 }),
             }}
           >
             <>
