@@ -321,3 +321,15 @@ input::placeholder {
 .zm-modal {
   direction: ltr;
 }
+
+.courses-slider {
+  height: 310px !important;
+}
+
+.courses-slider .swiper-wrapper {
+  height: 290px !important;
+}
+
+.courses-slider .swiper-pagination {
+  bottom: -5px !important;
+}
