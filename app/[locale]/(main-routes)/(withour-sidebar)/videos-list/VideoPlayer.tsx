@@ -160,6 +160,8 @@ const VideoPlayer = React.memo(
         dispatch(closeSidebar());
       }
     }, [dispatch, locale]);
+
+    console.log(src);
     return (
       <div className="relative h-[200px] lg:h-[540px] bg-[#2d2f31] overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-[80%] w-full h-[216px] lg:h-[535px] bg-[#424242]">
@@ -171,7 +173,7 @@ const VideoPlayer = React.memo(
           `}
           >
             {src ? (
-              <MemoizedPlyrVideo src={src.video_url} />
+              <MemoizedPlyrVideo src={src.video_path} />
             ) : (
               <div className="text-white font-bold w-full h-full flex items-center justify-center">
                 <p>There are no videos yet.</p>

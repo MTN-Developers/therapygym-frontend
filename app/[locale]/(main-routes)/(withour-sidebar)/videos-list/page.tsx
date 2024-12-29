@@ -40,7 +40,6 @@ const Page = () => {
     },
   });
   const dispatch = useAppDispatch();
-
   // const handleVideoSelect = (video: IVideo) => {
   //   dispatch(setCurrentVideo(video));
   // };
