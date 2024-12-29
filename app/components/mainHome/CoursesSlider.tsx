@@ -11,6 +11,9 @@ import { getOne } from "@/services/server";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
+import { Pagination } from "swiper/modules";
+import "swiper/css/pagination";
+
 const CoursesSlider = () => {
   const {
     data: courses,
@@ -48,13 +51,15 @@ const CoursesSlider = () => {
         <Swiper
           spaceBetween={16}
           slidesPerView={"auto"}
-          className="w-full h-fit"
+          className="w-full h-fit courses-slider"
+          modules={[Pagination]}
+          pagination={true}
         >
           {courses?.data?.data?.map((course, idx) => (
-            <SwiperSlide key={idx} className="!w-[217px]">
+            <SwiperSlide key={idx} className="!w-[217px] !h-full">
               <Link
                 href={`/courses/${course.id}`}
-                className="relative flex flex-col items-center cursor-pointer shadow-none w-full h-[310px] bg-gray-50  rounded-lg"
+                className="relative h-full flex flex-col items-center cursor-pointer shadow-none w-full bg-gray-50  rounded-lg"
               >
                 <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
                   <Image
@@ -72,7 +77,7 @@ const CoursesSlider = () => {
                   <Tooltip
                     title={locale == "ar" ? course.name_ar : course.name_en}
                   >
-                    <h2 className=" text-[#353535] text-start font-[pnu] truncate text-base font-bold mb-2 leading-[160%]">
+                    <h2 className=" text-[#353535] text-start font-[pnu]  text-base font-bold mb-2 leading-[160%]">
                       {locale == "ar" ? course.name_ar : course.name_en}
                     </h2>
                   </Tooltip>
