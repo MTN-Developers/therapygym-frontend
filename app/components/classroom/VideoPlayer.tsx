@@ -41,11 +41,11 @@ const VideoPlayer = React.memo(
 
     const getPlayerPositionClasses = () => {
       if (isSidebarOpen && locale === "ar") {
-        return "right-[350px] !w-[72%]";
+        return "lg:right-[350px] lg:!w-[72%]";
       }
 
       if (!isSidebarOpen && locale === "en") {
-        return "left-[350px] !w-[72%]";
+        return "lg:left-[350px] lg:!w-[72%]";
       }
 
       return "right-0 left-0";
@@ -58,8 +58,8 @@ const VideoPlayer = React.memo(
       }
     }, [dispatch, locale]);
     return (
-      <div className="relative h-[540px] bg-[#2d2f31] overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[535px] bg-[#424242]">
+      <div className="relative h-[200px] lg:h-[540px] bg-[#2d2f31] overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-[80%] w-full h-full lg:h-[535px] bg-[#424242]">
           <div
             className={`
             absolute top-0 w-full h-full 
@@ -76,11 +76,13 @@ const VideoPlayer = React.memo(
             )}
           </div>
 
-          <RightSidebar
-            chapters={courseVideos}
-            handleVideoSelect={handleVideoSelect}
-            currentVideo={currentVideo}
-          />
+          <div className="hidden lg:block">
+            <RightSidebar
+              chapters={courseVideos}
+              handleVideoSelect={handleVideoSelect}
+              currentVideo={currentVideo}
+            />
+          </div>
         </div>
       </div>
     );

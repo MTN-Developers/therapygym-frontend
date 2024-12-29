@@ -18,7 +18,6 @@ interface IProps {
 }
 
 const HeaderClassRoom = React.memo(({ video }: IProps) => {
-  
   const router = useRouter();
   const { locale } = useTranslationContext();
   const dispatch = useDispatch();
@@ -48,7 +47,7 @@ const HeaderClassRoom = React.memo(({ video }: IProps) => {
           alt="logo"
           width={24}
           height={24}
-          className="w-6 h-6 cursor-pointer"
+          className="w-6 h-6 cursor-pointer hidden lg:block"
           onClick={() => dispatch(toggleSidebar())}
         />
         <p className="mx-6">
@@ -64,9 +63,8 @@ const HeaderClassRoom = React.memo(({ video }: IProps) => {
       </div>
     </div>
   );
-})
+});
 
 HeaderClassRoom.displayName = "HeaderClassRoom";
-
 
 export default HeaderClassRoom;
