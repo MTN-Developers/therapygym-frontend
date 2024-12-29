@@ -233,6 +233,7 @@
     "NoVideos": "لا توجد فيديوهات حتى الآن."
   },
   "ClassroomPage": {
+    "CourseContent": "محتوي الكورس",
     "CourseNotFound": "لم يتم العثور على دورة بهذا المعرف.",
     "AboutCourse": "عن الكورس",
     "AboutLecturer": "عن المحاضر",
