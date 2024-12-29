@@ -21,13 +21,13 @@ import { RootState, useAppDispatch } from "@/app/store/store";
 import { useTranslations } from "next-intl";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
-import { Spin } from "antd";
+import { Spin, Tabs, TabsProps } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-// import useSWR from "swr";
-// import { getOne } from "@/services/server";
-// import { useTranslationContext } from "@/contexts/TranslationContext";
-//
+import TabSidebar from "@/app/components/classroom/TabSidebar";
+import { useTranslationContext } from "@/contexts/TranslationContext";
+
 const Page = () => {
+  const { locale } = useTranslationContext();
   const t = useTranslations("ClassroomPage");
   // const [toggleSidebar, setToggleSidebar] = useState(false); // Initially hidden
   const params = useParams();
@@ -41,6 +41,14 @@ const Page = () => {
   });
   const dispatch = useAppDispatch();
 
+  // const handleVideoSelect = (video: IVideo) => {
+  //   dispatch(setCurrentVideo(video));
+  // };
+
+  const handleVideoSelect = (video: IVideo) => {
+    dispatch(setCurrentVideo(video));
+  };
+
   const { currentVideo } = useSelector(
     (state: RootState) => state.courseVideos
   );
@@ -49,57 +57,6 @@ const Page = () => {
     data: {
       packageVideos: data?.data,
     },
-  };
-
-  // const items: TabsProps["items"] = [
-  //   {
-  //     key: "1",
-  //     label: <span style={{ marginInline: 16 }}>{t("AboutCourse")}</span>,
-  //     children: (
-  //       <div className="px-4">
-  //         <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-  //           {t("AboutCourse")}
-  //         </h2>
-  //         <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
-  //           {locale == "ar"
-  //             ? data?.data?.description_ar
-  //             : data?.data?.description_en}
-  //         </p>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     key: "2",
-  //     label: t("AboutLecturer"),
-  //     children: (
-  //       <div className="px-4">
-  //         <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-  //           {t("AboutLecturer")}
-  //         </h2>
-  //         <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
-  //           {t("PlaceholderText")}
-  //         </p>
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     key: "3",
-  //     label: t("CustomerReviews"),
-  //     children: (
-  //       <div className="px-4">
-  //         <h2 className="text-[#007AFE] text-start font-[pnu] text-2xl font-bold leading-8 mt-8 tracking-[-0.24px]">
-  //           {t("CustomerReviews")}
-  //         </h2>
-  //         <p className="w-full mt-4 text-[#656565]  font-[pnu] text-base font-normal leading-[160%]">
-  //           {t("PlaceholderText")}
-  //         </p>
-  //       </div>
-  //     ),
-  //   },
-  // ];
-
-  const handleVideoSelect = (video: IVideo) => {
-    dispatch(setCurrentVideo(video));
   };
 
   useEffect(() => {
@@ -122,6 +79,14 @@ const Page = () => {
       ) : (
         <p>{t("CourseNotFound")}</p>
       )}
+
+      <div className="!h-[58vh] block lg:hidden overflow-scroll">
+        <TabSidebar
+          chapters={courseVideos as any}
+          handleVideoSelect={handleVideoSelect}
+          currentVideo={currentVideo}
+        />
+      </div>
     </div>
   );
 };
