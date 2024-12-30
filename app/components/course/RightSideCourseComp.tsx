@@ -71,7 +71,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   };
   // console.log(course.packages, "course.packages");
   return (
-    <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-50">
+    <div className="lg:w-[370px] lg:h-fit pb-6 bg-white rounded-xl shadow-lg z-[10]">
       {isModalOpen ? (
         <Modal
           width={1100}
