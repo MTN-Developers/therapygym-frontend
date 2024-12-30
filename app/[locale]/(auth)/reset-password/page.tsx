@@ -26,11 +26,11 @@ const Page = () => {
   const passwordSchema = Yup.object().shape({
     newPassword: Yup.string()
       .required(tValidation("PasswordRequired"))
-      .min(8, tValidation("PasswordMin"))
-      .matches(/[A-Z]/, tValidation("PasswordUppercase"))
-      .matches(/[a-z]/, tValidation("PasswordLowercase"))
-      .matches(/[0-9]/, tValidation("PasswordNumber"))
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, tValidation("PasswordSpecial")),
+      .min(8, tValidation("PasswordMin")),
+    // .matches(/[A-Z]/, tValidation("PasswordUppercase"))
+    // .matches(/[a-z]/, tValidation("PasswordLowercase"))
+    // .matches(/[0-9]/, tValidation("PasswordNumber")),
+    // .matches(/[!@#$%^&*(),.?":{}|<>]/, tValidation("PasswordSpecial")),
     confirmPassword: Yup.string()
       .required(tValidation("ConfirmPasswordRequired"))
       .oneOf([Yup.ref("newPassword")], tValidation("PasswordsMustMatch")),
