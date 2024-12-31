@@ -6,6 +6,7 @@ import * as yup from "yup";
 import ErrorMsg from "../shared/ErrorMsg";
 import { endpoints } from "@/services/endpoints";
 import axiosInstance from "@/app/utils/axiosInstance";
+import { useParams } from "next/navigation";
 type PromoCodeFormData = yup.InferType<typeof promoCodesSchema>;
 const promoCodesSchema = yup.object({
   promoCode: yup.string().required("Promo Code is required"),
@@ -22,7 +23,6 @@ const PromoCodeForm = ({
   promoCodeList,
   setPromoCodeList,
   setGatewayFees,
-  clientPhone,
   total,
   gatewayFees,
 }: {
@@ -44,6 +44,8 @@ const PromoCodeForm = ({
   } = useForm<PromoCodeFormData>({
     resolver: yupResolver(promoCodesSchema),
   });
+
+  const urlParams = useParams();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -79,7 +81,7 @@ const PromoCodeForm = ({
       const { data: response, status } = await axiosInstance.get(
         endpoints.checkPromoCode({
           code: promoCode,
-          phone: clientPhone,
+          course_id: urlParams.id,
         })
       );
 
