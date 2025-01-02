@@ -1,15 +1,15 @@
-"use client";
-
-import ImgCrop from "antd-img-crop";
-import { Upload, UploadFile, UploadProps } from "antd";
+import { useState, useRef } from "react";
+import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import NextImage from "next/image";
-import { UserData } from "@/types/profile";
+import axiosInstance from "@/app/utils/axiosInstance";
+import "react-image-crop/dist/ReactCrop.css";
 import { RcFile } from "antd/es/upload";
-import { useState } from "react";
 import editIcon from "@/assets/images/edit-icon-2.svg";
+import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
+import { useAppDispatch } from "@/app/store/store";
 
 interface ImageUploaderProps {
-  userData: UserData;
+  userData: { profile: { avatar: string } };
   onFileChange: (_file: RcFile | null) => void;
 }
 
@@ -17,97 +17,148 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   userData,
   onFileChange,
 }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "defaultProfilePicture.jpg",
-      url: userData.profile?.avatar || "https://via.placeholder.com/110",
-      status: "done",
-    },
-  ]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>(
+    userData.profile?.avatar || "https://via.placeholder.com/110"
+  );
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [crop, setCrop] = useState<Crop>({
+    unit: "px",
+    width: 300,
+    height: 300,
+    x: 0,
+    y: 0,
+  });
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [modalImage, setModalImage] = useState<string>("");
+  const dispatch = useAppDispatch();
 
-  // Converts a file to a base64 dataURL for immediate preview
-  const getSrcFromFile = (file: UploadFile): Promise<string> => {
-    return new Promise((resolve) => {
-      const originFile = file.originFileObj as RcFile;
-      if (!originFile) return resolve("");
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.readAsDataURL(originFile);
+      reader.addEventListener("load", () => {
+        setModalImage(reader.result?.toString() || "");
+        setShowCropModal(true);
+      });
+      reader.readAsDataURL(e.target.files[0]);
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const { width, height } = e.currentTarget;
+    const crop = centerAspectCrop(width, height);
+    setCrop(crop);
+  };
+
+  const centerAspectCrop = (mediaWidth: number, mediaHeight: number): Crop => {
+    const cropWidth = Math.min(300, mediaWidth);
+    const cropHeight = Math.min(300, mediaHeight);
+
+    return {
+      unit: "px" as const, // Explicitly set as a literal type
+      width: cropWidth,
+      height: cropHeight,
+      x: (mediaWidth - cropWidth) / 2,
+      y: (mediaHeight - cropHeight) / 2,
+    };
+  };
+
+  const getCroppedImg = async (
+    image: HTMLImageElement,
+    crop: PixelCrop
+  ): Promise<Blob> => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      throw new Error("No 2d context");
+    }
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+
+    return new Promise((resolve) => {
+      canvas.toBlob(
+        (blob) => {
+          if (blob) resolve(blob);
+        },
+        "image/jpeg",
+        1
+      );
     });
   };
 
-  const handleChange: UploadProps["onChange"] = async (info) => {
-    // We only want 1 file in the list, so take the last item
-    let updatedFileList = info.fileList.slice(-1);
+  const handleCropComplete = async () => {
+    if (!imgRef.current || !completedCrop || !selectedFile) return;
 
-    // Convert any new file to a dataURL so we can display it immediately
-    if (updatedFileList.length > 0) {
-      const lastFile = updatedFileList[0];
-      if (!lastFile.url && lastFile.originFileObj) {
-        const src = await getSrcFromFile(lastFile);
-        lastFile.url = src; // Assign the dataURL to file.url
-      }
-    }
+    try {
+      const croppedBlob = await getCroppedImg(imgRef.current, completedCrop);
+      const file = new File([croppedBlob], selectedFile.name, {
+        type: "image/jpeg",
+      });
 
-    // Update local state
-    setFileList(updatedFileList);
+      const previewUrl = URL.createObjectURL(croppedBlob);
+      setPreviewUrl(previewUrl);
+      onFileChange(file as RcFile);
 
-    // If user has at least one file, pass the raw file up
-    if (updatedFileList.length > 0 && updatedFileList[0].originFileObj) {
-      onFileChange(updatedFileList[0].originFileObj as RcFile);
-    } else {
-      onFileChange(null);
+      // Make API request to upload the cropped image
+      const formData = new FormData();
+      formData.append("image", file);
+
+      await axiosInstance.patch("/user", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setShowCropModal(false);
+      dispatch(fetchUserProfile()); // Update user profile after successful crop and upload
+    } catch (e) {
+      console.error("Error creating crop:", e);
     }
   };
-
-  const handlePreview: UploadProps["onPreview"] = async (file) => {
-    // open a new tab with the full-size preview
-    const url = file.url || (await getSrcFromFile(file));
-    if (!url) return;
-    window.open(url, "_blank");
-  };
-
-  const currentImageUrl = fileList[0]?.url;
 
   return (
     <div className="relative w-fit mb-6">
       <div className="relative w-[110px] h-[110px] rounded-full overflow-hidden flex items-center justify-center bg-gray-200 shadow-sm">
-        <ImgCrop
-          cropShape="round"
-          showGrid
-          rotationSlider
-          aspectSlider
-          showReset
-        >
-          <Upload
-            listType="picture-card"
-            multiple={false}
-            maxCount={1}
-            fileList={fileList}
-            onChange={handleChange}
-            onPreview={handlePreview}
-            showUploadList={false}
-            beforeUpload={() => false} // Don't auto-upload
-          >
-            {currentImageUrl ? (
-              <NextImage
-                src={currentImageUrl}
-                alt="User Image"
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex items-center justify-center w-full h-full text-gray-500">
-                No Image
-              </div>
-            )}
-          </Upload>
-        </ImgCrop>
+        <div className="relative w-full h-full">
+          <NextImage
+            src={previewUrl}
+            alt="User Image"
+            fill
+            className="object-cover"
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            onChange={onSelectFile}
+            accept="image/*"
+            className="absolute inset-0 opacity-0 cursor-pointer"
+          />
+        </div>
       </div>
       <button
         type="button"
         className="absolute bottom-0 right-0 w-6 h-6 rounded-md shadow-sm flex items-center justify-center"
+        onClick={() => fileInputRef.current?.click()}
       >
         <NextImage
           src={editIcon}
@@ -117,6 +168,46 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           className="text-blue-400"
         />
       </button>
+
+      {/* Crop Modal */}
+      {showCropModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-2xl w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Edit Image</h3>
+            <div className="max-h-[60vh] overflow-auto mb-4">
+              <ReactCrop
+                crop={crop}
+                onChange={(c) => setCrop(c)}
+                onComplete={(c) => setCompletedCrop(c)}
+                aspect={1}
+                circularCrop
+              >
+                <img
+                  ref={imgRef}
+                  alt="Crop me"
+                  src={modalImage}
+                  onLoad={onImageLoad}
+                  className="object-contain   max-w-full"
+                />
+              </ReactCrop>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded-md"
+                onClick={() => setShowCropModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                onClick={handleCropComplete}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
