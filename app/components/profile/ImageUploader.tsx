@@ -1,15 +1,15 @@
-"use client";
-
 import { useState, useRef } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import NextImage from "next/image";
-import { UserData } from "@/types/profile";
+import axiosInstance from "@/app/utils/axiosInstance";
+import "react-image-crop/dist/ReactCrop.css";
 import { RcFile } from "antd/es/upload";
 import editIcon from "@/assets/images/edit-icon-2.svg";
-import "react-image-crop/dist/ReactCrop.css";
+import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
+import { useAppDispatch } from "@/app/store/store";
 
 interface ImageUploaderProps {
-  userData: UserData;
+  userData: { profile: { avatar: string } };
   onFileChange: (_file: RcFile | null) => void;
 }
 
@@ -23,7 +23,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   );
   const [showCropModal, setShowCropModal] = useState(false);
   const [crop, setCrop] = useState<Crop>({
-    unit: "px", // Use pixels for precise control
+    unit: "px",
     width: 300,
     height: 300,
     x: 0,
@@ -33,6 +33,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const imgRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [modalImage, setModalImage] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -48,27 +49,22 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
-    const crop = centerAspectCrop(width, height, 1); // Aspect ratio of 1 for a square crop
+    const crop = centerAspectCrop(width, height);
     setCrop(crop);
   };
 
-  function centerAspectCrop(
-    mediaWidth: number,
-    mediaHeight: number,
-    aspect: number
-  ) {
+  const centerAspectCrop = (mediaWidth: number, mediaHeight: number): Crop => {
     const cropWidth = Math.min(300, mediaWidth);
     const cropHeight = Math.min(300, mediaHeight);
 
     return {
-      unit: "px" as const,
+      unit: "px" as const, // Explicitly set as a literal type
       width: cropWidth,
       height: cropHeight,
       x: (mediaWidth - cropWidth) / 2,
       y: (mediaHeight - cropHeight) / 2,
-      aspect,
     };
-  }
+  };
 
   const getCroppedImg = async (
     image: HTMLImageElement,
@@ -118,11 +114,23 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       const file = new File([croppedBlob], selectedFile.name, {
         type: "image/jpeg",
       });
-      const previewUrl = URL.createObjectURL(croppedBlob);
 
+      const previewUrl = URL.createObjectURL(croppedBlob);
       setPreviewUrl(previewUrl);
       onFileChange(file as RcFile);
+
+      // Make API request to upload the cropped image
+      const formData = new FormData();
+      formData.append("image", file);
+
+      await axiosInstance.patch("/user", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setShowCropModal(false);
+      dispatch(fetchUserProfile()); // Update user profile after successful crop and upload
     } catch (e) {
       console.error("Error creating crop:", e);
     }
@@ -179,7 +187,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                   alt="Crop me"
                   src={modalImage}
                   onLoad={onImageLoad}
-                  className="max-w-full"
+                  className="object-contain   max-w-full"
                 />
               </ReactCrop>
             </div>
