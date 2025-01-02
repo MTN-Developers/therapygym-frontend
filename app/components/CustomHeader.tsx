@@ -47,10 +47,10 @@ export default function CustomHeader({
     setSearch(value);
   }
 
-   function CourseIdExisted() {
+  function CourseIdExisted() {
     let pathArr = pathname.split("/");
     let courseId = pathArr[pathArr.length - 1];
-    if (courseId.length > 10) {
+    if (courseId.length > 20) {
       return currentCourse?.primary_color;
     }
 
