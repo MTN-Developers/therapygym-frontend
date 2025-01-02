@@ -36,6 +36,17 @@ const ChangeLanguage = () => {
     },
   ];
 
+  // ## handlers
+  function CourseIdExisted() {
+    let pathArr = pathname.split("/");
+    let courseId = pathArr[pathArr.length - 1];
+    if (courseId.length > 20) {
+      return currentCourse?.primary_color;
+    }
+
+    return "#0573F6";
+  }
+
   return (
     <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
       <Dropdown
@@ -44,10 +55,7 @@ const ChangeLanguage = () => {
         trigger={["click"]}
         placement="bottomRight"
       >
-        <IoLanguageOutline
-          color={currentCourse?.primary_color || "#167bf3"}
-          size={20}
-        />
+        <IoLanguageOutline color={CourseIdExisted()} size={20} />
       </Dropdown>
     </div>
   );
