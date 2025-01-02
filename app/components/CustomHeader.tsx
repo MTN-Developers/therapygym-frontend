@@ -36,6 +36,8 @@ export default function CustomHeader({
     router.push("/login");
   };
 
+  console.log("path", pathname);
+
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
 
@@ -43,6 +45,16 @@ export default function CustomHeader({
   function handleSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setSearch(value);
+  }
+
+   function CourseIdExisted() {
+    let pathArr = pathname.split("/");
+    let courseId = pathArr[pathArr.length - 1];
+    if (courseId.length > 10) {
+      return currentCourse?.primary_color;
+    }
+
+    return "#0573F6";
   }
 
   const useSelector = useAppSelector;
@@ -65,7 +77,7 @@ export default function CustomHeader({
         onClick={() => setCollapsed((prev: boolean) => !prev)}
         className="relative flex items-center gap-2 rounded-lg"
       >
-        <MenuIcon color={currentCourse?.primary_color} />
+        <MenuIcon color={CourseIdExisted()} />
         <div
           className={`absolute 
             ${locale == "ar" ? "left-5" : "right-5"}
@@ -88,7 +100,7 @@ export default function CustomHeader({
       <div className="flex gap-2">
         <div className="flex cursor-pointer items-center content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           {/* <Image src={billIcon} alt="bill" width={20} height={20} /> */}
-          <BillIcon color={currentCourse?.primary_color} />
+          <BillIcon color={CourseIdExisted()} />
         </div>
         <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           <Dropdown
@@ -100,7 +112,7 @@ export default function CustomHeader({
             trigger={["click"]}
             placement="bottomRight"
           >
-            <MessageIcon color={currentCourse?.primary_color || "#0573F6"} />
+            <MessageIcon color={CourseIdExisted()} />
             {/* <Image src={messageIcon} alt="message" width={20} height={20} /> */}
           </Dropdown>
         </div>
@@ -134,7 +146,7 @@ export default function CustomHeader({
                   ? "/images/male.jpg"
                   : "/images/female.jpg"
               }
-              className="rounded-xl"
+              className="rounded-full  !w-[40px] !h-[40px] object-cover"
               alt="user photo"
               width={35}
               height={35}
