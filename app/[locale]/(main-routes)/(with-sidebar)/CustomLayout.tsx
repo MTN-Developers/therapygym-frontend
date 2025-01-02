@@ -313,8 +313,8 @@ import { AppDispatch, RootState } from "@/app/store/store";
 import { logout } from "@/app/store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CustomHeader from "@/app/components/CustomHeader";
-import useSWR from "swr";
-import { getOne } from "@/services/server";
+// import useSWR from "swr";
+// import { getOne } from "@/services/server";
 import { useScreen } from "usehooks-ts";
 import profileIcon from "@/assets/images/profile-icon.svg";
 import { useTranslationContext } from "@/contexts/TranslationContext";
@@ -391,7 +391,7 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
   // console.log("user obj is ", user);
   const { locale: lang } = useTranslationContext();
 
-  const { data } = useSWR<getUserProfile>("/user/me", getOne);
+  // const { data } = useSWR<getUserProfile>("/user/me", getOne);
   const logout_T = useTranslations("Logout");
   // console.log(data);
   // const isAuthenticated: boolean = true;
@@ -557,14 +557,14 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
                         ? "/images/male.jpg"
                         : "/images/female.jpg"
                     }
-                    className="rounded-full"
+                    className="rounded-full w-[40px] h-[40px] object-cover"
                     alt="user photo"
                     width={35}
                     height={35}
                   />
                   <div className="text-white flex flex-col">
                     <p>{userData?.name}</p>
-                    <p className="text-[12px]">{data?.data?.role}</p>
+                    {/* <p className="text-[12px]">{data?.data?.role}</p> */}
                   </div>
                   <button onClick={showLogoutModal}>
                     <Image src={logoutIcon} alt="logout icon" />
