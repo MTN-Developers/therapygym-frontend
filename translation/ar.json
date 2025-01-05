@@ -287,5 +287,12 @@
       "Renew subscription": "تجديد الاشتراك",
       "Days To Renew": "يوم متبقي للتجديد"
     }
+  },
+  "Feedback": {
+    "How easy was it to complete the payment process?": "ما مدى سهولة إتمام عملية الدفع؟",
+    "How would you rate your overall experience with our platform?": "كيف تقيم تجربتك العامة مع منصتنا؟",
+    "How easy was it to sign up for our platform?": "ما مدى سهولة التسجيل في منصتنا؟",
+    "How satisfied are you with the speed and performance of the platform?": "ما مدى رضاك عن سرعة وأداء المنصة؟",
+    "How easy was it to navigate and use the platform?": "ما مدى سهولة التنقل واستخدام المنصة؟"
   }
 }

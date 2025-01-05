@@ -319,6 +319,7 @@ import { useScreen } from "usehooks-ts";
 import profileIcon from "@/assets/images/profile-icon.svg";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
+import Feedback from "@/app/components/Feedback";
 import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
 const { Content, Sider, Header } = Layout;
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
@@ -652,7 +653,10 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
               >
                 <CustomHeader setCollapsed={setCollapsed} />
               </Header>
-              <div className="flex-1">{children}</div>
+              <div className="flex-1 relative">
+                {children}
+                <Feedback />
+              </div>
             </Content>
           </Layout>
         </>
