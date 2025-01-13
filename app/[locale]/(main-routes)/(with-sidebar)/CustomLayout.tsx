@@ -300,9 +300,9 @@ import { CiStreamOn } from "react-icons/ci";
 import { Layout, Menu, Modal, theme } from "antd";
 import homeIcon from "@/assets/images/home-icon.svg";
 import coursesIcon from "@/assets/images/all-courses-icon.svg";
-import calenderIcon from "@/assets/images/calender-icon.svg";
-import discussionIcon from "@/assets/images/discussion-icon.svg";
-import supportIcon from "@/assets/images/support-icon.svg";
+// import calenderIcon from "@/assets/images/calender-icon.svg";
+// import discussionIcon from "@/assets/images/discussion-icon.svg";
+// import supportIcon from "@/assets/images/support-icon.svg";
 import mtnliveLogo2 from "@/assets/images/mtn-live-logo2.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -355,25 +355,25 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       iconType: "component",
       link: `/${locale}/live-stream/`,
     },
-    {
-      id: 3,
-      label: t("Calendar"),
-      icon: calenderIcon,
-      link: `/${locale}/calender`,
-    },
-    {
-      id: 4,
-      label: t("Discussions"),
-      icon: discussionIcon,
-      link: `/${locale}/discussion`,
-    },
-    {
-      id: 5,
-      label: t("Support"),
+    // {
+    //   id: 3,
+    //   label: t("Calendar"),
+    //   icon: calenderIcon,
+    //   link: `/${locale}/calender`,
+    // },
+    // {
+    //   id: 4,
+    //   label: t("Discussions"),
+    //   icon: discussionIcon,
+    //   link: `/${locale}/discussion`,
+    // },
+    // {
+    //   id: 5,
+    //   label: t("Support"),
 
-      icon: supportIcon,
-      link: `/${locale}/support`,
-    },
+    //   icon: supportIcon,
+    //   link: `/${locale}/support`,
+    // },
     {
       id: 6,
       label: t("Profile"),

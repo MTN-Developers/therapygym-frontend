@@ -123,17 +123,17 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
         {/* Price and discount */}
         <div className="flex items-center gap-1">
           <span className="line-through w-11 shrink-0 text-base font-normal leading-6 text-gray-500">
-            ${course?.original_price}
+            ${packag?.original_price}
           </span>
           <span className="text-2xl font-bold leading-8 text-gray-900">
-            ${course?.price_after_discount}
+            ${packag?.price_after_discount}
           </span>
           {/* Calculate discount percentage */}
           {course?.original_price && course?.price_after_discount && (
             <span className="flex ml-10 text-xs text-red-500 justify-center items-center rounded px-2 py-1 bg-[rgba(34,80,140,0.10)]">
               {Math.round(
                 100 -
-                  (course.price_after_discount / course.original_price) * 100
+                  (packag.price_after_discount / packag.original_price) * 100
               )}
               % OFF
             </span>
