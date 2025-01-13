@@ -6,9 +6,9 @@ import userIcon from "@/assets/images/user-icon.svg";
 import editIcon from "@/assets/images/edit-icon.svg";
 import accounIcon from "@/assets/images/account-icon.svg";
 import subscribeIcon from "@/assets/images/subscribe-icon.svg";
-import paymentIcon from "@/assets/images/payment-icon.svg";
-import privacyIcon from "@/assets/images/privacy-icon.svg";
-import notificationIcon from "@/assets/images/notification-icon.svg";
+// import paymentIcon from "@/assets/images/payment-icon.svg";
+// import privacyIcon from "@/assets/images/privacy-icon.svg";
+// import notificationIcon from "@/assets/images/notification-icon.svg";
 import { useRouter, usePathname } from "next/navigation";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
@@ -49,21 +49,21 @@ const ProfileSidebar: React.FC = () => {
       title: t("Subscription"),
       link: `/${locale}/profile/subscription`,
     },
-    {
-      icon: paymentIcon,
-      title: t("Payment method"),
-      link: `/${locale}/profile/payment-method`,
-    },
-    {
-      icon: privacyIcon,
-      title: t("Privacy"),
-      link: `/${locale}/profile/privacy`,
-    },
-    {
-      icon: notificationIcon,
-      title: t("Notification"),
-      link: `/${locale}/profile/notification`,
-    },
+    // {
+    //   icon: paymentIcon,
+    //   title: t("Payment method"),
+    //   link: `/${locale}/profile/payment-method`,
+    // },
+    // {
+    //   icon: privacyIcon,
+    //   title: t("Privacy"),
+    //   link: `/${locale}/profile/privacy`,
+    // },
+    // {
+    //   icon: notificationIcon,
+    //   title: t("Notification"),
+    //   link: `/${locale}/profile/notification`,
+    // },
   ];
 
   const handleItemClick = (link: string) => {

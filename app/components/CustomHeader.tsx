@@ -98,11 +98,11 @@ export default function CustomHeader({
         />
       </div>
       <div className="flex gap-2">
-        <div className="flex cursor-pointer items-center content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
+        {/* <div className="flex cursor-pointer items-center content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]"> */}
           {/* <Image src={billIcon} alt="bill" width={20} height={20} /> */}
-          <BillIcon color={CourseIdExisted()} />
-        </div>
-        <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
+          {/* <BillIcon color={CourseIdExisted()} /> */}
+        {/* </div> */}
+        {/* <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           <Dropdown
             menu={{
               items: [
@@ -113,9 +113,8 @@ export default function CustomHeader({
             placement="bottomRight"
           >
             <MessageIcon color={CourseIdExisted()} />
-            {/* <Image src={messageIcon} alt="message" width={20} height={20} /> */}
           </Dropdown>
-        </div>
+        </div> */}
 
         <ChangeLanguage />
         {/* <div className="flex cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]"> */}
