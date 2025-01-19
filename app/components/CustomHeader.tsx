@@ -16,6 +16,7 @@ import MessageIcon from "@/assets/svgs/message-icon";
 import { RootState, useAppSelector } from "../store/store";
 import MenuIcon from "@/assets/svgs/MenuIcon";
 import BillIcon from "@/assets/svgs/BillIcon";
+import { updateSearchTerm } from "../store/slices/searchCourseSlice";
 // import { useSelector } from "react-redux";
 
 export default function CustomHeader({
@@ -35,8 +36,9 @@ export default function CustomHeader({
     dispatch(logout());
     router.push("/login");
   };
+  const useSelector = useAppSelector;
 
-  console.log("path", pathname);
+  const { searchTerm } = useSelector((state) => state.searchSlice);
 
   // Derived state for showing the search icon
   const showSearchIcon = search.trim() === "";
@@ -45,6 +47,8 @@ export default function CustomHeader({
   function handleSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setSearch(value);
+    dispatch(updateSearchTerm(value.trim()));
+    console.log("searchTerm", searchTerm);
   }
 
   function CourseIdExisted() {
@@ -57,7 +61,6 @@ export default function CustomHeader({
     return "#0573F6";
   }
 
-  const useSelector = useAppSelector;
   const { currentCourse } = useSelector((state) => state.allCourses);
   const { userData } = useSelector((state: RootState) => state.userProfile);
   // # end handlers
@@ -99,8 +102,8 @@ export default function CustomHeader({
       </div>
       <div className="flex gap-2">
         {/* <div className="flex cursor-pointer items-center content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]"> */}
-          {/* <Image src={billIcon} alt="bill" width={20} height={20} /> */}
-          {/* <BillIcon color={CourseIdExisted()} /> */}
+        {/* <Image src={billIcon} alt="bill" width={20} height={20} /> */}
+        {/* <BillIcon color={CourseIdExisted()} /> */}
         {/* </div> */}
         {/* <div className="flex items-center cursor-pointer content-center justify-center rounded-xl shadow-md w-[36px] h-[36px]">
           <Dropdown
