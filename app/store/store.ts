@@ -7,6 +7,7 @@ import userProfileReducer from "./slices/userProfileSlice";
 import subscribedCoursesSliceReducer from "./slices/subscribedCoursesSlice";
 import courseVideosReducer from "./slices/courseVideosSlice";
 import { persistStore, persistReducer } from "redux-persist";
+import searchSliceReducer from "./slices/searchCourseSlice";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   userProfile: userProfileReducer,
   courseVideos: courseVideosReducer,
+  searchSlice: searchSliceReducer,
   // Add other reducers here
 });
 
