@@ -175,3 +175,9 @@ export interface ICourseVideosResponse {
   status: number;
   message: string;
 }
+
+
+
+export interface SearchCourses {
+  
+}
