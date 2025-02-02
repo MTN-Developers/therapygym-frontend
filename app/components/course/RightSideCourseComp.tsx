@@ -261,7 +261,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
 
 export default RightSideCourseComp;
 
-const PackageCard = ({
+export const PackageCard = ({
   pkg,
   course_id,
 }: {

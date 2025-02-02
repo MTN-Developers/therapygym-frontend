@@ -1,14 +1,20 @@
 "use client";
 
+import { PackageCard } from "@/app/components/course/RightSideCourseComp";
 import { RenderHTML } from "@/app/components/shared/RenderHTML";
+import { setCurrentCourse } from "@/app/store/slices/allCoursesSlice";
+import Close from "@/assets/components/Close";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
 import { SubscriptionApiResponse, Subscription } from "@/types/packages";
-import { Spin } from "antd";
+import { Button, Modal, Spin } from "antd";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 
 const Page = () => {
@@ -77,13 +83,42 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
   const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
   const remaining = differenceDays > 0 ? differenceDays : 0; // Don't show negative days
   const endDateObj = new Date(end_date);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [open_packages_modal, setOpenPackagesModal] = React.useState(false);
+  const {
+    data: courses,
+    // error,
+    // isLoading,
+  } = useSWR<getCourse>(`/course/${subscription.course.id}`, getOne, {
+    revalidateOnFocus: false,
+    onSuccess: (data) => {
+      dispatch(setCurrentCourse(data.data));
+    },
+  });
+
+  const handlePurchaseButton = () => {
+    switch (course.type) {
+      case "standalone":
+        router.push(`/courses/${course.id}/payment`);
+        break;
+      case "standalone_subscribe":
+        router.push(`/courses/${course.id}/purchase-options`);
+        break;
+      case "subscribe":
+        setOpenPackagesModal(true);
+        break;
+      default:
+        console.error("Unknown course type");
+        break;
+    }
+  };
 
   const endDateString = endDateObj.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
-  console.log(course);
   return (
     <div
       className={`border text-nowrap lg:w-[895px] w-[270px] rounded-xl shadow-sm p-2 lg:p-6 flex flex-col gap-4 lg:flex-row items-start lg:items-center`}
@@ -153,6 +188,87 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
         >
           {t("Renew subscription")}
         </Link>
+        <Button
+          // className="bg-[#017AFD] text-white text-base lg:text-lg rounded-md font-bold w-full lg:w-[277px] h-[56px] flex items-center justify-center"
+          className="
+    relative overflow-hidden
+    text-white text-base lg:text-lg
+    rounded-md font-bold
+    w-full lg:w-[277px] h-[56px]
+    flex items-center justify-center
+    transition-all duration-300 ease-in-out
+    bg-gradient-to-r from-[#017AFD] via-[#0156b0] to-[#017AFD]
+    bg-[length:200%_100%]
+    animate-[gradientFlow_3s_ease-in-out_infinite]
+    hover:scale-105
+    active:scale-95
+    before:content-['']
+    before:absolute
+    before:inset-[2px]
+    before:rounded-[6px]
+    before:opacity-0
+    before:transition-opacity
+    before:duration-200
+    hover:before:opacity-100
+    after:content-['']
+    after:absolute
+    after:inset-0
+    after:rounded-md
+    after:animate-[pulse_2s_infinite]
+    shadow-[0_0_15px_rgba(1,122,253,0.5)]
+  "
+          onClick={handlePurchaseButton}
+        >
+          {locale === "en" ? "Upgrade subscription" : "ترقية الإشتراك"}
+        </Button>
+
+        {open_packages_modal && (
+          <Modal
+            closeIcon={<Close />}
+            title=""
+            className="packages-modal top-[50px]"
+            rootClassName="packages-modal2"
+            cancelButtonProps={{ style: { display: "none" } }}
+            okButtonProps={{ style: { display: "none" } }}
+            width={1350}
+            style={{ background: "transparent" }}
+            open={open_packages_modal}
+            onOk={() => setOpenPackagesModal(false)}
+            onCancel={() => setOpenPackagesModal(false)}
+          >
+            <div className="[font-family:Cairo] mt-4 flex flex-col w-full justify-center items-center">
+              {/* <h2 className="text-white text-[22px] lg:text-[62px] font-medium leading-[33px] lg:leading-[66px] mb-2">
+              {t("ChoosePackage")}
+            </h2> */}
+              {/* <p className="w-[415px] shrink-0 text-[#C0C0C0] text-center text-lg font-bold leading-[66px]">
+              {t("AffordableOptions")}
+            </p> */}
+              <div className="w-full">
+                <Swiper
+                  lang="ar"
+                  dir={locale == "ar" ? "rtl" : "ltr"}
+                  direction="horizontal"
+                  spaceBetween={16}
+                  slidesPerView={"auto"}
+                  className="w-full h-fit"
+                >
+                  {[...(courses?.data.packages || [])] // Create a new array using spread operator
+                    .sort(
+                      (a, b) => a.price_after_discount - b.price_after_discount
+                    )
+                    .map((pkg, idx) => (
+                      <SwiperSlide
+                        key={idx}
+                        className="!w-[306px] !lg:w-[415px]"
+                      >
+                        <PackageCard course_id={course.id} pkg={pkg} />
+                      </SwiperSlide>
+                    ))}
+                </Swiper>
+              </div>
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );
