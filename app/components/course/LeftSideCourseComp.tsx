@@ -26,19 +26,17 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   // -----------------------------
   const [copied, setCopied] = useState(false);
 
-  // Only grab window.location.href on the client side
-  const shareUrl =
-    typeof window !== "undefined"
-      ? window.location.href
-      : "https://example.com";
-
   // The text you want to prepend to the shared link
   const shareMessage = "I'm taking this amazing course! Join me at";
+
+  // Only grab window.location.href on the client side
+  const currentPageUrl =
+    typeof window !== "undefined" ? window.location.href : "";
 
   // Copy link to clipboard
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(`${shareMessage} ${shareUrl}`);
+      await navigator.clipboard.writeText(`${shareMessage} ${currentPageUrl}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -48,17 +46,37 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
 
   // Open a new window for each social media platform, with the message included
   const shareToSocial = (platform: "twitter" | "facebook" | "linkedin") => {
-    const encodedUrl = encodeURIComponent(shareUrl);
+    const encodedUrl = encodeURIComponent(currentPageUrl);
     const encodedMessage = encodeURIComponent(shareMessage);
 
-    const urls = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodedMessage}%20${encodedUrl}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedMessage}`,
-      linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedMessage}&summary=${encodedMessage}`,
-    };
+    let socialShareUrl; // Changed variable name here
 
-    window.open(urls[platform], "_blank", "width=600,height=400");
+    switch (platform) {
+      case "facebook":
+        // Facebook sharing URL
+        socialShareUrl = `https://www.facebook.com/sharer.php?u=${encodedUrl}`;
+        break;
+      case "twitter":
+        // Twitter sharing URL
+        socialShareUrl = `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}`;
+        break;
+      case "linkedin":
+        // LinkedIn sharing URL
+        socialShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+        break;
+      default:
+        return;
+    }
+
+    const windowFeatures =
+      "width=600,height=400,left=" +
+      (window.innerWidth - 600) / 2 +
+      ",top=" +
+      (window.innerHeight - 400) / 2;
+
+    window.open(socialShareUrl, "_blank", windowFeatures);
   };
+
   // -----------------------------
   // END SHARE LOGIC
   // -----------------------------
