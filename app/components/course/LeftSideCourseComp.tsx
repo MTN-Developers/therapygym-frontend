@@ -9,10 +9,11 @@ import { useTranslations } from "next-intl";
 import Clock from "@/assets/svgs/Clock@2x";
 import Star from "@/assets/svgs/Star";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { FaXTwitter } from "react-icons/fa6";
 
 // *** NEW: Import icons from lucide-react
 import {
-  Twitter,
+  // Twitter,
   Facebook,
   Linkedin,
   Copy,
@@ -160,7 +161,7 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
                 onClick={() => shareToSocial("twitter")}
                 className="p-2 rounded-full bg-[#1DA1F2] text-white hover:bg-[#1a8cd8] transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <FaXTwitter className="w-5 h-5" />
               </div>
 
               {/* Facebook */}
