@@ -8,9 +8,17 @@ import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
 import Clock from "@/assets/svgs/Clock@2x";
 import Star from "@/assets/svgs/Star";
+import { IoLogoWhatsapp } from "react-icons/io";
 
 // *** NEW: Import icons from lucide-react
-import { Twitter, Facebook, Linkedin, Copy, Check } from "lucide-react";
+import {
+  Twitter,
+  Facebook,
+  Linkedin,
+  Copy,
+  Check,
+  // MessageCircle,
+} from "lucide-react";
 
 interface IProps {
   items: TabsProps["items"];
@@ -45,7 +53,9 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
   };
 
   // Open a new window for each social media platform, with the message included
-  const shareToSocial = (platform: "twitter" | "facebook" | "linkedin") => {
+  const shareToSocial = (
+    platform: "twitter" | "facebook" | "linkedin" | "whatsapp"
+  ) => {
     const encodedUrl = encodeURIComponent(currentPageUrl);
     const encodedMessage = encodeURIComponent(shareMessage);
 
@@ -64,6 +74,10 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
         // LinkedIn sharing URL
         socialShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
         break;
+      case "whatsapp":
+        socialShareUrl = `https://api.whatsapp.com/send?text=${encodedMessage}%20${encodedUrl}`;
+        break;
+
       default:
         return;
     }
@@ -130,13 +144,15 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
               {t("ArabicLanguage")}
             </p>
           </div>
-          <div className="flex gap-6 items-center">
-            <p className="text-[color:var(--Neutral-70,#595959)] text-sm font-medium leading-[22px] tracking-[-0.14px]">
-              {t("ProvidedBy")}
-            </p>
-            <p className="color-primary text-base font-medium leading-[22px] underline">
-              {t("Doctor")}{" "}
-            </p>
+          <div className="flex flex-wrap gap-6 items-center">
+            <div>
+              <p className="text-[color:var(--Neutral-70,#595959)] text-sm font-medium leading-[22px] tracking-[-0.14px]">
+                {t("ProvidedBy")}
+              </p>
+              <p className="color-primary text-base font-medium leading-[22px] underline">
+                {t("Doctor")}{" "}
+              </p>
+            </div>
             {/* here is the share buttons  */}
             <div className="flex items-center gap-2">
               {/* Twitter */}
@@ -161,6 +177,13 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
                 className="p-2 rounded-full bg-[#0077B5] text-white hover:bg-[#006399] transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
+              </div>
+              {/* WhatsApp */}
+              <div
+                onClick={() => shareToSocial("whatsapp")}
+                className="p-2 rounded-full bg-[#25D366] text-white hover:bg-[#20bd5a] transition-colors"
+              >
+                <IoLogoWhatsapp className="w-5 h-5" />
               </div>
 
               {/* Copy Link */}
