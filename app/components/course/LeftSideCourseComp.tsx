@@ -144,13 +144,15 @@ const LeftSideCourseComp = ({ items, onChange, course }: IProps) => {
               {t("ArabicLanguage")}
             </p>
           </div>
-          <div className="flex gap-6 items-center">
-            <p className="text-[color:var(--Neutral-70,#595959)] text-sm font-medium leading-[22px] tracking-[-0.14px]">
-              {t("ProvidedBy")}
-            </p>
-            <p className="color-primary text-base font-medium leading-[22px] underline">
-              {t("Doctor")}{" "}
-            </p>
+          <div className="flex flex-wrap gap-6 items-center">
+            <div>
+              <p className="text-[color:var(--Neutral-70,#595959)] text-sm font-medium leading-[22px] tracking-[-0.14px]">
+                {t("ProvidedBy")}
+              </p>
+              <p className="color-primary text-base font-medium leading-[22px] underline">
+                {t("Doctor")}{" "}
+              </p>
+            </div>
             {/* here is the share buttons  */}
             <div className="flex items-center gap-2">
               {/* Twitter */}
