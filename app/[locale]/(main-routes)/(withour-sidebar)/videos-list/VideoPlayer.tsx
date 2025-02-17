@@ -21,7 +21,8 @@ const MemoizedSolutionVideo = React.memo(({ src }: { src: string }) => (
     allow="autoplay; fullscreen; picture-in-picture pip"
     key={src}
     className="w-full h-full"
-    src={`https://therapy-gym-intimate-relationships.pages.dev/?stream#${src}`}
+    src={`${src}`}
+    // src={`https://therapy-gym-intimate-relationships.pages.dev/?stream#${src}`}
     // src={`https://video-player-cxd.pages.dev/?stream#${src}`}
     // src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
   />
@@ -50,7 +51,7 @@ const VideoPlayer = React.memo(
       (state: RootState) => state.sidebar
     );
 
-    console.log("ahmed src ", src);
+    // console.log("ahmed src ", src);
 
     const { locale } = useTranslationContext();
     const dispatch = useDispatch();
