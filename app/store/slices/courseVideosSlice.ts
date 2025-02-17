@@ -39,7 +39,7 @@ export const fetchCourseVideos = createAsyncThunk(
           },
         }
       );
-      console.log(data);
+      // console.log(data);
       return data;
       // return response.data;
     } catch (error: unknown) {

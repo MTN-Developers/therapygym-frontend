@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
         deleteCookie("access_token");
         deleteCookie("refresh_token");
         deleteCookie("user");
-        console.log("Redirecting to login page 2");
+        // console.log("Redirecting to login page 2");
         window.location.href = "/login";
         return Promise.reject(new Error("Requires login"));
       } else {

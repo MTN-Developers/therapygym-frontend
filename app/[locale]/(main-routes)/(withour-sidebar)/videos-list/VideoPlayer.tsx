@@ -15,13 +15,13 @@ import PlyrVideo from "@/app/components/classroom/PlyrVideo";
 //   <PlyrVideo src={src} />
 // ));
 
-const MemoizedSolutionVideo = React.memo(({ src }: { src: string }) => (
+const MemoizedSolutionVideo = React.memo(({ src }: { src: IVideo }) => (
   <iframe
     allowFullScreen
     allow="autoplay; fullscreen; picture-in-picture pip"
-    key={src}
+    key={src.id}
     className="w-full h-full"
-    src={`${src}`}
+    src={src.r2_url}
     // src={`https://therapy-gym-intimate-relationships.pages.dev/?stream#${src}`}
     // src={`https://video-player-cxd.pages.dev/?stream#${src}`}
     // src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
@@ -75,7 +75,7 @@ const VideoPlayer = React.memo(
       }
     }, [dispatch, locale]);
 
-    console.log("src is", src.r2_url);
+    // console.log("src is", src.r2_url);
     return (
       <div className="relative h-[200px] lg:h-[540px] bg-[#2d2f31] overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-[80%] w-full h-[216px] lg:h-[535px] bg-[#424242]">
@@ -86,10 +86,15 @@ const VideoPlayer = React.memo(
             ${getPlayerPositionClasses()}
           `}
           >
-            {src.r2_url !== null ? (
-              <MemoizedSolutionVideo src={src.r2_url} />
-            ) : (
+            {src.r2_url ? (
+              <MemoizedSolutionVideo src={src} />
+            ) : src.video_url ? (
               <MemoizedPlyrVideo src={src.video_url} />
+            ) : (
+              // Fallback <div> if neither r2_url nor video_url is present
+              <div className="text-white font-bold w-full h-full flex items-center justify-center">
+                <p>There are no videos yet.</p>
+              </div>
             )}
           </div>
 
