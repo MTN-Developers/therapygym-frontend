@@ -48,7 +48,7 @@ export default function CustomHeader({
     const value = e.target.value;
     setSearch(value);
     dispatch(updateSearchTerm(value.trim()));
-    console.log("searchTerm", searchTerm);
+    // console.log("searchTerm", searchTerm);
   }
 
   function CourseIdExisted() {
