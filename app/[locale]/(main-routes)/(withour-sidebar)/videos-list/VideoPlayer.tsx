@@ -51,7 +51,7 @@ const VideoPlayer = React.memo(
       (state: RootState) => state.sidebar
     );
 
-    console.log("ahmed src ", src);
+    // console.log("ahmed src ", src);
 
     const { locale } = useTranslationContext();
     const dispatch = useDispatch();
