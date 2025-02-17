@@ -23,7 +23,7 @@ export const fetchUserProfile = createAsyncThunk<
   try {
     const response = await axiosInstance.get("user/me");
 
-    console.log("user data profile response is ", response);
+    // console.log("user data profile response is ", response);
     return response.data.data;
   } catch (error: unknown) {
     let errorMessage = "an error occurred while fetching";
