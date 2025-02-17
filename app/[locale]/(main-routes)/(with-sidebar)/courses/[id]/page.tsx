@@ -39,6 +39,8 @@ const Page = ({
 
   const dispatch = useAppDispatch();
 
+  // console.log("Ahmed videos", course);
+
   React.useEffect(() => {
     // Access the root element
     const root = document.documentElement;
