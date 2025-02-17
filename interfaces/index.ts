@@ -71,11 +71,11 @@ export interface SubscribedCourseApi {
   calendar_image: string;
 }
 
-  // export interface IVideo {
-  //   id: number;
-  //   title: string;
-  //   url: string;
-  // }
+// export interface IVideo {
+//   id: number;
+//   title: string;
+//   url: string;
+// }
 
 export interface IChapter {
   id: number;
@@ -148,6 +148,7 @@ export interface IVideo {
   title_en: string;
   video_url: string;
   video_path: string;
+  r2_url: string | null;
   updated_at: string;
   created_at: string;
   deleted_at: string | null;
@@ -176,8 +177,4 @@ export interface ICourseVideosResponse {
   message: string;
 }
 
-
-
-export interface SearchCourses {
-  
-}
+export interface SearchCourses {}
