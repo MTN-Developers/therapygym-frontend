@@ -75,7 +75,7 @@ const CourseCard = ({ subscription }: { subscription: Subscription }) => {
   const { end_date } = subscription;
   const packag = subscription.package; // The "package" object within subscription
   const course = subscription.course; // The "course" object within package
-  console.log(subscription.package);
+  // console.log(subscription.package);
   // Calculate remaining days
   const now = new Date();
   const endDate = new Date(end_date);

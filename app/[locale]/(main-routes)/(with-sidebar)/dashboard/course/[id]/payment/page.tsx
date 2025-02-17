@@ -17,7 +17,7 @@ const Page = ({
   };
 }) => {
   const { id } = params;
-  console.log(id, "Course ID");
+  // console.log(id, "Course ID");
   const { data, isLoading } = useSWR<getCourse>(`/course/${id}`, getOne);
 
   if (isLoading) {

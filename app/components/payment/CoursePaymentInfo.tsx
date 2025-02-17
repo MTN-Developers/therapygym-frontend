@@ -9,7 +9,7 @@ const CoursePaymentInfo = ({ course }: { course: SubscribedCourse }) => {
 
   const calculatedGatewayFees = StripeNumber * 0.05;
 
-  console.log(course);
+  // console.log(course);
 
   return (
     <div

@@ -57,7 +57,7 @@ export const login = createAsyncThunk(
         console.log("error", errorMessage);
       } else if (error instanceof Error) {
         console.log("error2 ", error);
-        
+
         errorMessage = error.message;
       }
 
@@ -69,7 +69,7 @@ export const login = createAsyncThunk(
 export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",
   async (_, { rejectWithValue }) => {
-    console.log("refreshAccessToken Function (TEST)");
+    // console.log("refreshAccessToken Function (TEST)");
     try {
       // console.log("SDSd");
       const refreshToken = localStorage.getItem("refreshToken");
@@ -86,7 +86,7 @@ export const refreshAccessToken = createAsyncThunk(
       // console.log(response, "response");
 
       const { access_token } = response.data?.data;
-      console.log(access_token);
+      // console.log(access_token);
       // const decodedToken: { exp: number } = jwt_decode(access_token);
       // const tokenExpirey = decodedToken.exp * 1000;
 
@@ -104,7 +104,7 @@ export const refreshAccessToken = createAsyncThunk(
       deleteCookie("access_token");
       deleteCookie("refresh_token");
       deleteCookie("user");
-      console.log("Delete Cookie from authSlice");
+      // console.log("Delete Cookie from authSlice");
       let errorMessage = "An unknown error occurred";
 
       if (error instanceof AxiosError) {

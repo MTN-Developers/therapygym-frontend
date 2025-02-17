@@ -35,8 +35,8 @@ const CoursePaymentForm = ({ Course }: { Course: SubscribedCourse }) => {
         type: "course",
       });
 
-      console.log(CreateIntent?.data, "CreateIntent");
-      console.log(CreateIntent?.data?.clientSecret);
+      // console.log(CreateIntent?.data, "CreateIntent");
+      // console.log(CreateIntent?.data?.clientSecret);
       const { error } = await stripe.confirmCardPayment(
         CreateIntent?.data?.clientSecret,
         {

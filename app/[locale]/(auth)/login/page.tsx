@@ -45,7 +45,7 @@ const Page = () => {
     e.preventDefault();
     try {
       const resultAction = await dispatch(login({ email, password }));
-      console.log("resultAction", resultAction);
+      // console.log("resultAction", resultAction);
 
       if (login.fulfilled.match(resultAction)) {
         message.success("Login successful");

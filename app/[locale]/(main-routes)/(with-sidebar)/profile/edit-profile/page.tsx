@@ -127,13 +127,13 @@ const Page = () => {
 
   const onSubmit = async (formData: FormData) => {
     try {
-      console.log("Starting form submission");
+      // console.log("Starting form submission");
       const data = new FormData();
 
-      console.log("Avatar file state:", avatarFile);
+      // console.log("Avatar file state:", avatarFile);
 
       if (avatarFile) {
-        console.log("Appending avatar file:", avatarFile.name);
+        // console.log("Appending avatar file:", avatarFile.name);
         data.append("image", avatarFile, avatarFile.name);
       }
 
