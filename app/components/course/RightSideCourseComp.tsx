@@ -61,15 +61,15 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const handleRedirectToCourse = () => {
     setLoading(true);
 
-    if (course.id === "9c285b51-34fd-4a56-96b4-4943ba8ff561") {
-      setTimeout(() => {
-        router.push(`/awsClassroom/${course.id}`);
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        router.push(`/classroom/${course.id}`);
-      }, 2000);
-    }
+    // if (course.id === "9c285b51-34fd-4a56-96b4-4943ba8ff561") {
+    //   setTimeout(() => {
+    //     router.push(`/awsClassroom/${course.id}`);
+    //   }, 2000);
+    // } else {
+    setTimeout(() => {
+      router.push(`/awsClassroom/${course.id}`);
+    }, 2000);
+    // }
   };
 
   const handlePlayVideo = () => {
