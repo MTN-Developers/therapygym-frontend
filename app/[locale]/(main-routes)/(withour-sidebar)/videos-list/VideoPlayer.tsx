@@ -15,18 +15,25 @@ import PlyrVideo from "@/app/components/classroom/PlyrVideo";
 //   <PlyrVideo src={src} />
 // ));
 
-const MemoizedSolutionVideo = React.memo(({ src }: { src: IVideo }) => (
-  <iframe
-    allowFullScreen
-    allow="autoplay; fullscreen; picture-in-picture pip"
-    key={src.id}
-    className="w-full h-full"
-    src={src.r2_url}
-    // src={`https://therapy-gym-intimate-relationships.pages.dev/?stream#${src}`}
-    // src={`https://video-player-cxd.pages.dev/?stream#${src}`}
-    // src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
-  />
-));
+const MemoizedSolutionVideo = React.memo(({ src }: { src: IVideo }) => {
+  // Add null check
+  if (!src.r2_url) {
+    return null;
+  }
+
+  return (
+    <iframe
+      allowFullScreen
+      allow="autoplay; fullscreen; picture-in-picture pip"
+      key={src.id}
+      className="w-full h-full"
+      src={src.r2_url}
+      // src={`https://therapy-gym-intimate-relationships.pages.dev/?stream#${src}`}
+      // src={`https://video-player-cxd.pages.dev/?stream#${src}`}
+      // src={`https://stream.mtninstitute.net/streaming/index.html?stream#${src}`}
+    />
+  );
+});
 
 MemoizedSolutionVideo.displayName = "MemoizedSolutionVideo";
 
@@ -86,12 +93,11 @@ const VideoPlayer = React.memo(
             ${getPlayerPositionClasses()}
           `}
           >
-            {src.r2_url ? (
+            {src.r2_url && src.r2_url.trim() ? (
               <MemoizedSolutionVideo src={src} />
-            ) : src.video_url ? (
+            ) : src.video_url && src.video_url.trim() ? (
               <MemoizedPlyrVideo src={src.video_url} />
             ) : (
-              // Fallback <div> if neither r2_url nor video_url is present
               <div className="text-white font-bold w-full h-full flex items-center justify-center">
                 <p>There are no videos yet.</p>
               </div>
