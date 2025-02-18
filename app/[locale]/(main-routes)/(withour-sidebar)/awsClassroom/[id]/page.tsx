@@ -119,6 +119,7 @@ const Page = () => {
 
       {courseVideos ? (
         <VideoPlayer
+          key={currentVideo?.id} // Add this line
           src={currentVideo!}
           handleVideoSelect={handleVideoSelect}
           courseVideos={courseVideos as any}
