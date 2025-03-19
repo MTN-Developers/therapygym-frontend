@@ -22,7 +22,6 @@ export default async function RootLayout({
           {children}
         </TranslationContextProvider>
       </NextIntlClientProvider>
-      
     </main>
   );
 }
