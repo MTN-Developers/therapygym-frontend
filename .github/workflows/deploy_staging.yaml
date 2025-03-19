@@ -29,7 +29,7 @@ jobs:
         run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: docker build --build-arg APP_PORT=${{ secrets.STAGING_PORT }} -t mazinmtn/mtn_live_frontend:${{ env.VERSION }} .
+        run: docker build --build-arg APP_PORT=${{ secrets.STAGING_PORT }} -t mazinmtn/therapygym_frontend_staging:${{ env.VERSION }} .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -38,7 +38,7 @@ jobs:
           password: ${{ secrets.DOCKER_PWD }}
 
       - name: Push Docker image to Docker Hub
-        run: docker push mazinmtn/mtn_live_frontend:${{ env.VERSION }}
+        run: docker push mazinmtn/therapygym_frontend_staging:${{ env.VERSION }}
 
       - name: Deploy to Staging
         env:
@@ -65,24 +65,24 @@ jobs:
           ssh -i ~/.ssh/private_key $VM_USER@$VM_IP << EOF
             echo "${{ secrets.DOCKER_PWD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
             
-            docker pull mazinmtn/mtn_live_frontend:${VERSION}
+            docker pull mazinmtn/therapygym_frontend_staging:${VERSION}
             
-            if [ "\$(docker ps -q -f name=mtn_live_frontend_staging)" ]; then
-              docker stop mtn_live_frontend_staging
+            if [ "\$(docker ps -q -f name=therapygym_frontend_staging)" ]; then
+              docker stop therapygym_frontend_staging
             fi
 
-            if [ "\$(docker ps -aq -f status=exited -f name=mtn_live_frontend_staging)" ]; then
-              docker rm mtn_live_frontend_staging
+            if [ "\$(docker ps -aq -f status=exited -f name=therapygym_frontend_staging)" ]; then
+              docker rm therapygym_frontend_staging
             fi
 
-            docker run -d --restart unless-stopped -p "$PORT:$PORT" --name mtn_live_frontend_staging \
+            docker run -d --restart unless-stopped -p "$PORT:$PORT" --name therapygym_frontend_staging \
               -e PORT="$PORT" \
               -e NEXT_PUBLIC_BASE_URL="$NEXT_PUBLIC_BASE_URL" \
               -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="$NEXT_PUBLIC_STRIPE_PUBLIC_KEY" \
               -e NEXT_PUBLIC_CHECK_PHONE_API_KEY="$NEXT_PUBLIC_CHECK_PHONE_API_KEY" \
               -e ZOOM_SDK_KEY="$ZOOM_SDK_KEY" \
               -e ZOOM_SDK_SECRET="$ZOOM_SDK_SECRET" \
-              mazinmtn/mtn_live_frontend:${VERSION}
+              mazinmtn/therapygym_frontend_staging:${VERSION}
 
             docker image prune -f
           EOF
