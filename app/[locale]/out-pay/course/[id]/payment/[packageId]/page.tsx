@@ -23,7 +23,7 @@ import { Package, PackagesResponse } from "@/types/publicCoursePackages";
 // Components
 import CountryCodeSelect from "@/app/components/auth/CountryCodeSelect";
 import FormField from "@/app/components/auth/register/FormField";
-import TermsAndPrivacy from "@/app/components/auth/register/TermsAndPrivacy";
+// import TermsAndPrivacy from "@/app/components/auth/register/TermsAndPrivacy";
 import ChangeLanguage from "@/app/components/shared/ChangeLanguage";
 import useSWR from "swr";
 import { getOne } from "@/services/server";
@@ -338,7 +338,7 @@ const PaymentStepper = ({
               size="large"
             />
 
-            <TermsAndPrivacy t={t} />
+            {/* <TermsAndPrivacy t={t} /> */}
 
             <Button
               type="primary"
@@ -431,7 +431,7 @@ const Page = ({
   }
 
   return (
-    <div className="size-full flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-fit bg-white rounded-lg shadow-md">
+    <div className="size-full min-h-screen flex-wrap px-4 py-10 lg:p-0 gap-0 flex justify-between h-fit bg-white rounded-lg shadow-md">
       <div className="w-full lg:w-1/2 min-h-[700px] h-fit lg:flex relative">
         <div
           className="absolute w-full"
@@ -451,8 +451,8 @@ const Page = ({
         </div>
       </div>
       <div className="w-full lg:w-1/2 py-[28px]">
-        <div className="w-[540px] min-h-full h-fit p-4 max-w-full flex justify-center flex-col">
-          <div className="flex flex-col gap-4">
+        <div className="w-[620px] min-h-full h-fit p-4 max-w-full flex justify-center flex-col">
+          {/* <div className="flex flex-col gap-4">
             <Image
               src={"/images/mtn-live.svg"}
               width={150}
@@ -460,7 +460,7 @@ const Page = ({
               className="mb-4"
               alt="MTN Live"
             />
-          </div>
+          </div> */}
 
           <PaymentStepper
             selectedPackage={selectedPackage as Package}
