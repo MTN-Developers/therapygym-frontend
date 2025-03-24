@@ -1,3 +1,4 @@
+"use client";
 import StripeProvider from "@/app/StripeProvider";
 
 export default function RootLayout({

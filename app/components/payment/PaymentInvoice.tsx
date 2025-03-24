@@ -1,7 +1,7 @@
 "use client";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { getOne } from "@/services/server";
-import { Course_package } from "@/types/packages";
+// import { Course_package } from "@/types/packages";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
@@ -12,6 +12,7 @@ import { useAppSelector } from "@/app/store/store";
 import { Tooltip } from "antd";
 import { IoMdClose } from "react-icons/io";
 import { formatCurrency } from "@/app/utils/formatCurrency";
+import { Package } from "@/types/publicCoursePackages";
 
 interface PromoCode {
   code: string;
@@ -22,10 +23,12 @@ const PaymentInvoice = ({
   packageData,
   promoCodeList,
   setPromoCodeList,
+  courseId,
 }: {
-  packageData: Course_package;
+  packageData: Package;
   promoCodeList: PromoCode[];
   setPromoCodeList: any;
+  courseId: string;
 }) => {
   const t = useTranslations("PaymentInvoice");
   const { locale } = useTranslationContext();
@@ -44,11 +47,10 @@ const PaymentInvoice = ({
     total - calculatedGatewayFees
   );
 
+  console.log("courseId", courseId);
+
   const { userData } = useAppSelector((state) => state.userProfile);
-  const { data: course } = useSWR<getCourse>(
-    `/course/${packageData?.course_id}`,
-    getOne
-  );
+  const { data: course } = useSWR<getCourse>(`/course/${courseId}`, getOne);
 
   const handleRemovePromoCode = (promo: PromoCode, index: number) => {
     // Remove promo code from list

@@ -12,8 +12,9 @@ import ErrorMsg from "../shared/ErrorMsg";
 import { StripeCardElement } from "@stripe/stripe-js";
 import axiosInstance from "@/app/utils/axiosInstance";
 import { useTranslations } from "next-intl";
-import { Course_package } from "@/types/packages";
+// import { Course_package } from "@/types/packages";
 import { useAppSelector } from "@/app/store/store";
+import { Package } from "@/types/publicCoursePackages";
 
 interface PromoCode {
   code: string;
@@ -22,9 +23,11 @@ interface PromoCode {
 const PaymentForm = ({
   Package,
   promoCodeList,
+  courseId,
 }: {
-  Package: Course_package;
+  Package: Package;
   promoCodeList: PromoCode[];
+  courseId: string;
 }) => {
   const router = useRouter();
   const stripe = useStripe();
@@ -78,7 +81,7 @@ const PaymentForm = ({
         setLoading(false);
         message.success(t("PaymentSuccess"));
         sessionStorage.setItem("showCourseFeedback", "true");
-        router.push(`/courses/${Package.course_id}`);
+        router.push(`/courses/${courseId}`);
       }
     } catch (error) {
       console.log(error);

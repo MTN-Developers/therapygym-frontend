@@ -24,16 +24,28 @@ export function middleware(req: NextRequest) {
     "reset-password",
     "request-reset-password",
   ];
+
+  // Check if the current path is the payment route that should be accessible without login
+  // This pattern now accounts for the locale prefix
+  const isPaymentRoute = pathname.match(
+    /\/(en|ar)\/out-pay\/course\/.*\/payment\/.*/
+  );
+
   const isAuthRoute = authRoutes.some((route) =>
     pathname.startsWith(`/${locale}/${route}`)
   );
 
-  // console.log(isAuthRoute, pathname);
+  console.log("Path:", pathname);
+  console.log("Is payment route:", !!isPaymentRoute);
 
-  if (!accessToken && !isAuthRoute && isLocaleValid) {
+  // Only redirect to login if:
+  // 1. User is not authenticated AND
+  // 2. Not on an auth route AND
+  // 3. Not on the payment route AND
+  // 4. The locale is valid
+  if (!accessToken && !isAuthRoute && !isPaymentRoute && isLocaleValid) {
     console.log("Redirecting to login page");
     const pathnameWithoutLocale = pathname.replace(`/${locale}`, "");
-    // console.log(req.nextUrl.pathname, );
 
     const redirectURL =
       req.nextUrl.pathname == `/${locale}`
