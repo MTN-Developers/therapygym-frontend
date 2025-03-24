@@ -1,6 +1,7 @@
 "use client";
+// out-pay page
 import PaymentForm from "@/app/components/payment/PaymentForm";
-import NotFoundComponent from "@/app/components/shared/NotFound";
+// import NotFoundComponent from "@/app/components/shared/NotFound";
 import { getOne } from "@/services/server";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
@@ -9,7 +10,8 @@ import React from "react";
 import useSWR from "swr";
 import PaymentInvoice from "@/app/components/payment/PaymentInvoice";
 import { useTranslations } from "next-intl";
-import { Course_package, getPackage } from "@/types/packages";
+// import { Course_package, getPackage } from "@/types/packages";
+import { Package, PackagesResponse } from "@/types/publicCoursePackages";
 
 interface PromoCode {
   code: string;
@@ -25,13 +27,18 @@ const Page = ({
   };
 }) => {
   const { id, packageId } = params;
+
+  console.log("ahmed", id);
+
   const t = useTranslations("PaymentPage");
   const [promoCodeList, setPromoCodeList] = React.useState<PromoCode[]>([]);
 
-  const { data, isLoading } = useSWR<getPackage>(
-    `/package/${packageId}`,
+  const { data, isLoading } = useSWR<PackagesResponse>(
+    `/package/course/${id}`,
     getOne
   );
+
+  const selectedPackage = data?.data?.find((packag) => packag.id === packageId);
 
   if (isLoading) {
     return (
@@ -42,11 +49,15 @@ const Page = ({
   }
 
   if (!data?.data && isLoading === false) {
-    return <NotFoundComponent />;
+    // return <NotFoundComponent />;
+    return <>it is going to login couse no data</>;
   }
 
-  if (isLoading === false && data?.data?.course_id !== id) {
-    return <NotFoundComponent />;
+  if (isLoading === false && selectedPackage.id !== packageId) {
+    console.log(selectedPackage.id, packageId);
+
+    // return <NotFoundComponent />;
+    return <>it is going to login couse id is false</>;
   }
 
   return (
@@ -64,7 +75,8 @@ const Page = ({
           <PaymentInvoice
             promoCodeList={promoCodeList}
             setPromoCodeList={setPromoCodeList}
-            packageData={data?.data as Course_package}
+            packageData={selectedPackage as Package}
+            courseId={id}
           />
         </div>
       </div>
@@ -90,7 +102,8 @@ const Page = ({
 
           <PaymentForm
             promoCodeList={promoCodeList}
-            Package={data?.data as Course_package}
+            Package={selectedPackage as Package}
+            courseId={id}
           />
         </div>
       </div>
