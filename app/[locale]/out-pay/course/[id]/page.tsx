@@ -39,7 +39,7 @@ const Page = ({
 
   const dispatch = useAppDispatch();
 
-  console.log("Ahmed course", course);
+  // console.log("Ahmed videos", course);
 
   React.useEffect(() => {
     // Access the root element

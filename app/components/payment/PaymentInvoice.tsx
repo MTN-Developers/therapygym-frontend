@@ -1,17 +1,16 @@
 "use client";
 import { useTranslationContext } from "@/contexts/TranslationContext";
-import { getOne } from "@/services/server";
-import { Course_package } from "@/types/packages";
+// import { Course_package } from "@/types/packages";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
-import useSWR from "swr";
 import { RenderHTML } from "../shared/RenderHTML";
 import PromoCodeForm from "./PromoCodeForm";
 import { useAppSelector } from "@/app/store/store";
 import { Tooltip } from "antd";
 import { IoMdClose } from "react-icons/io";
 import { formatCurrency } from "@/app/utils/formatCurrency";
+import { Package } from "@/types/publicCoursePackages";
 
 interface PromoCode {
   code: string;
@@ -22,10 +21,12 @@ const PaymentInvoice = ({
   packageData,
   promoCodeList,
   setPromoCodeList,
+  courseId,
 }: {
-  packageData: Course_package;
+  packageData: Package;
   promoCodeList: PromoCode[];
   setPromoCodeList: any;
+  courseId: string;
 }) => {
   const t = useTranslations("PaymentInvoice");
   const { locale } = useTranslationContext();
@@ -44,11 +45,10 @@ const PaymentInvoice = ({
     total - calculatedGatewayFees
   );
 
+  console.log("courseId", courseId);
+
   const { userData } = useAppSelector((state) => state.userProfile);
-  const { data: course } = useSWR<getCourse>(
-    `/course/${packageData?.course_id}`,
-    getOne
-  );
+  // const { data: course } = useSWR<getCourse>(`/course/${courseId}`, getOne);
 
   const handleRemovePromoCode = (promo: PromoCode, index: number) => {
     // Remove promo code from list
@@ -90,8 +90,8 @@ const PaymentInvoice = ({
           <Image
             src={
               locale == "ar"
-                ? (course?.data?.logo_ar as string)
-                : (course?.data?.logo_en as string)
+                ? (packageData.course_logo_ar as string)
+                : (packageData.course_logo_en as string)
             }
             width={96}
             height={40}
@@ -100,7 +100,7 @@ const PaymentInvoice = ({
         </div>
         <div className="flex flex-col gap-3">
           <div className="w-fit text-[#2B2B2B] [font-family:Inter] text-base font-medium">
-            {locale == "ar" ? course?.data?.name_ar : course?.data?.name_en}
+            {locale == "ar" ? packageData.course_name_ar : packageData.course_name_en}
             {locale == "ar" ? (
               <RenderHTML
                 htmlContent={packageData?.name_ar}
