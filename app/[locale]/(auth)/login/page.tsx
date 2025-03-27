@@ -97,9 +97,9 @@ const Page = () => {
             <h1 className="text-[#2983EE]  text-3xl font-bold ">
               {t("Login")}
             </h1>
-            {/* <h2 className="text-[#353535]  text-sm font-normal ">
+            <h2 className="text-[#353535]  text-sm font-normal ">
               {t("We are glad to see you back with us")}
-            </h2> */}
+            </h2>
             <div className="flex items-center w-full justify-between">
               <h3
                 className={`hidden lg:block text-[#0573F6]   
