@@ -120,6 +120,8 @@ const FromComp = () => {
         }
       );
 
+      console.log("response", response);
+
       if (response.status === 201 || response.status === 200) {
         message.success(t("RegistrationSuccess"));
         TriggerLogin({
@@ -138,6 +140,8 @@ const FromComp = () => {
             password: data.password,
           },
         });
+      } else if (response.status === 409) {
+        message.error("Email or phone already exists");
       } else {
         message.error(t("RegistrationFailed"));
       }
@@ -153,7 +157,10 @@ const FromComp = () => {
           }
         } else {
           const errorMessage = error.response?.data?.error;
-          message.error(errorMessage || t("UnexpectedError"));
+          // message.error(errorMessage || t("UnexpectedError"));
+          console.log("errorMessage", errorMessage);
+
+          message.error("Email or phone already exists");
         }
       } else {
         message.error(t("UnexpectedError"));
