@@ -149,7 +149,7 @@ const PaymentStepper = ({
           console.log("errorMessage", errorMessage);
 
           message.error("Email or phone already exists");
-          message.error(errorMessage || t("UnexpectedError"));
+          // message.error(errorMessage || t("UnexpectedError"));
         }
       } else {
         message.error(t("UnexpectedError"));
