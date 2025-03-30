@@ -1,61 +1,84 @@
 "use client";
+
+import React from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Spin } from "antd";
+import useSWR from "swr";
+
 import ZoomMeeting from "@/app/components/live/ZoomMeeting";
 import { useAppSelector } from "@/app/store/store";
-import { useTranslations } from "next-intl";
-import React from "react";
+import { getOne } from "@/services/server";
 
-const Page = ({
-  params: _params,
-}: {
-  params: {
-    courseId: string;
-  };
-}) => {
-  // const [_activeMeeting, setActiveMeeting] = React.useState<any>(null);
+const CourseLivePage = () => {
+  const params = useParams();
+  const courseId = params.courseId;
+  const router = useRouter();
   const t = useTranslations("LiveStreamPage");
-  // const { isLoading } = useSWR(
-  //   `/zoom/meetings/course/${params.courseId}`,
-  //   getAll as any,
-  //   {
-  //     onSuccess: (data) => {
-  //       // sort to make the newest date first
-  //       setActiveMeeting(
-  //         data?.data
-  //           ?.sort(
-  //             (a: any, b: any) =>
-  //               new Date(b.created_at).getTime() -
-  //               new Date(a.created_at).getTime()
-  //           )
-  //           .filter((item: any) => item.is_active)[0]
-  //       );
-  //     },
-  //   }
-  // );
-  // console.log(/);
   const { user } = useAppSelector((state) => state.auth);
+
+  // Fetch course data
+  const {
+    data: courses,
+    error,
+    isLoading,
+  } = useSWR<{
+    data: {
+      data: Array<{
+        id: string;
+        status: { isSubscribed: boolean; isPurchased: boolean };
+      }>;
+    };
+  }>("/course", getOne);
+
+  // Filter and memoize subscribed/purchased courses
+  const myCourses = React.useMemo(() => {
+    const subscribed = courses?.data?.data?.filter(
+      (course) => course.status?.isSubscribed || course.status?.isPurchased
+    );
+    return subscribed || [];
+  }, [courses?.data?.data]);
+
+  // Check if user has access to this course
+  const currentCourse = myCourses.find((course) => course.id === courseId);
+
+  // Redirect if course is not accessible
+  React.useEffect(() => {
+    if (courses && !currentCourse) {
+      router.push("/");
+    }
+  }, [courses, currentCourse, router]);
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (error) {
+    console.error("Error fetching courses:", error);
+    return <p className="font-semibold text-xl">Error loading course data</p>;
+  }
+
+  // If no course is found, show nothing (will redirect)
+  if (!currentCourse) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full h-full items-center justify-center">
-      <h2 className="font-semibold text-xl"> {t("LiveStream")}</h2>
-      {/* <p>{params.courseId}</p> */}
+      <h2 className="font-semibold text-xl">{t("LiveStream")}</h2>
       <ZoomMeeting
         client_name={`${user?.name} - ${user?.country}`}
         meetingId={"81297066423"}
         passcode={"169998"}
       />
-
-      {/* ) : activeMeeting ? (
-        <ZoomMeeting
-          client_name={`${user?.name} - ${user?.country}`}
-          meetingId={"81297066423"}
-          passcode={"169998"}
-          // meetingId={activeMeeting.meeting_id}
-          // passcode={activeMeeting.passcode}
-        />
-      ) : (
-        <p>{t("NoActiveMeeting")}</p>
-      )} */}
     </div>
   );
 };
 
-export default Page;
+export default CourseLivePage;
