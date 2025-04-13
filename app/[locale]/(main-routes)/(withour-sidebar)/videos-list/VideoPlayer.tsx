@@ -24,7 +24,7 @@ const MemoizedSolutionVideo = React.memo(({ src }: { src: IVideo }) => {
   return (
     <iframe
       allowFullScreen
-      allow="autoplay; fullscreen; picture-in-picture pip"
+      allow="autoplay; fullscreen; picture-in-picture; pip;"
       key={src.id}
       className="w-full h-full"
       src={src.r2_url}
