@@ -23,7 +23,8 @@
     "Discussions": "المناقشات",
     "Support": "الدعم",
     "LiveStream": "البث المباشر",
-    "Profile": "الملف الشخصي"
+    "Profile": "الملف الشخصي",
+    "gifts": "الهدايا"
   },
   "Login": {
     "Welcome": "مرحبا بك",
@@ -294,5 +295,8 @@
     "How easy was it to sign up for our platform?": "ما مدى سهولة التسجيل في منصتنا؟",
     "How satisfied are you with the speed and performance of the platform?": "ما مدى رضاك عن سرعة وأداء المنصة؟",
     "How easy was it to navigate and use the platform?": "ما مدى سهولة التنقل واستخدام المنصة؟"
+  },
+  "GiftsPage": {
+    "Gifts & Promotions": "هدايا و عروض"
   }
 }

@@ -70,6 +70,10 @@ const FromComp = () => {
   const course_id = searchParams.get("course_id");
   const package_id = searchParams.get("package_id");
 
+  const giftcode = searchParams.get("giftcode");
+
+  console.log("code ", giftcode);
+
   const commonInputClass =
     "lg:w-[590px] border border-[#8d8a8a] bg-transparent focus:bg-transparent h-[55px] font-bold";
 
@@ -139,6 +143,7 @@ const FromComp = () => {
             email: data.email,
             password: data.password,
           },
+          giftcode: giftcode,
         });
       } else if (response.status === 409) {
         message.error("Email or phone already exists");

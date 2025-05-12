@@ -11,6 +11,7 @@ export const TriggerLogin = async ({
   router,
   course_id,
   package_id,
+  giftcode,
 }: {
   dispatch: any;
   user: any;
@@ -19,6 +20,7 @@ export const TriggerLogin = async ({
   router: any;
   course_id?: string;
   package_id?: string;
+  giftcode?: string;
 }) => {
   try {
     const resultAction = await dispatch(
@@ -50,6 +52,24 @@ export const TriggerLogin = async ({
           console.log(data);
           router.push(`/`);
         } catch (e) {
+          console.log(e);
+        }
+        router.push(`/`);
+      }
+
+      if (giftcode) {
+        try {
+          const { data } = await axiosInstance.patch(
+            `/user-gift/${giftcode}/use`,
+            {
+              giftcode: giftcode,
+            }
+          );
+          console.log(data);
+          message.success("Giftcode applied successfully");
+          router.push(`/`);
+        } catch (e) {
+          message.error("Giftcode applied failed");
           console.log(e);
         }
         router.push(`/`);

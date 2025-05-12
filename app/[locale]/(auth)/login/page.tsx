@@ -35,12 +35,16 @@ const Page = () => {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
   const package_id = searchParams.get("package_id");
+  const giftcode = searchParams.get("giftcode");
+
   const tt = useTranslations("RegisterPage");
 
   const t = useTranslations("Login");
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.auth);
+
+  console.log("giftcode from login", giftcode);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,10 +76,14 @@ const Page = () => {
             console.log(e);
           }
         }
-        // router.push("/"); // Redirect to home page
-        router.replace(`
-          ${redirect ? decodeURIComponent(redirect) : "/"}
-          `);
+        // ✅ redirect logic
+        if (giftcode) {
+          router.replace("/gifts");
+        } else if (redirect) {
+          router.replace(decodeURIComponent(redirect));
+        } else {
+          router.replace("/");
+        }
       } else {
         message.error(resultAction.payload as string);
       }
