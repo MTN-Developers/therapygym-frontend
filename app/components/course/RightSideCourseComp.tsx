@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useTranslationContext } from "@/contexts/TranslationContext";
 import { IoClose, IoTvOutline } from "react-icons/io5";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import Trophy from "@/assets/svgs/Trophy";
 import CurrencyDollarSimple from "@/assets/svgs/CurrencyDollarSimple";
 import Clock from "@/assets/svgs/Clock@2x";
@@ -19,12 +19,12 @@ import Play from "@/assets/svgs/Play";
 import { Course_package } from "@/types/packages";
 import Logo from "@/assets/svgs/Logo";
 import { RenderHTML } from "../shared/RenderHTML";
-const PlyrVideo = dynamic(
-  () => import("@/app/components/classroom/PlyrVideo"),
-  {
-    ssr: false,
-  }
-);
+// const PlyrVideo = dynamic(
+//   () => import("@/app/components/classroom/PlyrVideo"),
+//   {
+//     ssr: false,
+//   }
+// );
 
 const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
   const [loading, setLoading] = React.useState(false);
@@ -99,7 +99,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
           >
             <IoClose color="#FFF" />
           </div>
-          <PlyrVideo src={course?.promo_video as string} />
+          {/* <PlyrVideo src={course?.promo_video as string} /> */}
         </Modal>
       ) : null}
       {open_packages_modal && (
@@ -148,7 +148,7 @@ const RightSideCourseComp = ({ course }: { course: SubscribedCourse }) => {
       )}
       <div className="relative">
         <Image
-          src={locale == "ar" ? course.banner_ar : course.banner_en}
+          src={locale == "ar" ? course.logo_ar : course.logo_en}
           alt={course.name_ar}
           width={370}
           height={740}
