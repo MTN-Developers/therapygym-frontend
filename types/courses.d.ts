@@ -39,7 +39,9 @@ type SubscribedCourse = {
   status: {
     isPurchased: boolean;
     isSubscribed: boolean;
+    isSubscriptionValid: boolean;
   };
+  has_live: boolean;
   packages: package[];
 };
 
