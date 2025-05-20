@@ -19,11 +19,15 @@ const SelectCourse = () => {
 
   const MyCourses = React.useMemo(() => {
     const my_courses = courses?.data?.data?.filter(
-      (courses) => courses.status?.isSubscribed || courses.status?.isPurchased
+      (courses) =>
+        (courses.status?.isSubscribed || courses.status?.isPurchased) &&
+        courses.has_live &&
+        courses.status.isSubscriptionValid
     );
     return my_courses || [];
   }, [courses?.data?.data]);
 
+  console.log({ MyCourses });
   const t = useTranslations("Home");
   const { locale } = useTranslationContext();
   return (

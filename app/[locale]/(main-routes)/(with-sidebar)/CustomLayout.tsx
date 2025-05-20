@@ -321,6 +321,9 @@ import { useTranslationContext } from "@/contexts/TranslationContext";
 import { useTranslations } from "next-intl";
 import Feedback from "@/app/components/Feedback";
 import { fetchUserProfile } from "@/app/store/slices/userProfileSlice";
+import giftIcon from "@/public/images/gift-icon.svg";
+
+//
 const { Content, Sider, Header } = Layout;
 const Dashboard = ({ children }: { children: React.ReactNode }) => {
   const { locale } = useTranslationContext();
@@ -354,6 +357,13 @@ const Dashboard = ({ children }: { children: React.ReactNode }) => {
       ),
       iconType: "component",
       link: `/${locale}/live-stream/`,
+    },
+    {
+      id: 8,
+      label: t("gifts"),
+      icon: <Image src={giftIcon} alt="gift icon" />,
+      iconType: "component",
+      link: `/${locale}/gifts/`,
     },
     // {
     //   id: 3,

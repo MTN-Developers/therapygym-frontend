@@ -26,7 +26,12 @@ const CourseLivePage = () => {
     data: {
       data: Array<{
         id: string;
-        status: { isSubscribed: boolean; isPurchased: boolean };
+        has_live: boolean;
+        status: {
+          isSubscribed: boolean;
+          isPurchased: boolean;
+          isSubscriptionValid: boolean;
+        };
       }>;
     };
   }>("/course", getOne);
@@ -34,7 +39,10 @@ const CourseLivePage = () => {
   // Filter and memoize subscribed/purchased courses
   const myCourses = React.useMemo(() => {
     const subscribed = courses?.data?.data?.filter(
-      (course) => course.status?.isSubscribed || course.status?.isPurchased
+      (course) =>
+        (course.status?.isSubscribed || course.status?.isPurchased) &&
+        course.has_live &&
+        course.status.isSubscriptionValid
     );
     return subscribed || [];
   }, [courses?.data?.data]);

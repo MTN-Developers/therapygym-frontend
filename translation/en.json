@@ -23,7 +23,8 @@
     "Discussions": "Discussions",
     "Support": "Support",
     "LiveStream": "Live Stream",
-    "Profile": "Profile"
+    "Profile": "Profile",
+    "gifts": "Gifts & Promotions"
   },
   "Login": {
     "Welcome": "Welcome",
@@ -293,5 +294,8 @@
     "How easy was it to sign up for our platform?": "How easy was it to sign up for our platform?",
     "How satisfied are you with the speed and performance of the platform?": "How satisfied are you with the speed and performance of the platform?",
     "How easy was it to navigate and use the platform?": "How easy was it to navigate and use the platform?"
+  },
+  "GiftsPage": {
+    "Gifts & Promotions": "Gifts & Promotions"
   }
 }

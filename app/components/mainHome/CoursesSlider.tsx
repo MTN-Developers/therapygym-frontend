@@ -63,7 +63,7 @@ const CoursesSlider = () => {
               >
                 <div className=" flex justify-center w-full bg-white rounded-t-lg  ">
                   <Image
-                    src={course.banner_ar ?? ""}
+                    src={course.logo_ar ?? ""}
                     width={217}
                     height={150}
                     alt="course image"
