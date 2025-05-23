@@ -218,11 +218,14 @@ const AchievementsComp = () => {
 };
 
 const AllCourses = () => {
-  const {
-    data: courses,
-    error,
-    isLoading,
-  } = useSWR<getCourses>("/course", getOne);
+  const { data, error, isLoading } = useSWR<getCourses>(
+    "/course?limit=1000",
+    getOne
+  );
+
+  const courses = data?.data?.data.filter(
+    (course) => course.category === "therapy gym"
+  );
 
   // console.log(courses?.data?.data);
 
@@ -247,18 +250,18 @@ const AllCourses = () => {
           </div>
         </>
       )}
-      {!courses?.data.data.length && !isLoading && (
+      {!courses?.length && !isLoading && (
         <h1 className="text-xl font-bold text-[#5d5d5d] py-4">
           {t("NoCourses")}
         </h1>
       )}
-      {courses && courses?.data?.data?.length > 0 && (
+      {courses && courses?.length > 0 && (
         <Swiper
           spaceBetween={16}
           slidesPerView={"auto"}
           className="w-full h-fit"
         >
-          {courses?.data?.data?.map((course, idx) => (
+          {courses?.map((course, idx) => (
             <SwiperSlide key={idx} className="!w-[217px]">
               <Link
                 href={`/courses/${course.id}`}
