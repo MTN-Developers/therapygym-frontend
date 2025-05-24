@@ -18,12 +18,14 @@ const SelectCourse = () => {
   } = useSWR<getCourses>("/course", getOne);
 
   const MyCourses = React.useMemo(() => {
-    const my_courses = courses?.data?.data?.filter(
-      (courses) =>
-        (courses.status?.isSubscribed || courses.status?.isPurchased) &&
-        courses.has_live &&
-        courses.status.isSubscriptionValid
-    );
+    const my_courses = courses?.data?.data?.filter((course) => {
+      const match =
+        (course.status?.isSubscribed || course.status?.isPurchased) &&
+        course.has_live &&
+        course.status?.isSubscriptionValid;
+      console.log(course.name_en, match);
+      return match;
+    });
     return my_courses || [];
   }, [courses?.data?.data]);
 
