@@ -34,7 +34,7 @@ const CourseLivePage = () => {
         };
       }>;
     };
-  }>("/course", getOne);
+  }>("/course?limit=1000", getOne);
 
   // Filter and memoize subscribed/purchased courses
   const myCourses = React.useMemo(() => {
