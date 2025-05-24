@@ -43,7 +43,7 @@ const CourseLivePage = () => {
         (course.status?.isSubscribed || course.status?.isPurchased) &&
         course.has_live &&
         course.status?.isSubscriptionValid;
-      console.log(course, match);
+      // console.log(course, match);
       return match;
     });
     return my_courses || [];
