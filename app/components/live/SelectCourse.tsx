@@ -23,7 +23,7 @@ const SelectCourse = () => {
         (course.status?.isSubscribed || course.status?.isPurchased) &&
         course.has_live &&
         course.status?.isSubscriptionValid;
-      console.log(course.name_en, match);
+      // console.log(course.name_en, match);
       return match;
     });
     return my_courses || [];

@@ -38,14 +38,18 @@ const CourseLivePage = () => {
 
   // Filter and memoize subscribed/purchased courses
   const myCourses = React.useMemo(() => {
-    const subscribed = courses?.data?.data?.filter(
-      (course) =>
+    const my_courses = courses?.data?.data?.filter((course) => {
+      const match =
         (course.status?.isSubscribed || course.status?.isPurchased) &&
         course.has_live &&
-        course.status.isSubscriptionValid
-    );
-    return subscribed || [];
+        course.status?.isSubscriptionValid;
+      console.log(course.name_en, match);
+      return match;
+    });
+    return my_courses || [];
   }, [courses?.data?.data]);
+
+  console.log({ myCourses });
 
   // Check if user has access to this course
   const currentCourse = myCourses.find((course) => course.id === courseId);
