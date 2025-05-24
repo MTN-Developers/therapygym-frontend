@@ -15,7 +15,7 @@ const SelectCourse = () => {
     data: courses,
     error,
     isLoading,
-  } = useSWR<getCourses>("/course", getOne);
+  } = useSWR<getCourses>("/course?limit=1000", getOne);
 
   const MyCourses = React.useMemo(() => {
     const my_courses = courses?.data?.data?.filter(
